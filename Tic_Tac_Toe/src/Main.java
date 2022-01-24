@@ -26,7 +26,7 @@ public class Main {
         String player1;
         String player2;
         String ChosentoPlay;
-        int AiChoice;
+        int AiAmount;
         int gamemode;
         int play=0;
         System.out.println("Welcome to Tic Tac Toe!");
@@ -57,12 +57,8 @@ public class Main {
                 in.next();
                 player1 = in.nextLine();
                 //AI Choices
-                System.out.println("1.Random Ai");
-                System.out.println("2.Straight Line Ai");
-                System.out.println("3.Straight Line Blocking Ai");
-                System.out.println("4.Blocking Ai");
-                System.out.println("Choose your AI:");
-               AiChoice=in.nextInt();
+                System.out.println("How many Ais do you want?");
+               AiAmount=in.nextInt();
 
 
             }
