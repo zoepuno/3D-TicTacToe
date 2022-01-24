@@ -22,11 +22,6 @@ public class Game implements PlayerInt {
 
 
     @Override
-    public char getLetter() {
-        return 0;
-    }
-
-    @Override
     public Location getMove(char[][][] board) {
         return null;
     }

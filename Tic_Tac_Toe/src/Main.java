@@ -15,20 +15,26 @@
               |         |         |
               |         |         |
  */
+import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Scanner;
 
 
-public class Main {
+public class Main extends JPanel implements KeyListener {
+    char character;
+    Game maingame = new Game();
 
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
-        Game maingame = new Game();
+
         String player1;
         String player2;
         String ChosentoPlay;
         int AiAmount;
         int gamemode;
         int play=0;
+
         System.out.println("Welcome to Tic Tac Toe!");
         System.out.println("Type: \"PLAY\" to begin");
        ChosentoPlay =  in.nextLine();
@@ -69,4 +75,20 @@ public class Main {
         }
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+        character =  e.getKeyChar();
+        if(character == 'r');
+        maingame.reset();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }
