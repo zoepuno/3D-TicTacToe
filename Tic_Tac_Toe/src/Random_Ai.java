@@ -1,16 +1,18 @@
-import java.util.Random;
 import java.util.Scanner;
 
 public class Random_Ai {
-    public static void main(String[] args){
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
         char player = 'X';
-        char[][] board = 
-                {{' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' '}};
+        char[][] board =
+                {
+                        {' ', ' ', ' ', ' '},
+                        {' ', ' ', ' ', ' '},
+                        {' ', ' ', ' ', ' '},
+                        {' ', ' ', ' ', ' '}
+                };
 
-            int x = 0;
+        int x = 0;
 
         boolean error = false;
         int r;
@@ -32,10 +34,8 @@ public class Random_Ai {
                     if (r == 4 || c == 4) {
                         for (int row = 0; row < board.length; row++) {
                             for (int col = 0; col < board[0].length; col++) {
-                                pw.print(board[row][col]);
                             }
                         }
-                        pw.close();
                         break;
                     }
 
@@ -77,18 +77,17 @@ public class Random_Ai {
         else
             player = 'X';
 
-}
+    }
 
-    public static void displayBoard( char[][] board)
-    {
+    public static void displayBoard(char[][] board) {
         System.out.println(" " + board[0][0] + " | " + board[0][1] + " | " + board[0][2] + " ");
         System.out.println("-----------");
         System.out.println(" " + board[1][0] + " | " + board[1][1] + " | " + board[1][2] + " ");
         System.out.println("-----------");
         System.out.println(" " + board[2][0] + " | " + board[2][1] + " | " + board[2][2] + " ");
     }
-    public static boolean isWinner ( char[][] board, char player)
-    {
+
+    public static boolean isWinner(char[][] board, char player) {
         boolean win = false;
 
         // X wins
@@ -123,39 +122,32 @@ public class Random_Ai {
     }
 
 
-    public static boolean count(char[][] board)
-    {
+    public static boolean count(char[][] board) {
         int count = 0;
-        for(int r = 0; r < board.length; r++)
-        {
-            for(int c = 0; c < board.length; c++)
-            {
-                if(board[r][c] == 'X' || board[r][c] == 'O')
-                {
+        for (int r = 0; r < board.length; r++) {
+            for (int c = 0; c < board.length; c++) {
+                if (board[r][c] == 'X' || board[r][c] == 'O') {
                     count++;
                 }
             }
         }
-        if(count == 9)
-        {
+        if (count == 9) {
             return true;
-        }
-        else
+        } else
             return false;
     }
 
     //Moves Randomly
-    Random_Ai()
-    {
-        int  r = (int) (Math.random() * 4);
-        int c = (int) (Math.random() * 4);
+    public static void Random_Ai(char[][] board, int r, int c) {
+        do {
+            r = (int) (Math.random() * 4);
+            c = (int) (Math.random() * 4);
+            if (r == 4 || c == 4) {
+                break;
+            }
 
-    while(board[r][c] == 'X' || board[r][c] == 'O');
-            board[r][c] = 'O';
-        }
-        if (r == 4 || c == 4)
-        {
-            break;
-        }
-
+        } while (board[r][c] == 'X' || board[r][c] == 'O');
+    }
 }
+
+
