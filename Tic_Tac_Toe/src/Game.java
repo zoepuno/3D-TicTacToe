@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Game implements PlayerInt {
+public class Game{
     public int STATUS=0;
     public int PLAYING=1;
     public int PlAYER1_WON=2;
@@ -19,20 +19,11 @@ public class Game implements PlayerInt {
     public void reset(){
         STATUS=PLAYING;
     }
+public void addNames(String name){
+        playerNames.add(name);
 
-
-    @Override
-    public Location getMove(char[][][] board) {
-        return null;
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public PlayerInt freshCopy(char letter) {
-        return null;
-    }
 }
+    public int getPlayers() {
+        return playerNames.size();
+    }
+
