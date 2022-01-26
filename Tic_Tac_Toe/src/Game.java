@@ -37,6 +37,7 @@ public void addNames(String name){
             System.out.println(" " + board[c][2][0] + " | " + board[c][2][1] + " | " + board[c][2][2] + " " + board[c][2][3] + " ");
             System.out.println("-------------");
             System.out.println(" " + board[c][3][0] + " | " + board[c][3][1] + " | " + board[c][3][2] + " " + board[c][3][3] + " ");
+            System.out.println("");
         }
 
     }
