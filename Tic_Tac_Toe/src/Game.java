@@ -39,6 +39,21 @@ public void addNames(String name){
             System.out.println(" " + board[c][3][0] + " | " + board[c][3][1] + " | " + board[c][3][2] + " " + board[c][3][3] + " ");
             System.out.println("");
         }
-
+    }
+        public boolean count(char[][][] board) {
+        int count = 0;
+        for (int l = 0; l < 4; l++) {
+            for (int r = 0; r < board.length; r++) {
+                for (int c = 0; c < board.length; c++) {
+                    if (board[r][c][l] != ' ') {
+                        count++;
+                    }
+                }
+            }
+            if (count == 64) {
+                return true;
+            } else
+                return false;
+        }
     }
     }
