@@ -28,16 +28,16 @@ public void addNames(String name){
         return playerNames.size();
     }
 
- public void displayBoard(char[][][] board) {
-        for (int c = 0; c < 4; c++) {
-            System.out.println(" " + board[c][0][0] + " | " + board[c][0][1] + " | " + board[c][0][2] + " " + board[c][0][3] + " ");
+    public void displayBoard(char[][][] board) {
+        for (int l = 0; l < 4; l++) {
+            System.out.println(" " + board[0][0][l] + " | " + board[0][1][l]+ " | " + board[0][2][l] + " " + board[0][3][l] + " ");
             System.out.println("-------------");
-            System.out.println(" " + board[c][1][0] + " | " + board[c][1][1] + " | " + board[c][1][2] + " " + board[c][1][3] + " ");
+            System.out.println(" " + board[1][0][l] + " | " + board[1][1][l] + " | " + board[1][2][l] + " " + board[1][3][l] + " ");
             System.out.println("-------------");
-            System.out.println(" " + board[c][2][0] + " | " + board[c][2][1] + " | " + board[c][2][2] + " " + board[c][2][3] + " ");
+            System.out.println(" " + board[2][0][l] + " | " + board[2][1][l] + " | " + board[2][2][l] + " " + board[2][3][l] + " ");
             System.out.println("-------------");
-            System.out.println(" " + board[c][3][0] + " | " + board[c][3][1] + " | " + board[c][3][2] + " " + board[c][3][3] + " ");
-            System.out.println("");
+            System.out.println(" " + board[3][0][l] + " | " + board[3][1][l] + " | " + board[3][2][l] + " " + board[3][3][l] + " ");
+            System.out.println("Level: "+l);
         }
     }
         public boolean count(char[][][] board) {
