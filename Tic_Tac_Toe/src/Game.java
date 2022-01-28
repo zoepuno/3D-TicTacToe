@@ -37,7 +37,9 @@ public class Game {
         playerNames.add(name);
 
     }
-
+public String getplayerNames(int x){
+    return (String) playerNames.get(x);
+}
     public int getPlayers() {
         return playerNames.size();
     }
