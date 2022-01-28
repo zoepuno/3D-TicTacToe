@@ -1,4 +1,4 @@
-public class Player<E extends Location> implements PlayerInt<E>
+public class Player<E extends Location> implements PlayerInt
 {
 
    char letter;
@@ -32,7 +32,5 @@ public class Player<E extends Location> implements PlayerInt<E>
     }
 
     @Override
-    public PlayerInt<Location> freshCopy(char letter) {
-        return null;
-    }
+    public void freshCopy(){}
 }
