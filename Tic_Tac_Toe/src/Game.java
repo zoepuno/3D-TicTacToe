@@ -17,7 +17,14 @@ public class Game {
     char O = player2.getLetter();
 
     ArrayList playerNames = new ArrayList<String>();
-
+    public char[][][] board= new char[4][4][4];
+  public void setBoard(int c, int r, int l,char letter){
+        board[c][r][l]=letter;
+    }
+      public int setSTATUS(int b){
+        STATUS=b;
+        return STATUS;
+    }
     public int getSTATUS() {
         return STATUS;
     }
@@ -36,15 +43,16 @@ public class Game {
     }
 
     public void displayBoard(char[][][] board) {
-        for (int s = 0; s < 4; s++) {
-            System.out.println(" " + board[0][0][s] + " | " + board[0][1][s]+ " | " + board[0][2][s] + " " + board[0][3][s] + " ");
+     for (int l = 0; l < 4; l++) {
+            System.out.println("Level: "+(l+1));
+            System.out.println(" " + board[0][0][l] + " | " + board[0][1][l]+ " | " + board[0][2][l] + " | " + board[0][3][l] + " ");
             System.out.println("-------------");
-            System.out.println(" " + board[1][0][s] + " | " + board[1][1][s] + " | " + board[1][2][s] + " " + board[1][3][s] + " ");
+            System.out.println(" " + board[1][0][l] + " | " + board[1][1][l] + " | " + board[1][2][l] + " | " + board[1][3][l] + " ");
             System.out.println("-------------");
-            System.out.println(" " + board[2][0][s] + " | " + board[2][1][s] + " | " + board[2][2][s] + " " + board[2][3][s] + " ");
+            System.out.println(" " + board[2][0][l] + " | " + board[2][1][l] + " | " + board[2][2][l] + " | " + board[2][3][l] + " ");
             System.out.println("-------------");
-            System.out.println(" " + board[3][0][s] + " | " + board[3][1][s] + " | " + board[3][2][s] + " " + board[3][3][s] + " ");
-            System.out.println("Level: "+s);
+            System.out.println(" " + board[3][0][l] + " | " + board[3][1][l] + " | " + board[3][2][l] + " | " + board[3][3][l] + " ");
+
         }
     }
 
