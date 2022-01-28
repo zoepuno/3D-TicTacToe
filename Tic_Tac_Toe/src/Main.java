@@ -18,6 +18,8 @@
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -25,9 +27,11 @@ public class Main extends JPanel implements KeyListener {
     char character;
     Game maingame = new Game();
 
+
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
-
+        Game staticMainGame = new Game();
+        PlayervsPlayer Fight = new PlayervsPlayer();
         String player1;
         String player2;
         String ChosentoPlay;
@@ -52,10 +56,14 @@ public class Main extends JPanel implements KeyListener {
                 //Player Input: Player vs PLayer
                 System.out.print("Player One Name: ");
                 in.next();
-                player1= in.nextLine();
+              player1= in.nextLine();
+              staticMainGame.addNames(player1);
                 System.out.print("Player Two Name: ");
                 in.next();
                 player2= in.nextLine();
+                staticMainGame.addNames(player2);
+                Fight.theMainPlayerGame();
+
             }
             if(gamemode==2) {
                 // Player vs Computer
