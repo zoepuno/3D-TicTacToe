@@ -23,14 +23,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class Main extends JPanel implements KeyListener {
-    char character;
-    Game maingame = new Game();
+public class Main{
+
+    static Game maingame = new Game();
 
 
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
-        Game staticMainGame = new Game();
         PlayervsPlayer Fight = new PlayervsPlayer();
         String player1;
         String player2;
@@ -57,11 +56,11 @@ public class Main extends JPanel implements KeyListener {
                 System.out.print("Player One Name: ");
                 in.next();
               player1= in.nextLine();
-              staticMainGame.addNames(player1);
+                maingame.addNames(player1);
                 System.out.print("Player Two Name: ");
                 in.next();
                 player2= in.nextLine();
-                staticMainGame.addNames(player2);
+                maingame.addNames(player2);
                 Fight.theMainPlayerGame();
 
             }
@@ -83,20 +82,5 @@ public class Main extends JPanel implements KeyListener {
         }
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        character =  e.getKeyChar();
-        if(character == 'r');
-        maingame.reset();
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
 }
+
