@@ -1,6 +1,10 @@
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class Game {
+public class Game implements KeyListener {
+    char character;
     public int STATUS = 0;
     public int PLAYING = 1;
     public int PlAYER1_WON = 2;
@@ -13,11 +17,28 @@ public class Game {
     public int AI2_LOST = 9;
     public Player player1;
     public Player player2;
-    char x =  player1.getLetter();
-    char o = player2.getLetter();
+    char X;
+    char O;
+
+
+    public char[][][] board= new char[4][4][4];
+    public void fillBoard(){
+        for (int l = 0; l < 4; l++) {
+            for(int c=0; c<4; c++){
+                for(int r=0; r<4; r++){
+                    board[l][c][r]='-';
+                }
+            }
+        }
+    }
+
 
     ArrayList playerNames = new ArrayList<String>();
-    public char[][][] board= new char[4][4][4];
+
+    public void setLetter(){
+         X =  player1.getLetter();
+         O = player2.getLetter();
+    }
     public void setBoard(int c, int r, int l,char letter){
         board[c][r][l]=letter;
     }
@@ -37,15 +58,16 @@ public class Game {
         playerNames.add(name);
 
     }
-public String getplayerNames(int x){
-    return (String) playerNames.get(x);
-}
+    public String getplayerNames(int x){
+        return (String) playerNames.get(x);
+    }
+
     public int getPlayers() {
         return playerNames.size();
     }
 
     public void displayBoard(char[][][] board) {
-          for (int l = 0; l < 4; l++) {
+        for (int l = 0; l < 4; l++) {
             System.out.println("Level: "+(l+1));
             System.out.println(" " + board[0][0][l] + " | " + board[0][1][l]+ " | " + board[0][2][l] + " | " + board[0][3][l] + " ");
             System.out.println("----------------");
@@ -63,16 +85,16 @@ public String getplayerNames(int x){
         for (int s = 0; s < 4; s++) {
             for (int r = 0; r < board.length; r++) {
                 for (int c = 0; c < board.length; c++) {
-                    if (board[r][c][s] != ' ') {
+                    if (board[r][c][s] != '-') {
                         count++;
                     }
                 }
             }
         }
-    if (count == 64) {
-        return true;
-    }
-    return false;
+        if (count == 64) {
+            return true;
+        }
+        return false;
     }
 
     public int isWinner (char[][][] board)
@@ -82,55 +104,55 @@ public String getplayerNames(int x){
         //line wins at each horizantal level
         for (int s = 0; s < 4; s++) {
             //diagonal wins
-            if (board[0][0][s] == x && board[1][1][s] == x && board[2][2][s] == x && board[3][3][s] == x)
+            if (board[0][0][s] == X && board[1][1][s] == X && board[2][2][s] == X && board[3][3][s] == X)
                 win = PlAYER1_WON;
-            if (board[0][0][s] == o && board[1][1][s] == o && board[2][2][s] == o && board[3][3][s] == o)
+            if (board[0][0][s] == O && board[1][1][s] == O && board[2][2][s] == O && board[3][3][s] == O)
                 win = PlAYER2_WON;
-            if (board[0][3][s] == x && board[1][2][s] == x && board[2][1][s] == x && board[3][0][s] == x)
+            if (board[0][3][s] == X && board[1][2][s] == X && board[2][1][s] == X && board[3][0][s] == X)
                 win = PlAYER1_WON;
-            if (board[0][3][s] == o && board[1][2][s] == o && board[2][1][s] == o && board[3][0][s] == o)
+            if (board[0][3][s] == O && board[1][2][s] == O && board[2][1][s] == O && board[3][0][s] == O)
                 win = PlAYER2_WON;
 
-                for (int c = 0; c < 4; c++) {
-                    //column wins
-                    if (board[0][c][s] == x && board[1][c][s] == x && board[2][c][s] == x && board[3][c][s] == x)
-                        win = PlAYER1_WON;
-                    if (board[0][c][s] == o && board[1][c][s] == o && board[2][c][s] == o && board[3][c][s] == o)
-                        win = PlAYER2_WON;
-                }
-                for (int r = 0; r < 4; r++) {
-                    //row wins
-                    if (board[r][0][s] == x && board[r][1][s] == x && board[r][2][s] == x && board[r][3][s] == x)
-                        win = PlAYER1_WON;
-                    if (board[r][0][s] == o && board[r][1][s] == o && board[r][2][s] == o && board[r][3][s] == o)
-                        win = PlAYER2_WON;
-                }
+            for (int c = 0; c < 4; c++) {
+                //column wins
+                if (board[0][c][s] == X && board[1][c][s] == X && board[2][c][s] == X && board[3][c][s] == X)
+                    win = PlAYER1_WON;
+                if (board[0][c][s] == O && board[1][c][s] == O && board[2][c][s] == O && board[3][c][s] == O)
+                    win = PlAYER2_WON;
+            }
+            for (int r = 0; r < 4; r++) {
+                //row wins
+                if (board[r][0][s] == X && board[r][1][s] == X && board[r][2][s] == X && board[r][3][s] == X)
+                    win = PlAYER1_WON;
+                if (board[r][0][s] == O && board[r][1][s] == O && board[r][2][s] == O && board[r][3][s] == O)
+                    win = PlAYER2_WON;
+            }
         }
 
         //line wins at each vertical level
         for (int c = 0; c < 4; c++) {
             //diagonal wins
-            if (board[0][c][0] == x && board[1][c][1] == x && board[2][c][2] == x && board[3][c][3] == x)
+            if (board[0][c][0] == X && board[1][c][1] == X && board[2][c][2] == X && board[3][c][3] == X)
                 win = PlAYER1_WON;
-            if (board[0][c][0] == o && board[1][c][1] == o && board[2][c][2] == o && board[3][c][3] == o)
+            if (board[0][c][0] == O && board[1][c][1] == O && board[2][c][2] == O && board[3][c][3] == O)
                 win = PlAYER2_WON;
-            if (board[0][c][3] == x && board[1][c][2] == x && board[2][c][1]== x && board[3][c][0]== x)
+            if (board[0][c][3] == X && board[1][c][2] == X && board[2][c][1]== X && board[3][c][0]== X)
                 win = PlAYER1_WON;
-            if (board[0][c][3] == o && board[1][c][2] == o && board[2][c][1]== o && board[3][c][0]== o)
+            if (board[0][c][3] == O && board[1][c][2] == O && board[2][c][1]== O && board[3][c][0]== O)
                 win = PlAYER2_WON;
 
             for (int r = 0; r < 4; c++) {
                 //vertical row wins
-                if (board[r][c][0] == x && board[r][c][1] == x && board[r][c][2] == x && board[r][c][3] == x)
+                if (board[r][c][0] == X && board[r][c][1] == X && board[r][c][2] == X && board[r][c][3] == X)
                     win = PlAYER1_WON;
-                if (board[r][c][0] == o && board[r][c][1] == o && board[r][c][2] == o && board[r][c][3] == o)
+                if (board[r][c][0] == O && board[r][c][1] == O && board[r][c][2] == O && board[r][c][3] == O)
                     win = PlAYER2_WON;
             }
             for (int s = 0; s < 4; s++) {
                 //horizantal column wins
-                if (board[0][c][s] == x && board[1][c][s] == x && board[2][c][s] == x && board[3][c][s] == x)
+                if (board[0][c][s] == X && board[1][c][s] == X && board[2][c][s] == X && board[3][c][s] == X)
                     win = PlAYER1_WON;
-                if (board[0][c][s] == o && board[1][c][s] == o && board[2][c][s] == o && board[3][c][s] == o)
+                if (board[0][c][s] == O && board[1][c][s] == O && board[2][c][s] == O && board[3][c][s] == O)
                     win = PlAYER2_WON;
             }
         }
@@ -138,30 +160,44 @@ public String getplayerNames(int x){
         //line wins at each vertical level
         for (int r = 0; r < 4; r++) {
             //diagonal wins
-            if (board[r][0][0] == x && board[r][1][1] == x && board[r][2][2] == x && board[r][3][3] == x)
+            if (board[r][0][0] == X && board[r][1][1] == X && board[r][2][2] == X && board[r][3][3] == X)
                 win = PlAYER1_WON;
-            if (board[r][0][0] == o && board[r][1][1] == o && board[r][2][2] == o && board[r][3][3] == o)
+            if (board[r][0][0] == O && board[r][1][1] == O && board[r][2][2] == O && board[r][3][3] == O)
                 win = PlAYER2_WON;
-            if (board[r][3][0] == x && board[r][2][1] == x && board[r][1][2]== x && board[r][0][3]== x)
+            if (board[r][3][0] == X && board[r][2][1] == X && board[r][1][2]== X && board[r][0][3]== X)
                 win = PlAYER1_WON;
-            if (board[r][3][0] == o && board[r][2][1] == o && board[r][1][2]== o && board[r][0][3]== o)
+            if (board[r][3][0] == O && board[r][2][1] == O && board[r][1][2]== O && board[r][0][3]== O)
                 win = PlAYER2_WON;
         }
 
         //3-D diagonal wins
-        if (board[0][0][0] == x && board[1][1][1] == x && board[2][2][2] == x && board[3][3][3] == x)
+        if (board[0][0][0] == X && board[1][1][1] == X && board[2][2][2] == X && board[3][3][3] == X)
             win = PlAYER1_WON;
-        if (board[0][0][0] == o && board[1][1][1] == o && board[2][2][2] == o && board[3][3][3] == o)
+        if (board[0][0][0] == O && board[1][1][1] == O && board[2][2][2] == O && board[3][3][3] == O)
             win = PlAYER2_WON;
-        if (board[0][3][0] == x && board[1][2][1] == x && board[2][1][2]== x && board[3][0][3]== x)
+        if (board[0][3][0] == X && board[1][2][1] == X && board[2][1][2]== X && board[3][0][3]== X)
             win = PlAYER1_WON;
-        if (board[0][3][0] == o && board[1][2][1] == o && board[2][1][2]== o && board[3][0][3]== o)
+        if (board[0][3][0] == O && board[1][2][1] == O && board[2][1][2]== O && board[3][0][3]== O)
             win = PlAYER2_WON;
 
 
         return win;
     }
+    @Override
+    public void keyTyped(KeyEvent e) {
+        character =  e.getKeyChar();
+        if(character == 'r');
+        reset();
+    }
 
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }
-
 
