@@ -22,6 +22,8 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener {
     boolean playervsAI;
     boolean playervsRandomAi;
     int m;
+    static Game maingame = new Game();
+    Main startGame = new Main();
     public Tic_Tac_Toe_Display() {
         rec= new ArrayList<>();
         SceneOne=true;
@@ -181,6 +183,7 @@ if(playervsAI==true){
            SceneTwo=true;
            SceneOne=false;
            SceneThree=false;
+                startGame.playing=1;
                 }
             }
         for (int i = 0; i < choice1.size(); i++) {
@@ -190,6 +193,7 @@ if(playervsAI==true){
                 SceneThree = true;
                 playervsplayer = true;
                 GameStarted=true;
+                startGame.choice=1;
             }
         }
             for (int i = 0; i < choice2.size(); i++) {
@@ -198,6 +202,7 @@ if(playervsAI==true){
                     SceneTwo = false;
                     SceneThree = true;
                     playervsAI=true;
+                    startGame.choice=2;
                 }
         }
         for (int i = 0; i < RandomAi.size(); i++) {
@@ -206,6 +211,7 @@ if(playervsAI==true){
                 playervsAI=false;
                 playervsRandomAi=true;
                 GameStarted=true;
+                startGame.randomAI=1;
             }
         }
 
@@ -237,8 +243,6 @@ if(playervsAI==true){
         repaint();
     }
 }
-
-
 
 
 
