@@ -26,31 +26,23 @@ import java.util.Scanner;
 public class Main{
 
     static Game maingame = new Game();
-
+static int playing;
+static int choice;
+static int randomAI;
 
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
         PlayervsPlayer Fight = new PlayervsPlayer();
         String player1;
         String player2;
-        String ChosentoPlay;
+        int ChosentoPlay;
         int AiAmount;
         int gamemode;
         int play=0;
-
-        System.out.println("Welcome to Tic Tac Toe!");
-        System.out.println("Type: \"PLAY\" to begin");
-       ChosentoPlay =  in.nextLine();
-        if(ChosentoPlay.equals("Play")||ChosentoPlay.equals("PLAY") ) {
-            play=1;
-        }
-        while (play == 1) {
-            //Game mode Selection
-            System.out.println("1. Player vs Player ");
-            System.out.println("2. Player vs Computer ");
-            System.out.println("3. Computer vs Computer ");
-            System.out.println("Choose your gamemode: ");
-            gamemode=in.nextInt();
+       ChosentoPlay=playing;
+       
+        while (ChosentoPlay== 1) {
+            gamemode=choice;
             if(gamemode==1){
                 //Player Input: Player vs PLayer
                 System.out.print("Player One Name: ");
@@ -69,9 +61,10 @@ public class Main{
                 System.out.print("Choose your name: ");
                 in.next();
                 player1 = in.nextLine();
-                //AI Choices
-                System.out.println("How many Ais do you want?");
-               AiAmount=in.nextInt();
+                AiAmount=randomAI;
+                if(AiAmount==1){
+                    
+                }
 
 
             }
