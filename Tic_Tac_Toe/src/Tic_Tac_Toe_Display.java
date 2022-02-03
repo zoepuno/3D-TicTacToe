@@ -21,6 +21,8 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener {
     boolean playervsplayer;
     boolean playervsAI;
     boolean playervsRandomAi;
+    int m;
+
     public Tic_Tac_Toe_Display() {
         rec= new ArrayList<>();
         SceneOne=true;
@@ -41,31 +43,31 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener {
         p.setPaint(new Color(36,37,38));
         p.fillRect(0, 0, 800, 1200);
         if(SceneOne==true) {
-    // R 36,  G 37,  B 38
-    p.setPaint(new Color(255, 128, 128));
-    p.setFont(new Font("Sans Serif", Font.BOLD, 60));
-    p.drawString("Welcome To", 206, 200);
-    p.drawString("Tic Tac Toe", 206, 300);
+            // R 36,  G 37,  B 38
+            p.setPaint(new Color(255, 128, 128));
+            p.setFont(new Font("Sans Serif", Font.BOLD, 60));
+            p.drawString("Welcome To", 206, 200);
+            p.drawString("Tic Tac Toe", 206, 300);
 
-    p.setPaint(Color.RED);
-    p.setFont(new Font("Sans Serif", Font.BOLD, 60));
-    p.drawString("Welcome To", 200, 200);
-    p.drawString("Tic Tac Toe", 200, 300);
-    p.setPaint(new Color(36,37,38));
+            p.setPaint(Color.RED);
+            p.setFont(new Font("Sans Serif", Font.BOLD, 60));
+            p.drawString("Welcome To", 200, 200);
+            p.drawString("Tic Tac Toe", 200, 300);
+            p.setPaint(new Color(36,37,38));
             for (int i = 0; i < rec.size(); i++) {
                 RoundRectangle2D.Double rectangle = rec.get(i);
                 ((Graphics2D) g).fill(rectangle);
             }
-    p.setPaint(new Color(255, 128, 128));
-    p.drawString("PLAY?", 276, 600);
-    p.setFont(new Font("Sans Serif", Font.BOLD, 60));
-    p.setPaint(new Color(255, 128, 128));
-    p.drawRect(251, 530, 240, 100);
-    p.setPaint(Color.RED);
-    p.drawString("PLAY?", 270, 600);
-    p.drawRect(250, 530, 240, 100);
+            p.setPaint(new Color(255, 128, 128));
+            p.drawString("PLAY?", 276, 600);
+            p.setFont(new Font("Sans Serif", Font.BOLD, 60));
+            p.setPaint(new Color(255, 128, 128));
+            p.drawRect(251, 530, 240, 100);
+            p.setPaint(Color.RED);
+            p.drawString("PLAY?", 270, 600);
+            p.drawRect(250, 530, 240, 100);
         }
-      else  if(SceneTwo==true) {
+        else  if(SceneTwo==true) {
             p.setPaint(new Color(255, 128, 128));
             p.setFont(new Font("Sans Serif", Font.BOLD, 60));
             p.drawString("Choose your", 200, 200);
@@ -111,41 +113,62 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener {
 
 
         }
-       else if(SceneThree==true) {
-           if(playervsplayer){
+        else if(SceneThree==true) {
+            if (playervsplayer) {
 
-           }
-if(playervsAI==true){
-    p.setPaint(new Color(255, 128, 128));
-    p.setFont(new Font("Sans Serif", Font.BOLD, 60));
-    p.drawString("Choose your", 200, 200);
-    //128, 140, 255
-    p.setPaint(new Color(128, 140, 255));
-    p.drawString("AI:", 347, 300);
-    p.setFont(new Font("Sans Serif", Font.BOLD, 60));
-    p.setPaint(Color.RED);
-    p.drawString("Choose your", 206, 200);
-    p.setPaint(Color.BLUE);
-    p.drawString("AI:", 350, 300);
-    //choices
-    p.setPaint(new Color(36,37,38));
-    for (int i = 0; i < RandomAi.size(); i++) {
-        RoundRectangle2D.Double rectangle = RandomAi.get(i);
-        ((Graphics2D) g).fill(rectangle);
-    }
-    p.setPaint(new Color(255, 128, 128));
-    p.setFont(new Font("Sans Serif", Font.BOLD, 40));
-    p.drawString("1. Random AI ",186, 500);
-    p.setPaint(Color.RED);
-    p.drawString("1. Random AI ",190, 500);
-    p.drawRect(170, 460, 400,50);
-}
-if(GameStarted==true){
-    //Put Bpard Here
-}
-if(playervsAI==true){
-    //Put Code Here!
-}
+            }
+            if (playervsAI == true) {
+                p.setPaint(new Color(255, 128, 128));
+                p.setFont(new Font("Sans Serif", Font.BOLD, 60));
+                p.drawString("Choose your", 200, 200);
+                //128, 140, 255
+                p.setPaint(new Color(128, 140, 255));
+                p.drawString("AI:", 347, 300);
+                p.setFont(new Font("Sans Serif", Font.BOLD, 60));
+                p.setPaint(Color.RED);
+                p.drawString("Choose your", 206, 200);
+                p.setPaint(Color.BLUE);
+                p.drawString("AI:", 350, 300);
+                //choices
+                p.setPaint(new Color(36, 37, 38));
+                for (int i = 0; i < RandomAi.size(); i++) {
+                    RoundRectangle2D.Double rectangle = RandomAi.get(i);
+                    ((Graphics2D) g).fill(rectangle);
+                }
+                p.setPaint(new Color(255, 128, 128));
+                p.setFont(new Font("Sans Serif", Font.BOLD, 40));
+                p.drawString("1. Random AI ", 186, 500);
+                p.setPaint(Color.RED);
+                p.drawString("1. Random AI ", 190, 500);
+                p.drawRect(170, 460, 400, 50);
+            }
+            if (GameStarted == true) {
+                //Put Board Here
+                p.setPaint(Color.WHITE);
+                int[] a = {100, 200, 225, 125, 100};
+                int[] b = {550, 550, 525, 525, 550};
+
+                for (int s = 0; s < 4; s++) {
+                    for (int r = 0; r < 4; r++) {
+                        for (int c = 0; c < 4; c++) {
+                            p.drawPolygon(a, b, 5);
+                            for (m = 0; m < 5; m++)
+                                a[m] += 100;
+                        }
+                        for (m = 0; m < 5; m++) {
+                            a[m] -= 375;
+                            b[m] -= 25;
+                        }
+                    }
+                    for (m = 0; m < 5; m++) {
+                        a[m] -= 100;
+                        b[m] -= 25;
+                    }
+                }
+            }
+            if(playervsAI==true){
+                //Put Code Here!
+            }
         }
         repaint();
     }
@@ -156,11 +179,11 @@ if(playervsAI==true){
         for (int i = 0; i < rec.size(); i++) {
             RoundRectangle2D.Double rectangle = rec.get(i);
             if (rectangle.contains(e.getPoint())) {
-           SceneTwo=true;
-           SceneOne=false;
-           SceneThree=false;
-                }
+                SceneTwo=true;
+                SceneOne=false;
+                SceneThree=false;
             }
+        }
         for (int i = 0; i < choice1.size(); i++) {
             RoundRectangle2D.Double rectangle = choice1.get(i);
             if (rectangle.contains(e.getPoint())) {
@@ -170,13 +193,13 @@ if(playervsAI==true){
                 GameStarted=true;
             }
         }
-            for (int i = 0; i < choice2.size(); i++) {
-                RoundRectangle2D.Double rectangle = choice2.get(i);
-                if (rectangle.contains(e.getPoint())) {
-                    SceneTwo = false;
-                    SceneThree = true;
-                    playervsAI=true;
-                }
+        for (int i = 0; i < choice2.size(); i++) {
+            RoundRectangle2D.Double rectangle = choice2.get(i);
+            if (rectangle.contains(e.getPoint())) {
+                SceneTwo = false;
+                SceneThree = true;
+                playervsAI=true;
+            }
         }
         for (int i = 0; i < RandomAi.size(); i++) {
             RoundRectangle2D.Double rectangle = RandomAi.get(i);
@@ -215,4 +238,7 @@ if(playervsAI==true){
         repaint();
     }
 }
+
+
+
 
