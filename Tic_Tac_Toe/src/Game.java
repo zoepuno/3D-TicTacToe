@@ -8,6 +8,7 @@ public class Game implements KeyListener {
     public int STATUS = 0;
     public int PLAYING = 1;
     public int PlAYER1_WON = 2;
+    public int playerturn =  1;
     public int PlAYER2_WON = 3;
     public int PLAYER1_LOST = 4;
     public int PLAYER2_LOST = 5;
@@ -22,6 +23,8 @@ public class Game implements KeyListener {
 
 
     public char[][][] board= new char[4][4][4];
+
+
     public void fillBoard(){
         for (int l = 0; l < 4; l++) {
             for(int c=0; c<4; c++){
@@ -36,11 +39,11 @@ public class Game implements KeyListener {
     ArrayList playerNames = new ArrayList<String>();
 
     public void setLetter(){
-         X =  player1.getLetter();
-         O = player2.getLetter();
+        X =  player1.getLetter();
+        O = player2.getLetter();
     }
-    public void setBoard(int c, int r, int l,char letter){
-        board[c][r][l]=letter;
+    public void setBoard(Location area,char letter){
+        board[area.getCol()][area.getRow()][area.getSheet()]=letter;
     }
     public int setSTATUS(int b){
         STATUS=b;
@@ -66,6 +69,19 @@ public class Game implements KeyListener {
         return playerNames.size();
     }
 
+    public int getPlayerTurn(){
+        return playerturn;
+    }
+
+    public void setPlayerturn()
+    {
+        if (playerturn == 1)
+            //switch to second player
+            playerturn++;
+        else
+            //switch to first player
+            playerturn--;
+    }
     public void displayBoard(char[][][] board) {
         for (int l = 0; l < 4; l++) {
             System.out.println("Level: "+(l+1));
@@ -79,6 +95,8 @@ public class Game implements KeyListener {
 
         }
     }
+
+
 
     public boolean count(char[][][] board) {
         int count = 0;
@@ -95,6 +113,16 @@ public class Game implements KeyListener {
             return true;
         }
         return false;
+    }
+
+
+    public boolean moveCheck(char[][][] board, int r, int c,int s)
+    {
+        if (r >= 4 || c >= 4||s >= 4||r < 0 || c < 0||s < 0|| board[r][c][s] != '-')
+        {
+            return false;
+        }
+        return true;
     }
 
     public int isWinner (char[][][] board)
@@ -141,7 +169,7 @@ public class Game implements KeyListener {
             if (board[0][c][3] == O && board[1][c][2] == O && board[2][c][1]== O && board[3][c][0]== O)
                 win = PlAYER2_WON;
 
-            for (int r = 0; r < 4; c++) {
+            for (int r = 0; r < 4; r++) {
                 //vertical row wins
                 if (board[r][c][0] == X && board[r][c][1] == X && board[r][c][2] == X && board[r][c][3] == X)
                     win = PlAYER1_WON;
@@ -200,4 +228,3 @@ public class Game implements KeyListener {
 
     }
 }
-
