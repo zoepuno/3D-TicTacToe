@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.RoundRectangle2D;
@@ -12,7 +11,7 @@ import java.util.Scanner;
 
 
 public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnable{
-    static ArrayList<RoundRectangle2D.Double> rec = new ArrayList<RoundRectangle2D.Double>();
+    static ArrayList<RoundRectangle2D.Double> play = new ArrayList<RoundRectangle2D.Double>();
     static ArrayList<RoundRectangle2D.Double> choice1 = new ArrayList<RoundRectangle2D.Double>();
     static ArrayList<RoundRectangle2D.Double> choice2 = new ArrayList<RoundRectangle2D.Double>();
     static ArrayList<RoundRectangle2D.Double> choice3 = new ArrayList<RoundRectangle2D.Double>();
@@ -22,12 +21,12 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
     boolean SceneThree;
     private Thread t;
 
-    boolean playervsplayer;
-    boolean playervsAI;
-    boolean playervsRandomAi;
+    boolean playervsplayer = false;
+    boolean playervsAI = false;
+    boolean playervsRandomAi = false;
     int m;
     static Game mg = new Game();
-    Main startGame = new Main();
+    Scanner in = new Scanner(System.in);
 
     public Tic_Tac_Toe_Display() {
 
@@ -36,9 +35,9 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
         setVisible(true);
 
         addMouseListener(this);
-        rec= new ArrayList<>();
+        play = new ArrayList<>();
         SceneOne=true;
-        rec.add(new RoundRectangle2D.Double(250.0, 530.0, 240.0, 100.0, 10, 10));
+        play.add(new RoundRectangle2D.Double(250.0, 330.0, 240.0, 100.0, 10, 10));
         choice1.add(new RoundRectangle2D.Double(170, 460, 400,50,10,10));
         choice2.add(new RoundRectangle2D.Double(170, 560, 460,50,10,10));
         choice3.add(new RoundRectangle2D.Double(170, 660, 520,50,10,10));
@@ -55,8 +54,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
         p.fillRect(0, 0, 800, 1200);
 
         //intro to play
-        if (SceneOne == true)
-        {
+        if (SceneOne == true) {
             // R 36,  G 37,  B 38
             p.setPaint(new Color(255, 128, 128));
             p.setFont(new Font("Sans Serif", Font.BOLD, 60));
@@ -70,23 +68,22 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
 
 
             p.setPaint(new Color(36, 37, 38));
-            for (int i = 0; i < rec.size(); i++) {
-                RoundRectangle2D.Double rectangle = rec.get(i);
+            for (int i = 0; i < play.size(); i++) {
+                RoundRectangle2D.Double rectangle = play.get(i);
                 ((Graphics2D) g).fill(rectangle);
             }
             p.setPaint(new Color(255, 128, 128));
-            p.drawString("PLAY?", 276, 600);
+            p.drawString("PLAY?", 276, 400);
             p.setFont(new Font("Sans Serif", Font.BOLD, 60));
             p.setPaint(new Color(163, 185, 224));
-            p.drawRect(251, 530, 240, 100);
+            p.drawRect(250, 330, 240, 100);
             p.setPaint(Color.RED);
-            p.drawString("PLAY?", 270, 600);
-            p.drawRect(250, 530, 240, 100);
+            p.drawString("PLAY?", 270, 400);
+            p.drawRect(250, 330, 240, 100);
         }
 
         //choose gamemode
-        else if (SceneTwo == true)
-        {
+        else if (SceneTwo == true) {
             p.setPaint(new Color(255, 128, 128));
             p.setFont(new Font("Sans Serif", Font.BOLD, 60));
             p.drawString("Choose your", 200, 200);
@@ -99,16 +96,17 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
             p.setPaint(Color.BLUE);
             p.drawString("Gamemode:", 220, 300);
             p.setPaint(new Color(36, 37, 38));
+
             //rec choice
-            for (int i = 0; i < rec.size(); i++) {
+            for (int i = 0; i < play.size(); i++) {
                 RoundRectangle2D.Double rectangle = choice1.get(i);
                 ((Graphics2D) g).fill(rectangle);
             }
-            for (int i = 0; i < rec.size(); i++) {
+            for (int i = 0; i < play.size(); i++) {
                 RoundRectangle2D.Double rectangle = choice2.get(i);
                 ((Graphics2D) g).fill(rectangle);
             }
-            for (int i = 0; i < rec.size(); i++) {
+            for (int i = 0; i < play.size(); i++) {
                 RoundRectangle2D.Double rectangle = choice3.get(i);
                 ((Graphics2D) g).fill(rectangle);
             }
@@ -162,7 +160,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
             }
         }
 
-        if (mg.STATUS == mg.PLAYING) {
+        if(mg.STATUS == mg.PLAYING) {
             //Prints Board
             int[] a = {100, 200, 225, 125, 100};
             int[] b = {550, 550, 525, 525, 550};
@@ -214,52 +212,65 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
                 p.setFont(new Font("Sans Serif", Font.BOLD, 30));
                 p.drawString(Main.mg.player2.getName(), 300, 600);
             }
+            play();
+        }
+        repaint();
+    }
 
-            if (playervsRandomAi == true) {
+    public void play(){
+        SceneThree = false;
+        mg.STATUS = mg.PLAYING;
+            if(playervsplayer)
+            {
+
+            }
+            else if(playervsRandomAi)
+            {
                 //sets up person as first player
-                Main.mg.player2.name = "player";
+                System.out.print("Player One Name: ");
+               // mg.player1.name = in.next();
+                mg.addNames(mg.player1.name );
 
                 //sets up AI as second player
                 Random_Ai random = new Random_Ai("Random", 'x');
-                Main.mg.player2.name = random.getName();
+                mg.player2.name = random.getName();
 
-                System.out.println("Hello" + Main.mg.player1.name);
+                System.out.println("Hello" + mg.player1.name);
                 System.out.println("Player Two is " + random.getName());
 
                 // Let player 1 take a turn
                 if (mg.playerturn) {
-                    if (Main.mg.moveCheck(Main.mg.board.board, Main.mg.p1)) {  // make sure it's a valid move
-                        mg.board.setBoard(mg.p1, Main.mg.player1.getLetter());
+                    if (mg.moveCheck(mg.board.board, mg.p1)) {  // make sure it's a valid move
+                        mg.board.setBoard(mg.p1, mg.player1.getLetter());
 
                         if (Main.mg.board.count()) {
                             System.out.println("Game ends in a draw.");
-                            Main.mg.gameOver = true;
-                        } else if (Main.mg.isWinner(Main.mg.board.board) == Main.mg.PlAYER1) {
+                            mg.gameOver = true;
+                        } else if (mg.isWinner(mg.board.board) == mg.PlAYER1) {
                             System.out.println("P1 wins!");
-                            Main.mg.gameOver = true;
+                            mg.gameOver = true;
                         }
                     }
                 }
-                //p2
-                // Let the Ai take a turn
-                if (!mg.playerturn && !Main.mg.gameOver) {
-                    random.random_move(Main.mg.board.board);
-                    Main.mg.p2 = new Location(random.getC(), random.getR(), random.getS());
-                    if (Main.mg.moveCheck(Main.mg.board.board, Main.mg.p2))  // make sure it's valid move
-                        Main.mg.board.setBoard(Main.mg.p2, Main.mg.player2.letter);
+                //p2 - Ai's turn
+                if (!mg.playerturn && !mg.gameOver) {
+                    random.random_move(mg.board.board);
+                    mg.p2 = new Location(random.getC(), random.getR(), random.getS());
+                    if (mg.moveCheck(mg.board.board, mg.p2))  // make sure it's valid move
+                        mg.board.setBoard(mg.p2, mg.player2.letter);
 
-                    if (Main.mg.board.count()) {
+                    if (mg.board.count()) {
                         System.out.println("Game ends in a draw.");
-                        Main.mg.gameOver = true;
-                    } else if (Main.mg.isWinner(Main.mg.board.board) == Main.mg.PlAYER2) {
+                        mg.gameOver = true;
+                    } else if (mg.isWinner(mg.board.board) == mg.PlAYER2) {
                         System.out.println("P2 wins!");
-                        Main.mg.gameOver = true;
+                        mg.gameOver = true;
                     }
                 }
-                Main.mg.setPlayerturn();
+                mg.setPlayerturn();
             }
+
         }
-    }
 
     @Override
     public void run() {
@@ -273,22 +284,29 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
     @Override
     public void mouseClicked (MouseEvent e) {
         e.getButton();
-        for (int i = 0; i < rec.size(); i++) {
-            RoundRectangle2D.Double rectangle = rec.get(i);
+
+        //pressed [Play]
+        for (int i = 0; i < play.size(); i++) {
+            RoundRectangle2D.Double rectangle = play.get(i);
             if (rectangle.contains(e.getPoint())) {
                 SceneTwo = true;
                 SceneOne = false;
                 SceneThree = false;
+                System.out.println("Pressed Play");
             }
         }
+        //pressed [PvsP]
         for (int i = 0; i < choice1.size(); i++) {
             RoundRectangle2D.Double rectangle = choice1.get(i);
             if (rectangle.contains(e.getPoint())) {
                 SceneTwo = false;
                 SceneThree = true;
                 playervsplayer = true;
+                System.out.println("Pressed PvP");
             }
         }
+
+        //pressed [PvsAi]
         for (int i = 0; i < choice2.size(); i++) {
 
             RoundRectangle2D.Double rectangle = choice2.get(i);
@@ -296,9 +314,10 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
                 SceneTwo = false;
                 SceneThree = true;
                 playervsAI = true;
+                System.out.println("Pressed PvsAi");
             }
         }
-
+        //pressed [PvsRAi]
         for (int i = 0; i < RandomAi.size(); i++) {
 
             RoundRectangle2D.Double rectangle = RandomAi.get(i);
@@ -306,10 +325,12 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
                 playervsAI = false;
                 playervsRandomAi = true;
                 mg.STATUS = mg.PLAYING;
+                System.out.println("Pressed PvsRandom");
             }
 
             //click on grid
-            if (mg.STATUS == mg.PLAYING) {
+            if (mg.STATUS == mg.PLAYING)
+                System.out.println("Pressed Board");{
                 int x = e.getX(), y = e.getY();
                 System.out.println(x + "," + y);
                 if (mg.playerturn)
@@ -327,6 +348,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
 
         }
     }
+
     public Location Location(int x, int y)
     {
         int c = 0;
@@ -455,6 +477,8 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
         repaint();
     }
 }
+
+
 
 
 
