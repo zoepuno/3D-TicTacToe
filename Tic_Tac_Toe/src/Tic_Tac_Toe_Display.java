@@ -182,8 +182,51 @@ if(GameStarted==true){
                 p.drawString(Main.mg.player2.getName(), 300, 600);
             }
 }
-if(playervsAI==true){
+if(playervsrandomAI==true){
     //Put Code Here!
+      //sets up person as first player
+            mg.player2.name = "player";
+
+            //sets up AI as second player
+            Random_Ai random = new Random_Ai("Random", 'x');
+            Main.mg.player2.name = random.getName();
+
+            System.out.println("Hello" + Main.mg.player1.name);
+            System.out.println("Player Two is " + random.getName());
+     do {
+                // Let player 1 take a turn
+                if (Main.mg.playerturn == 1) {
+                    if (Main.mg.moveCheck(Main.mg.board.board, Main.mg.p1)) {  // make sure it's a valid move
+                        Main.mg.board.setBoard(Main.mg.p1, Main.mg.player1.getLetter());
+
+                        if (Main.mg.board.count()) {
+                            System.out.println("Game ends in a draw.");
+                            Main.mg.gameOver = true;
+                        } else if (Main.mg.isWinner(Main.mg.board.board) == Main.mg.PlAYER1) {
+                            System.out.println("P1 wins!");
+                            Main.mg.gameOver = true;
+                        }
+                    }
+                }
+                // Let the Ai take a turn
+                if (Main.mg.playerturn == 2 && !Main.mg.gameOver) {
+                    random.random_move(Main.mg.board.board);
+                    Main.mg.p2 = new Location(random.getC(), random.getR(), random.getS());
+                    if (Main.mg.moveCheck(Main.mg.board.board, Main.mg.p2))  // make sure it's valid move
+                        Main.mg.board.setBoard(Main.mg.p2, Main.mg.player2.letter);
+                }
+                Main.mg.setPlayerturn();
+            } while (!mg.gameOver);
+            if (Main.mg.board.count()) {
+                System.out.println("Game ends in a draw.");
+                Main.mg.gameOver = true;
+            }
+            else if (Main.mg.isWinner(Main.mg.board.board) == Main.mg.PlAYER2) {
+                System.out.println("P2 wins!");
+                Main.mg.gameOver = true;
+            }
+    
+ 
 }
         }
         repaint();
