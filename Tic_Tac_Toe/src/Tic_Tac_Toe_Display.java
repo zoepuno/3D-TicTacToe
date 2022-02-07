@@ -215,9 +215,117 @@ if(playervsAI==true){
             }
         }
 
-        repaint();
-    }
+           //click on grid
+            int x = e.getX(), y = e.getY();
+            System.out.println(x+","+y);
+            Location(x,y);
 
+            repaint();
+        }
+
+    public Location Location(int x, int y)
+    {
+        int c = 0;
+        int r = 0;
+        int s = 0;
+        int row = 0;
+        int col = 0;
+
+        //sheet 0
+        if(y>=75 && y<175){
+            s=0;
+            //row
+            row = 0;
+            for(int yrow = 75; yrow<= 150; yrow+=25)
+            {
+                if (y >= yrow && y < yrow+25)
+                {
+                    r = row;
+                }
+                row++;
+            }
+        }
+
+        //sheet 1
+        if(y>=200 && y<300){
+            s = 1;
+            row=0;
+            for(int yrow = 200; yrow<= 275; yrow+=25)
+            {
+                if (y  >= yrow && y < yrow+25)
+                {
+                    r = row;
+                }
+                row++;
+            }
+        }
+        //sheet 2
+        if(y>=325 && y<425){
+            s = 2;
+            //row
+            row = 0;
+            for(int yrow = 325; yrow <= 400; yrow+=25)
+            {
+                if (y  >= yrow && y < yrow+25)
+                {
+                    r = row;
+                }
+                row++;
+            }
+        }
+
+        //sheet 3
+        if(y>=450 && y<550){
+            s = 3;
+            row = 0;
+            for(int yrow = 450; yrow<=525; yrow+=25)
+            {
+                if (y  >= yrow && y < yrow+25)
+                {
+                    r = row;
+                }
+                row++;
+            }
+        }
+
+        //determine column
+        if(r==0) {
+            for (int xcol = 200; xcol <= 500; xcol += 100) {
+                if (x >= xcol && x < xcol + 100) {
+                    c = col;
+                }
+                col++;
+            }
+        }
+        if(r==1) {
+            for (int xcol = 175; xcol <= 475; xcol += 100) {
+                if (x >= xcol && x < xcol + 100) {
+                    c = col;
+                }
+                col++;
+            }
+        }
+        if(r==2) {
+            for (int xcol = 150; xcol <= 450; xcol += 100) {
+                if (x >= xcol && x < xcol + 100) {
+                    c = col;
+                }
+                col++;
+            }
+        }
+        if(r==3) {
+            for (int xcol = 125; xcol <= 425; xcol += 100) {
+                if (x >= xcol && x < xcol + 100) {
+                    c = col;
+                }
+                col++;
+            }
+        }
+
+        Location area = new Location(c, r, s);
+        System.out.println(area.toString());
+        return area;
+    }
     @Override
     public void mousePressed(MouseEvent e) {
 
