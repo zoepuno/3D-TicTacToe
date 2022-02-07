@@ -165,7 +165,22 @@ if(GameStarted==true){
             b[m] -= 25;
         }
     }
-    //Put Bpard Here
+     //prints player turn
+            p.setPaint(new Color(226, 225, 187));
+            p.setFont(new Font("Sans Serif", Font.BOLD, 30));
+            p.drawString("Player Turn: ", 100, 600);
+            if (Main.mg.playerturn == 1)//p1
+            {
+                p.setPaint(new Color(234, 153, 150));
+                p.setFont(new Font("Sans Serif", Font.BOLD, 30));
+                p.drawString(Main.mg.player1.getName(), 300, 600);
+            }
+            //p2
+            if (Main.mg.playerturn == 2) {
+                p.setPaint(new Color(163, 185, 224));
+                p.setFont(new Font("Sans Serif", Font.BOLD, 30));
+                p.drawString(Main.mg.player2.getName(), 300, 600);
+            }
 }
 if(playervsAI==true){
     //Put Code Here!
