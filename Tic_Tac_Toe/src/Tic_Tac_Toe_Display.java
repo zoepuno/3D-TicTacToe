@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.RoundRectangle2D;
@@ -54,7 +55,8 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
         p.fillRect(0, 0, 800, 1200);
 
         //intro to play
-        if (SceneOne == true) {
+        if (SceneOne == true)
+        {
             // R 36,  G 37,  B 38
             p.setPaint(new Color(255, 128, 128));
             p.setFont(new Font("Sans Serif", Font.BOLD, 60));
@@ -83,7 +85,8 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
         }
 
         //choose gamemode
-        else if (SceneTwo == true) {
+        else if (SceneTwo == true)
+        {
             p.setPaint(new Color(255, 128, 128));
             p.setFont(new Font("Sans Serif", Font.BOLD, 60));
             p.drawString("Choose your", 200, 200);
@@ -163,16 +166,13 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
             //Prints Board
             int[] a = {100, 200, 225, 125, 100};
             int[] b = {550, 550, 525, 525, 550};
-            Location area = new Location(0, 0, 0);
             for (int s = 0; s < 4; s++) {
                 for (int r = 0; r < 4; r++) {
                     for (int c = 0; c < 4; c++) {
                         p.setPaint(Color.WHITE);
                         p.drawPolygon(a, b, 5);
 
-                        area.setSheet(s);
-                        area.setRow(r);
-                        area.setCol(c);
+                        Location area = new Location(c, r, s);
                         char type = Main.mg.board.getPoint(area);
 
                         if (type == 'x') {
@@ -202,37 +202,33 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
             p.setPaint(new Color(226, 225, 187));
             p.setFont(new Font("Sans Serif", Font.BOLD, 30));
             p.drawString("Player Turn: ", 100, 600);
-            //p1
-            if (Main.mg.playerturn == 1) {
+            if (mg.playerturn)//p1
+            {
                 p.setPaint(new Color(234, 153, 150));
                 p.setFont(new Font("Sans Serif", Font.BOLD, 30));
                 p.drawString(Main.mg.player1.getName(), 300, 600);
             }
             //p2
-            if (Main.mg.playerturn == 2) {
+            if (!mg.playerturn) {
                 p.setPaint(new Color(163, 185, 224));
                 p.setFont(new Font("Sans Serif", Font.BOLD, 30));
                 p.drawString(Main.mg.player2.getName(), 300, 600);
             }
-            play();
-        }
-    }
-    public void play(){
 
             if (playervsRandomAi == true) {
                 //sets up person as first player
-                mg.player2.name = "player";
-                
+                Main.mg.player2.name = "player";
+
                 //sets up AI as second player
                 Random_Ai random = new Random_Ai("Random", 'x');
-                mg.player2.name = random.getName();
+                Main.mg.player2.name = random.getName();
 
-                System.out.println("Hello" + mg.player1.name);
+                System.out.println("Hello" + Main.mg.player1.name);
                 System.out.println("Player Two is " + random.getName());
 
                 // Let player 1 take a turn
-                if (mg.playerturn == 1) {
-                    if (mg.moveCheck(Main.mg.board.board, mg.p1)) {  // make sure it's a valid move
+                if (mg.playerturn) {
+                    if (Main.mg.moveCheck(Main.mg.board.board, Main.mg.p1)) {  // make sure it's a valid move
                         mg.board.setBoard(mg.p1, Main.mg.player1.getLetter());
 
                         if (Main.mg.board.count()) {
@@ -246,7 +242,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
                 }
                 //p2
                 // Let the Ai take a turn
-                if (Main.mg.playerturn == 2 && !Main.mg.gameOver) {
+                if (!mg.playerturn && !Main.mg.gameOver) {
                     random.random_move(Main.mg.board.board);
                     Main.mg.p2 = new Location(random.getC(), random.getR(), random.getS());
                     if (Main.mg.moveCheck(Main.mg.board.board, Main.mg.p2))  // make sure it's valid move
@@ -263,6 +259,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
                 Main.mg.setPlayerturn();
             }
         }
+    }
 
     @Override
     public void run() {
@@ -315,12 +312,12 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
             if (mg.STATUS == mg.PLAYING) {
                 int x = e.getX(), y = e.getY();
                 System.out.println(x + "," + y);
-                if (Main.mg.playerturn == 1)
+                if (mg.playerturn)
                     Main.mg.p1 = Location(x, y);
-                if (Main.mg.playerturn == 2)
+                if (mg.playerturn)
                     Main.mg.p2 = Location(x, y);
 
-                if (Main.mg.playerturn == 1)//player 1 spot
+                if (!mg.playerturn)//player 1 spot
                     Main.mg.p1 = Location(x, y);
 
                 if (Main.mg.gameOver)
@@ -458,7 +455,6 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
         repaint();
     }
 }
-
 
 
 
