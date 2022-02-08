@@ -26,6 +26,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
     boolean playervsRandomAi = false;
     int m;
     static Game mg = new Game();
+    PlayervsPlayer playervsPlayer= new PlayervsPlayer();
     Scanner in = new Scanner(System.in);
 
     public Tic_Tac_Toe_Display() {
@@ -41,7 +42,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
         choice1.add(new RoundRectangle2D.Double(170, 460, 400,50,10,10));
         choice2.add(new RoundRectangle2D.Double(170, 560, 460,50,10,10));
         choice3.add(new RoundRectangle2D.Double(170, 660, 520,50,10,10));
-        RandomAi.add(new RoundRectangle2D.Double(170, 460, 400,50,10,10));
+        RandomAi.add(new RoundRectangle2D.Double(170, 470, 400,50,10,10));
         repaint();
 
     }
@@ -131,9 +132,6 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
 
         //game type begins
         else if (SceneThree == true) {
-            if (playervsplayer) {
-
-            }
             if (playervsAI == true) {
                 p.setPaint(new Color(255, 128, 128));
                 p.setFont(new Font("Sans Serif", Font.BOLD, 60));
@@ -159,105 +157,106 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
                 p.drawRect(170, 460, 400, 50);
             }
         }
+else {
+            if (mg.getSTATUS() == mg.PLAYING) {
+                //Prints Board
+                int[] a = {100, 200, 225, 125, 100};
+                int[] b = {550, 550, 525, 525, 550};
+                for (int s = 0; s < 4; s++) {
+                    for (int r = 0; r < 4; r++) {
+                        for (int c = 0; c < 4; c++) {
+                            p.setPaint(Color.WHITE);
+                            p.drawPolygon(a, b, 5);
 
-        if(mg.STATUS == mg.PLAYING) {
-            //Prints Board
-            int[] a = {100, 200, 225, 125, 100};
-            int[] b = {550, 550, 525, 525, 550};
-            for (int s = 0; s < 4; s++) {
-                for (int r = 0; r < 4; r++) {
-                    for (int c = 0; c < 4; c++) {
-                        p.setPaint(Color.WHITE);
-                        p.drawPolygon(a, b, 5);
+                            Location area = new Location(c, r, s);
+                            char type = Main.mg.board.getPoint(area);
 
-                        Location area = new Location(c, r, s);
-                        char type = Main.mg.board.getPoint(area);
+                            if (type == 'x') {
+                                p.setPaint(new Color(255, 128, 128));
+                                p.fillPolygon(a, b, 5);
+                            }
 
-                        if (type == 'x') {
-                            p.setPaint(new Color(255, 128, 128));
-                            p.fillPolygon(a, b, 5);
+                            if (type == 'o') {
+                                p.setPaint(new Color(128, 140, 255));
+                                p.fillPolygon(a, b, 5);
+                            }
+                            for (m = 0; m < 5; m++)
+                                a[m] += 100;
                         }
-
-                        if (type == 'o') {
-                            p.setPaint(new Color(128, 140, 255));
-                            p.fillPolygon(a, b, 5);
+                        for (m = 0; m < 5; m++) {
+                            a[m] -= 375;
+                            b[m] -= 25;
                         }
-                        for (m = 0; m < 5; m++)
-                            a[m] += 100;
                     }
                     for (m = 0; m < 5; m++) {
-                        a[m] -= 375;
+                        a[m] -= 100;
                         b[m] -= 25;
                     }
                 }
-                for (m = 0; m < 5; m++) {
-                    a[m] -= 100;
-                    b[m] -= 25;
+
+                //prints player turn
+                p.setPaint(new Color(226, 225, 187));
+                p.setFont(new Font("Sans Serif", Font.BOLD, 30));
+                p.drawString("Player Turn: ", 100, 600);
+                if (mg.playerturn)//p1
+                {
+                    p.setPaint(new Color(234, 153, 150));
+                    p.setFont(new Font("Sans Serif", Font.BOLD, 30));
+                    //   p.drawString(Main.mg.player1.getName(), 300, 600);
+                }
+                //p2
+                if (!mg.playerturn) {
+                    p.setPaint(new Color(163, 185, 224));
+                    p.setFont(new Font("Sans Serif", Font.BOLD, 30));
+                    //   p.drawString(Main.mg.player2.getName(), 300, 600);
                 }
             }
-
-            //prints player turn
-            p.setPaint(new Color(226, 225, 187));
-            p.setFont(new Font("Sans Serif", Font.BOLD, 30));
-            p.drawString("Player Turn: ", 100, 600);
-            if (mg.playerturn)//p1
-            {
-                p.setPaint(new Color(234, 153, 150));
-                p.setFont(new Font("Sans Serif", Font.BOLD, 30));
-                p.drawString(Main.mg.player1.getName(), 300, 600);
-            }
-            //p2
-            if (!mg.playerturn) {
-                p.setPaint(new Color(163, 185, 224));
-                p.setFont(new Font("Sans Serif", Font.BOLD, 30));
-                p.drawString(Main.mg.player2.getName(), 300, 600);
-            }
-            play();
         }
         repaint();
     }
 
     public void play(){
         SceneThree = false;
-        mg.STATUS = mg.PLAYING;
-            if(playervsplayer)
-            {
-                // insert Player vs. Player Game Here
-            }
-            else if(playervsRandomAi)
-            {
-                //sets up person as first player
-                System.out.print("Player One Name: ");
-               // mg.player1.name = in.next();
-                mg.addNames(mg.player1.name );
+        mg.setSTATUS(1);
+        if(playervsplayer==true )
+        {
+            System.out.print("Player One Name: ");
+            mg.player1.name = in.next();
+            mg.addNames(mg.player1.name );
 
-                //sets up AI as second player
-                Random_Ai random = new Random_Ai("Random", 'x');
-                mg.player2.name = random.getName();
+            System.out.print("Player Two Name: ");
+            mg.player2.name = in.next();
+            mg.addNames(mg.player2.name );
+           playervsPlayer.theMainPlayerGame();
+            if ( mg.playerturn  == true ) {
+                if (mg.moveCheck(mg.board.board, mg.p1)) {
+                    mg.board.setBoard(mg.p1, mg.player1.getLetter());
 
-                System.out.println("Hello" + mg.player1.name);
-                System.out.println("Player Two is " + random.getName());
-
-                // Let player 1 take a turn
-                if (mg.playerturn) {
-                    if (mg.moveCheck(mg.board.board, mg.p1)) {  // make sure it's a valid move
-                        mg.board.setBoard(mg.p1, mg.player1.getLetter());
-
-                        if (Main.mg.board.count()) {
-                            System.out.println("Game ends in a draw.");
-                            mg.gameOver = true;
-                        } else if (mg.isWinner(mg.board.board) == mg.PlAYER1) {
-                            System.out.println("P1 wins!");
-                            mg.gameOver = true;
-                        }
+                    if (Main.mg.board.count()) {
+                        System.out.println("Game ends in a draw.");
+                        mg.gameOver = true;
+                    } else if (mg.isWinner(mg.board.board) == mg.PlAYER1) {
+                        System.out.println("P1 wins!");
+                        mg.gameOver = true;
                     }
                 }
-                //p2 - Ai's turn
-                if (!mg.playerturn && !mg.gameOver) {
-                    random.random_move(mg.board.board);
-                    mg.p2 = new Location(random.getC(), random.getR(), random.getS());
-                    if (mg.moveCheck(mg.board.board, mg.p2))  // make sure it's valid move
-                        mg.board.setBoard(mg.p2, mg.player2.letter);
+
+                if ((area.getCol() < 4 || area.getRow() < 4 || area.getSheet() < 4) && gamepull.board.board[area.getCol()][area.getRow()][area.getSheet()] == '-') {
+
+                    if (playervsPlayer.player == 'x') {
+                        mg.board.setBoard(area, 'x');
+                    } else {
+                        mg.board.setBoard(area, 'o');
+                    }
+
+                    mg.playerturn  = false;
+                } else {
+                    System.out.println("Invalid Move!");
+                    mg.playerturn=false;
+                }
+            } else {
+                if (mg.moveCheck(mg.board.board, mg.p2)) {
+                    mg.board.setBoard(mg.p2, mg.player2.getLetter());
 
                     if (mg.board.count()) {
                         System.out.println("Game ends in a draw.");
@@ -266,11 +265,70 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
                         System.out.println("P2 wins!");
                         mg.gameOver = true;
                     }
-                }
-                mg.setPlayerturn();
-            }
+                    if ((area.getCol() < 4 || area.getRow() < 4 || area.getSheet() < 4) && gamepull.board.board[area.getCol()][area.getRow()][area.getSheet()] == '-') {
 
+                        if (playervsPlayer.player2  == 'x') {
+                            mg.board.setBoard(area, 'x');
+                        } else {
+                            mg.board.setBoard(area, 'o');
+                        }
+                        mg.playerturn=true;
+
+                    } else {
+                        System.out.println("Invalid Move!");
+
+                        mg.playerturn=true;
+                    }
+                }
+            }
         }
+        else if(playervsRandomAi==true)
+        {
+            //sets up person as first player
+            System.out.print("Player One Name: ");
+             mg.player1.name = in.next();
+            mg.addNames(mg.player1.name );
+
+            //sets up AI as second player
+            Random_Ai random = new Random_Ai("Random", 'x');
+            mg.player2.name = random.getName();
+
+            System.out.println("Hello" + mg.player1.name);
+            System.out.println("Player Two is " + random.getName());
+
+            // Let player 1 take a turn
+            if (mg.playerturn) {
+                if (mg.moveCheck(mg.board.board, mg.p1)) {  // make sure it's a valid move
+                    mg.board.setBoard(mg.p1, mg.player1.getLetter());
+
+                    if (Main.mg.board.count()) {
+                        System.out.println("Game ends in a draw.");
+                        mg.gameOver = true;
+                    } else if (mg.isWinner(mg.board.board) == mg.PlAYER1) {
+                        System.out.println("P1 wins!");
+                        mg.gameOver = true;
+                    }
+                }
+            }
+            //p2 - Ai's turn
+            if (!mg.playerturn && !mg.gameOver) {
+                random.random_move(mg.board.board);
+                mg.p2 = new Location(random.getC(), random.getR(), random.getS());
+                if (mg.moveCheck(mg.board.board, mg.p2))  // make sure it's valid move
+                    mg.board.setBoard(mg.p2, mg.player2.letter);
+
+                if (mg.board.count()) {
+                    System.out.println("Game ends in a draw.");
+                    mg.gameOver = true;
+                } else if (mg.isWinner(mg.board.board) == mg.PlAYER2) {
+                    System.out.println("P2 wins!");
+                    mg.gameOver = true;
+                }
+            }
+            mg.setPlayerturn();
+        }
+
+    }
 
     @Override
     public void run() {
@@ -295,59 +353,66 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
                 System.out.println("Pressed Play");
             }
         }
-        //pressed [PvsP]
-        for (int i = 0; i < choice1.size(); i++) {
-            RoundRectangle2D.Double rectangle = choice1.get(i);
-            if (rectangle.contains(e.getPoint())) {
-                SceneTwo = false;
-                SceneThree = true;
-                playervsplayer = true;
-                System.out.println("Pressed PvP");
+        if(SceneTwo==true) {
+            //pressed [PvsP]
+            for (int i = 0; i < choice1.size(); i++) {
+                RoundRectangle2D.Double rectangle = choice1.get(i);
+                if (rectangle.contains(e.getPoint())) {
+                    SceneTwo = false;
+                    SceneThree = true;
+                    playervsplayer = true;
+                    play();
+                    System.out.println("Pressed PvP");
+
+                }
+            }
+
+            //pressed [PvsAi]
+            for (int i = 0; i < choice2.size(); i++) {
+
+                RoundRectangle2D.Double rectangle = choice2.get(i);
+                if (rectangle.contains(e.getPoint())) {
+                    SceneTwo = false;
+                    SceneThree = true;
+                    playervsAI = true;
+                    System.out.println("Pressed PvsAi");
+                }
+            }
+        }
+        else if(SceneThree==true) {
+            if (playervsAI == true) {
+                //pressed [PvsRAi]
+                for (int i = 0; i < RandomAi.size(); i++) {
+
+                    RoundRectangle2D.Double rectangle = RandomAi.get(i);
+                    if (rectangle.contains(e.getPoint())) {
+                        playervsRandomAi = true;
+                        mg.setSTATUS(1);
+                        play();
+                        System.out.println("Pressed PvsRandom");
+                    }
+                }
             }
         }
 
-        //pressed [PvsAi]
-        for (int i = 0; i < choice2.size(); i++) {
+        //click on grid
+        if (mg.getSTATUS()== mg.PLAYING ) {
+            System.out.println("Pressed Board");
+            int x = e.getX(), y = e.getY();
+            System.out.println(x + "," + y);
+            if (mg.playerturn)
+                mg.p1 = Location(x, y);
+            if (mg.playerturn)
+                mg.p2 = Location(x, y);
 
-            RoundRectangle2D.Double rectangle = choice2.get(i);
-            if (rectangle.contains(e.getPoint())) {
-                SceneTwo = false;
-                SceneThree = true;
-                playervsAI = true;
-                System.out.println("Pressed PvsAi");
-            }
+            if (!mg.playerturn)//player 1 spot
+                mg.p1 = Location(x, y);
+
+            if (mg.gameOver)
+                System.out.println("Press REPLAY button to play again.");
+            repaint();
         }
-        //pressed [PvsRAi]
-        for (int i = 0; i < RandomAi.size(); i++) {
 
-            RoundRectangle2D.Double rectangle = RandomAi.get(i);
-            if (rectangle.contains(e.getPoint())) {
-                playervsAI = false;
-                playervsRandomAi = true;
-                mg.STATUS = mg.PLAYING;
-                System.out.println("Pressed PvsRandom");
-            }
-
-            //click on grid
-            if(mg.STATUS == mg.PLAYING)
-            {
-                System.out.println("Pressed Board");
-                int x = e.getX(), y = e.getY();
-                System.out.println(x + "," + y);
-                if (mg.playerturn)
-                    mg.p1 = Location(x, y);
-                if (mg.playerturn)
-                    mg.p2 = Location(x, y);
-
-                if (!mg.playerturn)//player 1 spot
-                     mg.p1 = Location(x, y);
-
-                if (mg.gameOver)
-                    System.out.println("Press REPLAY button to play again.");
-                repaint();
-            }
-
-        }
     }
 
     public Location Location(int x, int y)
@@ -478,8 +543,5 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener,Runnabl
         repaint();
     }
 }
-
-
-
 
 
