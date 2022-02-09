@@ -17,10 +17,12 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
 
     int GamePause = 0;
     int millisToSleep = 20;
-    int nGames = 1;
+    int nGames=1;
     boolean playerInput = false;
     int p1Wins = 0;
     int p2Wins = 0;
+    int i;
+    boolean replay = false;
 
     public TicTacToe_Display() {
         super();
@@ -67,12 +69,30 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
 
     public void reset(){
         playerTurn = true;
+        replay = true;
+        System.out.println("reset");
 
-        for(int r=0;r<4;r++){
-            for(int c=0;c<4;c++){
-                for(int s=0;s<4;s++){
-                    board[r][c][s] = '-';
-                    winBoard[r][c][s] = '-';
+        if(!Ai1 || !Ai2) {
+            Thread t = new Thread();
+            t.start();
+            playerInput = true;
+            for(int r=0;r<4;r++){
+                for(int c=0;c<4;c++){
+                    for(int s=0;s<4;s++){
+                        board[r][c][s] = '-';
+                        winBoard[r][c][s] = '-';
+                    }
+                }
+            }
+        }
+
+        else {
+            for (int r = 0; r < 4; r++) {
+                for (int c = 0; c < 4; c++) {
+                    for (int s = 0; s < 4; s++) {
+                        board[r][c][s] = '-';
+                        winBoard[r][c][s] = '-';
+                    }
                 }
             }
         }
@@ -124,16 +144,28 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
                 }
             }
         }
+        //p1Wins, p2Wins, Ties
+        p.setFont(new Font("Sans Serif", Font.BOLD, 30));
+        p.setColor(new Color(255, 128, 128));
+        p.drawString("Player 1 wins: " + p1Wins/2, 400,100);
+        p.setColor(new Color(163, 185, 224));
+        p.drawString("Player 2 wins: " + p2Wins/2, 400,150);
 
+        //which player wins?
         p.setColor(new Color(141, 224, 148));
         if(isWinner(p1)){
-            p.drawString("PLAYER 1 WINS" , 10,800);
+            p.drawString("PLAYER 1 WINS" , 400,600);
+            if(!replay && !Ai2 || !Ai1)
+                p.drawString("Press 'r' to replay" , 400,400);
             p1Wins++;
         }
         else if (isWinner(p2)){
-            p.drawString("PLAYER 2 WINS" , 10,800);
+            p.drawString("PLAYER 2 WINS" , 400,600);
+            if(!replay && !Ai2 || !Ai1)
+                p.drawString("Press 'r' to replay" , 400,400);
             p2Wins++;
         }
+
     }
 
 
@@ -168,9 +200,9 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
 
     @Override
     public void keyTyped(KeyEvent e) {
-        System.out.println("no");
+
         if((isWinner(p1) || isWinner(p2)) && e.getKeyChar() == 'r'){
-            System.out.println("yes");
+            System.out.println("r is pressed");
             reset();
             repaint();
         }
@@ -354,22 +386,28 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
 
     @Override
     public void run() {
-        for(int switched = 0; switched < 2; switched++){
-
-            if(switched == 1)
+        for(int switched = 0; switched < 2; switched++)
+        {
+            if (switched == 1)
                 playerTurn = false;
 
-            for (int i = 0; i < nGames; i++) {
-                while ((!isWinner(p1) && !isWinner(p2))){
+            for (i = 0; i < nGames; i++) {
+
+                while ((!isWinner(p1) && !isWinner(p2))) {
+                    //p1
                     if (playerTurn) {
-                        if (Ai1) {
+
+                        //p1 is Random Ai
+                        if (Ai1)
+                        {
                             AImove(p1);
-                            try {
-                                Thread.sleep(millisToSleep);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
+
+                            try{ Thread.sleep(millisToSleep);}
+                            catch(InterruptedException e) {
+                                e.printStackTrace(); }
+                        }
+                        //p1 is player
+                        else {
                             playerInput = true;
                             while (playerInput) {
                                 try {
@@ -381,7 +419,10 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
                         }
                         playerTurn = false;
                         repaint();
-                    } else if (!playerTurn) {
+                    }
+                    //p2
+                    else if (!playerTurn) {
+                        //p2 is RandomAi
                         if (Ai2) {
                             AImove(p2);
                             try {
@@ -389,7 +430,9 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                        } else {
+                        }
+                        //p2 is person
+                        else {
                             playerInput = true;
                             while (playerInput) {
                                 try {
@@ -403,18 +446,17 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
                         repaint();
                     }
                 }
-
-
                 try {
                     Thread.sleep(GamePause);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if(Ai1 && Ai2)
-                    reset();
             }
+            if (Ai1 && Ai2)
+                reset();
         }
     }
+
 
     @Override
     public void keyPressed(KeyEvent e) {
