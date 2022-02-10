@@ -67,15 +67,15 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
         t.start();
     }
 
-    public void reset(){
-        playerTurn = true;
-        replay = true;
+     public void reset(){
         System.out.println("reset");
 
         if(!Ai1 || !Ai2) {
-            Thread t = new Thread();
-            t.start();
-            playerInput = true;
+            if (i == nGames) {
+                System.out.println("i: "+i);
+                System.out.println("nGames: "+nGames);
+                System.out.println("new turn");
+            }
             for(int r=0;r<4;r++){
                 for(int c=0;c<4;c++){
                     for(int s=0;s<4;s++){
@@ -84,6 +84,9 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
                     }
                 }
             }
+            Thread tt = new Thread(this);
+            tt.start();
+            repaint();
         }
 
         else {
@@ -96,7 +99,6 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
                 }
             }
         }
-
     }
 
 
@@ -144,12 +146,22 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
                 }
             }
         }
-        //p1Wins, p2Wins, Ties
-        p.setFont(new Font("Sans Serif", Font.BOLD, 30));
-        p.setColor(new Color(255, 128, 128));
-        p.drawString("Player 1 wins: " + p1Wins/2, 400,100);
-        p.setColor(new Color(163, 185, 224));
-        p.drawString("Player 2 wins: " + p2Wins/2, 400,150);
+      //p1Wins, p2Wins, Ties
+        if(!Ai1 && !Ai2)
+        {
+            p.setFont(new Font("Sans Serif", Font.BOLD, 30));
+            p.setColor(new Color(255, 128, 128));
+            p.drawString("Player 1 wins: " + p1Wins/2, 400,100);
+            p.setColor(new Color(163, 185, 224));
+            p.drawString("Player 2 wins: " + p2Wins/2, 400,150);
+        }
+        else {
+            p.setFont(new Font("Sans Serif", Font.BOLD, 30));
+            p.setColor(new Color(255, 128, 128));
+            p.drawString("Player 1 wins: " + p1Wins, 400, 100);
+            p.setColor(new Color(163, 185, 224));
+            p.drawString("Player 2 wins: " + p2Wins, 400, 150);
+        }
 
         //which player wins?
         p.setColor(new Color(141, 224, 148));
@@ -157,13 +169,11 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
             p.drawString("PLAYER 1 WINS" , 400,600);
             if(!replay && !Ai2 || !Ai1)
                 p.drawString("Press 'r' to replay" , 400,400);
-            p1Wins++;
         }
         else if (isWinner(p2)){
             p.drawString("PLAYER 2 WINS" , 400,600);
             if(!replay && !Ai2 || !Ai1)
                 p.drawString("Press 'r' to replay" , 400,400);
-            p2Wins++;
         }
 
     }
@@ -385,33 +395,42 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
     public void mousePressed(MouseEvent e) { }
 
     @Override
+   @Override
     public void run() {
-        for(int switched = 0; switched < 2; switched++)
-        {
-            if (switched == 1)
+        System.out.println("running");
+        for (int switched = 0; switched < 2; switched++) {
+            if (switched == 1) {
                 playerTurn = false;
+            }
+
+            if (i == nGames) {
+                System.out.println("can't play anymore");
+            }
 
             for (i = 0; i < nGames; i++) {
-
+                System.out.println(isWinner(p1));
+                System.out.println(isWinner(p2));
                 while ((!isWinner(p1) && !isWinner(p2))) {
+                    System.out.println("playing a game");
                     //p1
                     if (playerTurn) {
 
                         //p1 is Random Ai
-                        if (Ai1)
-                        {
+                        if (Ai1) {
                             AImove(p1);
 
-                            try{ Thread.sleep(millisToSleep);}
-                            catch(InterruptedException e) {
-                                e.printStackTrace(); }
+                            try {
+                                Thread.sleep(millisToSleep);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                         //p1 is player
                         else {
                             playerInput = true;
                             while (playerInput) {
                                 try {
-                                    Thread.sleep(20);
+                                    Thread.sleep(50);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -421,7 +440,7 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
                         repaint();
                     }
                     //p2
-                    else if (!playerTurn) {
+                    else {
                         //p2 is RandomAi
                         if (Ai2) {
                             AImove(p2);
@@ -445,15 +464,26 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
                         playerTurn = true;
                         repaint();
                     }
+                    try {
+                        Thread.sleep(GamePause);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-                try {
-                    Thread.sleep(GamePause);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if (isWinner(p1))
+                    p1Wins++;
+                if (isWinner(p2))
+                    p2Wins++;
+                if (Ai1 && Ai2) {
+                    if (i != nGames)
+                        reset();
                 }
             }
-            if (Ai1 && Ai2)
-                reset();
+            if (Ai1 && Ai2) {
+                if (i == nGames)
+                    System.out.print("game ends");
+                break;
+            }
         }
     }
 
