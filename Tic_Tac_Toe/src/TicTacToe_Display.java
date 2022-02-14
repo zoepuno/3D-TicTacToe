@@ -13,7 +13,8 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
     char[][][] winBoard = new char[4][4][4];
     char p1 = 'x', p2 = 'o';
     boolean playerTurn = true;
-    boolean Ai1 = false, Ai2 = false;
+    static boolean Ai1 = false;
+    static boolean Ai2 = false;
     boolean random, blocking, moved;
 
     int GamePause = 0;
@@ -323,14 +324,7 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
         }
         return false;
     }
-    
- public void BlockingAi(char player){
 
-        block.move(player, board, moved);
-
-        displayBoard();
-
-  }
     public boolean isWinner(char player){
 
         //linear levels win
@@ -459,6 +453,33 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
         return false;
     }
 
+
+    public static int getIntput(){
+        Scanner in = new Scanner(System.in);
+        while(true){
+            if(in.hasNextInt())
+                return in.nextInt();
+            in.next();
+        }
+    }
+
+    public static String getStringput(){
+        Scanner in = new Scanner(System.in);
+        while(true){
+            if(in.hasNext())
+                return in.next();
+        }
+    }
+
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
     @Override
     public void mouseEntered(MouseEvent e) { }
 
@@ -471,110 +492,9 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
     @Override
     public void mousePressed(MouseEvent e) { }
 
-    @Override
-    public void run() {
-        System.out.println("running");
-        for(int switched = 0; switched < 2; switched++) {
-            if (switched == 1)
-                playerTurn = false;
-
-            if (i == nGames) {
-                System.out.println("can't play anymore");
-            }
-
-            for (i = 0; i < nGames; i++) {
-                System.out.println(isWinner(p1));
-                System.out.println(isWinner(p2));
-                while ((!isWinner(p1) && !isWinner(p2))) {
-                    //p1
-                    if (playerTurn) {
-
-                        //p1 is Random Ai
-                        if (Ai1) {
-                            if (random) {
-                                RandomAImove(p1);
-                            }
-                            if (blocking) {
-                                BlockingAi(p1);
-                            }
-
-                            try {
-                                Thread.sleep(millisToSleep);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        //p1 is player
-                        else {
-                            playerInput = true;
-                            while (playerInput) {
-                                try {
-                                    Thread.sleep(20);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                        playerTurn = false;
-                        repaint();
-                    }
-                    //p2
-                    else {
-                        //p2 is RandomAi
-                        if (Ai2) {
-                            if (random) {
-                                RandomAImove(p2);
-                            }
-                            if (blocking) {
-                                BlockingAi(p2);
-                            }
-                            try {
-                                Thread.sleep(millisToSleep);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        //p2 is person
-                        else {
-                            playerInput = true;
-                            while (playerInput) {
-                                try {
-                                    Thread.sleep(50);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                        playerTurn = true;
-                        repaint();
-                    }
-                }
-                try {
-                    Thread.sleep(GamePause);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        if (isWinner(p1))
-            p1Wins++;
-        if (isWinner(p2))
-            p2Wins++;
-        if (Ai1 && Ai2) {
-            if (i != nGames)
-                reset();
-        }
-            if (Ai1 && Ai2)
-                reset();
-    }
-
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
+    public void addNotify(){
+        super.addNotify();
+        requestFocus();
     }
 }
+
