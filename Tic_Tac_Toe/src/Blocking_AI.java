@@ -2,25 +2,27 @@ public class Blocking_AI implements PlayerInt {
     char[][][] boardCopy = new char[4][4][4];
     Player play = new Player(null, '0');
     Game game = new Game();
-    int col=0;
-    int row=0;
+    int col = 0;
+    int row = 0;
     boolean done;
     Location boo;
+
     public Blocking_AI() {
-setBoardCopy();
-changeBoard();
+
     }
 
     public void setBoardCopy() {
-        if (play.getLetter() == 'o') {
+        if (Tic_Tac_Toe_Display.Ai1 == true) {
             for (int l = 0; l < 4; l++) {
                 for (int c = 0; c < 4; c++) {
                     for (int r = 0; r < 4; r++) {
                         boardCopy[l][c][r] = 'x';
+
                     }
                 }
             }
-        } else {
+        }
+        if (Tic_Tac_Toe_Display.Ai2 == true) {
             for (int l = 0; l < 4; l++) {
                 for (int c = 0; c < 4; c++) {
                     for (int r = 0; r < 4; r++) {
@@ -46,109 +48,114 @@ changeBoard();
     public void freshCopy() {
 
     }
+    public void displayBoard(char[][][] boardCopy) {
+        for (int l = 0; l < 4; l++) {
+            System.out.println("Level: " + (l + 1));
+            System.out.println(" " + boardCopy[0][0][l] + " | " + boardCopy[0][1][l] + " | " + boardCopy[0][2][l] + " | " + boardCopy[0][3][l] + " ");
+            System.out.println("----------------");
+            System.out.println(" " + boardCopy[1][0][l] + " | " + boardCopy[1][1][l] + " | " + boardCopy[1][2][l] + " | " + boardCopy[1][3][l] + " ");
+            System.out.println("----------------");
+            System.out.println(" " + boardCopy[2][0][l] + " | " + boardCopy[2][1][l] + " | " + boardCopy[2][2][l] + " | " + boardCopy[2][3][l] + " ");
+            System.out.println("----------------");
+            System.out.println(" " + boardCopy[3][0][l] + " | " + boardCopy[3][1][l] + " | " + boardCopy[3][2][l] + " | " + boardCopy[3][3][l] + " ");
+        }
+        }
     public void changeBoard() {
-        if (play.getLetter() == 'o') {
+        if (Tic_Tac_Toe_Display.Ai2 == true) {
             for (int l = 0; l < 4; l++) {
                 for (int c = 0; c < 4; c++) {
                     for (int r = 0; r < 4; r++) {
                         if (game.board.board[l][c][r] == 'x') {
-                            boardCopy[l][c][r]='x';
+                            boardCopy[l][c][r] = 'x';
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int l = 0; l < 4; l++) {
+                for (int c = 0; c < 4; c++) {
+                    for (int r = 0; r < 4; r++) {
+                        if (game.board.board[c][r][l] == 'o') {
+                            boardCopy[c][r][l] = 'o';
                         }
                     }
                 }
             }
         }
-     else{
+    }
+
+    public void move(char player) {
         for (int l = 0; l < 4; l++) {
             for (int c = 0; c < 4; c++) {
                 for (int r = 0; r < 4; r++) {
-                    if (game.board.board[c][r][l] == 'o') {
-                        boardCopy[c][r][l]='o';
+                    //col
+                    if (!(boardCopy[c][0][l] == player)) {
+                        col++;
+                        if (col == 3) {
+                            for (int v = 0; c < 4; c++) {
+                                if (game.board.board[v][0][l] == '-') {
+                                    boo = new Location(v, 0, l);
+                                    break;
+                                }
+                            }
+                        }
+                        if (col == 2) {
+                            for (int v = 0; c < 4; c++) {
+                                if (game.board.board[v][0][l] == '-') {
+                                    boo = new Location(v, 0, l);
+                                    break;
+                                }
+                            }
+                        }
+                    } else if (!(boardCopy[c][0][l] == player)) {
+                        col++;
+                        if (col == 3) {
+                            for (int v = 0; c < 4; c++) {
+                                if (game.board.board[v][0][l] == '-') {
+
+                                    boo = new Location(v, 0, l);
+                                    break;
+                                }
+                            }
+                        }
+                        if (col == 2) {
+                            for (int v = 0; c < 4; c++) {
+                                if (game.board.board[v][0][l] == '-') {
+
+                                    boo = new Location(v, 0, l);
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        //corner first
+                        if (game.board.board[0][0][l] == '-') {
+                            boo = new Location(c, r, l);
+                            break;
+                        } else if (game.board.board[3][3][l] == '-') {
+                            boo = new Location(c, r, l);
+                            break;
+                        } else if (game.board.board[0][3][l] == '-') {
+                            boo = new Location(c, r, l);
+                            break;
+                        } else if (game.board.board[3][0][l] == '-') {
+                            boo = new Location(c, r, l);
+                            break;
+
+                        }
                     }
+
                 }
             }
         }
+            game.board.board[boo.getSheet()][boo.getRow()][boo.getCol()] = player;
+            System.out.print("Coolio");
+            changeBoard();
+            displayBoard(boardCopy);
+            Tic_Tac_Toe_Display.moved=true;
+
+
     }
-}
-public void move(char player){
-
-    for (int l = 0; l < 4; l++) {
-        for (int c = 0; c < 4; c++) {
-            for (int r = 0; r < 4; r++) {
-                //win first, block next
-                //Section 1 O's
-                //col
-                if(boardCopy[c][0][l]=='x' && player=='o') {
-                    col++;
-                    if(col==2) {
-                        for (int v = 0; c < 4; c++) {
-                            if(game.board.board[v][0][l]=='-'){
-                                boo=  new Location(v,0,l);
-                            }
-                        }
-                    }
-                }
-                //row
-                else if(boardCopy[0][r][l]=='x' && player=='o') {
-                    col++;
-                    if(col==2) {
-                        for (int v = 0; c < 4; c++) {
-                            if(game.board.board[0][r][l]=='-'){
-
-                                boo=  new Location(0,r,l);
-                            }
-                        }
-                    }
-                }
-
-                //Section for X's
-               else if(boardCopy[c][0][l]=='o' && player=='x') {
-                    col++;
-                    if(col==2) {
-                        for (int v = 0; c < 4; c++) {
-                            if(game.board.board[v][0][l]=='-'){
-
-                                boo= new Location(v,0,l);
-                            }
-                        }
-                    }
-                }
-                //row
-                else if(boardCopy[0][r][l]=='o' && player == 'x') {
-                    col++;
-                    if(col==2) {
-                        for (int v = 0; c < 4; c++) {
-                            if(game.board.board[0][r][l]=='-'){
-
-                                boo=  new Location(0,r,l);
-                            }
-                        }
-                    }
-                }
-                else{
-                    //corner first
-                    if(game.board.board[0][0][l]=='-'){
-                        System.out.print("PAIN");
-                        boo= new Location(c,r,l);
-                    }
-                    else if(game.board.board[3][3][l]=='-'){
-                        System.out.print("PAIN2");
-                       boo=  new Location(c,r,l);
-                    }
-                    else if(game.board.board[0][3][l]=='-'){
-                        System.out.print("PAIN3");
-                        boo= new Location(c,r,l);
-                    }
-                    else if(game.board.board[3][0][l]=='-'){
-                        System.out.print("PAIN4");
-                        boo= new Location(c,r,l);
-                    }
-                }
-            }
-            }
-        }
-    }
-
 }
 /**
  * Every two it puts a block between them
@@ -163,4 +170,71 @@ public void move(char player){
  *   if theres two in a row, col, or sheet
  *   than add a block in that row col or sheet.
  *   Works for straight and diagonal.
+ *
+ *
+ *
+ *   old Code:
+ *      //Section 1 O's
+ *                     //win first, block next
+ *                     //col
+ *                     if (boardCopy[c][0][l] == 'x' && Tic_Tac_Toe_Display.Ai2 == true) {
+ *                         col++;
+ *                         if (col == 2) {
+ *                             for (int v = 0; c < 4; c++) {
+ *                                 if (game.board.board[v][0][l] == '-') {
+ *                                     boo = new Location(v, 0, l);
+ *                                 }
+ *                             }
+ *                         }
+ *                     }
+ *                     //row
+ *                     else if (boardCopy[0][r][l] =='x' && Tic_Tac_Toe_Display.Ai2 == true) {
+ *                         col++;
+ *                         if (col == 2) {
+ *                             for (int v = 0; c < 4; c++) {
+ *                                 if (game.board.board[0][r][l] == '-') {
+ *
+ *                                     boo = new Location(0, r, l);
+ *                                 }
+ *                             }
+ *                         }
+ *                     }
+ *
+ *                     //Section for X's
+ *                     else if (boardCopy[c][0][l] == 'o' && Tic_Tac_Toe_Display.Ai1 == true) {
+ *                         col++;
+ *                         if (col == 2) {
+ *                             for (int v = 0; c < 4; c++) {
+ *                                 if (game.board.board[v][0][l] == '-') {
+ *
+ *                                     boo = new Location(v, 0, l);
+ *                                 }
+ *                             }
+ *                         }
+ *                     }
+ *                     //row
+ *                     else if (boardCopy[0][r][l] == 'o' && Tic_Tac_Toe_Display.Ai1 == true) {
+ *                         col++;
+ *                         if (col == 2) {
+ *                             for (int v = 0; c < 4; c++) {
+ *                                 if (game.board.board[0][r][l] == '-') {
+ *
+ *                                     boo = new Location(0, r, l);
+ *                                 }
+ *                             }
+ *                         }
+ *                     } else {
+ *                         //corner first
+ *                         if (game.board.board[0][0][l] == '-') {
+ *                             boo = new Location(c, r, l);
+ *                         } else if (game.board.board[3][3][l] == '-') {
+ *                             boo = new Location(c, r, l);
+ *                         } else if (game.board.board[0][3][l] == '-') {
+ *                             boo = new Location(c, r, l);
+ *                         } else if (game.board.board[3][0][l] == '-') {
+ *                             boo = new Location(c, r, l);
+ *
+ *                             // Location loc = p1.getMove(board);
+ *                         }
+ *                     }
  */
