@@ -13,8 +13,7 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
     char[][][] winBoard = new char[4][4][4];
     char p1 = 'x', p2 = 'o';
     boolean playerTurn = true;
-    static boolean Ai1 = false;
-    static boolean Ai2 = false;
+    boolean Ai1 = false, Ai2 = false;
     boolean random, blocking, moved;
 
     int GamePause = 0;
@@ -25,6 +24,7 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
     int p2Wins = 0;
     int i;
     boolean replay = false;
+    Blocking_AI block= new Blocking_AI();
 
     public TicTacToe_Display() {
         super();
@@ -63,14 +63,14 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
         System.out.print("Do you want player o to be AI? (type 'y' or 'n'): ");
         if (getStringput().charAt(0) == 'y'){
             Ai2 = true;
-        System.out.print("Random AI(r) or Blocking AI(b): ");
-        if (getStringput().charAt(0) == 'r') {
-            random = true;
+            System.out.print("Random AI(r) or Blocking AI(b): ");
+            if (getStringput().charAt(0) == 'r') {
+                random = true;
+            }
+            if (getStringput().charAt(0) == 'b') {
+                blocking = true;
+            }
         }
-        if (getStringput().charAt(0) == 'b') {
-            blocking = true;
-        }
-    }
 
         if(Ai1 && Ai2){
             System.out.print("How many milliseconds between AI moves?: ");
@@ -231,11 +231,11 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
                             }
                             if(blocking)
 
-                            try {
-                                Thread.sleep(millisToSleep);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                                try {
+                                    Thread.sleep(millisToSleep);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                         }
                         //p1 is a human player
                         else {
@@ -260,11 +260,11 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
                                 random2.RandomAI_Move();
                             }
                             if(blocking)
-                            try {
-                                Thread.sleep(millisToSleep);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                                try {
+                                    Thread.sleep(millisToSleep);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                         }
                         //p2 is person
                         else {
@@ -325,6 +325,12 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
         return false;
     }
 
+    public void BlockingAi(char player){
+
+        block.move(player, board, moved);
+
+
+    }
     public boolean isWinner(char player){
 
         //linear levels win
@@ -453,7 +459,6 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
         return false;
     }
 
-
     public static int getIntput(){
         Scanner in = new Scanner(System.in);
         while(true){
@@ -471,15 +476,6 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
         }
     }
 
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
     @Override
     public void mouseEntered(MouseEvent e) { }
 
@@ -492,9 +488,12 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
     @Override
     public void mousePressed(MouseEvent e) { }
 
-    public void addNotify(){
-        super.addNotify();
-        requestFocus();
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }
-
