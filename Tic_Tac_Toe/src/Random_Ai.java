@@ -1,60 +1,31 @@
-import java.util.Scanner;
 
-public class Random_Ai extends Player{
 
-    Scanner keyboard = new Scanner(System.in);
+public class Random_Ai{
 
-    Player RAi = new Player("Random",'x');
+    boolean moved;
+    char player;
+    char[][][] board;
 
-    int x = 0;
-    boolean error = false;
-    int r;
-    int c;
-    int s;
-
-    Random_Ai(String name, char letter) {
-        super(name, letter);
+    Random_Ai(char player, char[][][] board, boolean moved) {
+        this.player = player;
+        this.board = board;
+        this.moved = moved;
     }
 
-
-    public void setR(int r)
-    {
-        this.r = r;
-    }
-    public void setC(int c)
-    {
-        this.c = c;
-    }
-    public void setS(int s)
-    {
-        this.s = s;
-    }
-
-    public int getR()
-    {
-        return r;
-    }
-    public int getC()
-    {
-        return c;
-    }
-    public int getS()
-    {
-        return c;
-    }
     //Moves Randomly
-    public void random_move(char[][][] board) {
+    public void RandomAI_Move() {
+        Location RandomAIloc = new Location((int) (Math.random() * 4), (int) (Math.random() * 4), (int) (Math.random() * 4));
+        moved = false;
 
-            r = (int) (Math.random() * 4);
-            c = (int) (Math.random() * 4);
-            s = (int) (Math.random() * 4);
-
-                if (r >= 4 || c >= 4||s >= 4||r < 0 || c < 0||s < 0|| board[r][c][s] != '-')
-                {
-                    random_move(board);
-                }
-        }
+        do {
+            if (board[RandomAIloc.getCol()][RandomAIloc.getRow()][RandomAIloc.getSheet()] == '-') {
+                board[RandomAIloc.getCol()][RandomAIloc.getRow()][RandomAIloc.getSheet()] = player;
+                moved = true;
+            } else
+                RandomAIloc = new Location((int) (Math.random() * 4), (int) (Math.random() * 4), (int) (Math.random() * 4));
+        } while (!moved);
     }
+}
 
 
 
