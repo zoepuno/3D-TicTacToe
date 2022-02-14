@@ -324,15 +324,13 @@ public class TicTacToe_Display extends JPanel implements MouseListener, Runnable
         return false;
     }
     
-  public void BlockingAi(char player){
-        moved=false;
-        while (moved==false) {
-            block.move(player);
-        }
+ public void BlockingAi(char player){
+
+        block.move(player, board, moved);
+
         displayBoard();
 
   }
-
     public boolean isWinner(char player){
 
         //linear levels win
