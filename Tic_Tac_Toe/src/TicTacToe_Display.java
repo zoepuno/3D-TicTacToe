@@ -14,7 +14,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
     char[][][] winBoard = new char[4][4][4];
     char p1 = 'x', p2 = 'o';
     boolean playerTurn = true;
-    boolean Ai1 = false, Ai2 = false;
+    static boolean Ai1 = false, Ai2 = false;
 
     int GamePause = 0;
     int millisToSleep = 20;
@@ -25,9 +25,10 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
     int i;
     boolean replay = false;
     Blocking_AI block= new Blocking_AI();
-    boolean moved;
+    static boolean moved;
     boolean random;
     boolean blocking;
+    Board boards = new Board();
 
     public Tic_Tac_Toe_Display() {
         super();
@@ -60,6 +61,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
                 random=true;
             }
             else{
+                block.setBoardCopy();
                 blocking=true;
             }
             }
@@ -72,6 +74,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
                     random=true;
                 }
                 else{
+                    block.setBoardCopy();
                     blocking=true;
                 }
             }
@@ -192,7 +195,16 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
         }
 
     }
-
+public void displayBoard(){
+    for (int l = 0; l < 4; l++) {
+        for (int c = 0; c < 4; c++) {
+            for (int r = 0; r < 4; r++) {
+                System.out.println(board[r][c][l] +",");
+            }
+        }
+        System.out.println("\n");
+    }
+}
 
 
     public void addNotify(){
@@ -267,15 +279,15 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
             else
                 ran = new Location((int)(Math.random()*4), (int)(Math.random()*4), (int)(Math.random()*4));
         }while(!moved);
+        displayBoard();
     }
   public void BlockingAi(char player){
- moved=false;
+        moved=false;
         while (moved==false) {
-            Location blocks=new Location((int) (0), (int)(0), (int)(0));
             block.move(player);
-            blocks=block.boo;
-            moved=true;
         }
+        displayBoard();
+
   }
 
     public boolean isWinner(char player){
@@ -421,8 +433,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
     @Override
     public void run() {
         System.out.println("running");
-        for(int switched = 0; switched < 2; switched++)
-        {
+        for(int switched = 0; switched < 2; switched++) {
             if (switched == 1)
                 playerTurn = false;
 
@@ -434,23 +445,24 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
                 System.out.println(isWinner(p1));
                 System.out.println(isWinner(p2));
                 while ((!isWinner(p1) && !isWinner(p2))) {
-                            //p1
-                            if (playerTurn) {
+                    //p1
+                    if (playerTurn) {
 
-                                //p1 is Random Ai
-                                if (Ai1)
-                                {
-                                    if(random) {
-                                        RandomAImove(p1);
-                                    }
-                                    if(blocking){
-                                        BlockingAi(p1);
-                                    }
+                        //p1 is Random Ai
+                        if (Ai1) {
+                            if (random) {
+                                RandomAImove(p1);
+                            }
+                            if (blocking) {
+                                BlockingAi(p1);
+                            }
 
-                                    try{ Thread.sleep(millisToSleep);}
-                                    catch(InterruptedException e) {
-                                        e.printStackTrace(); }
-                                }
+                            try {
+                                Thread.sleep(millisToSleep);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
                         //p1 is player
                         else {
                             playerInput = true;
@@ -466,13 +478,13 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
                         repaint();
                     }
                     //p2
-                    else
+                    else {
                         //p2 is RandomAi
                         if (Ai2) {
-                            if(random) {
+                            if (random) {
                                 RandomAImove(p2);
                             }
-                            if(blocking){
+                            if (blocking) {
                                 BlockingAi(p2);
                             }
                             try {
@@ -502,6 +514,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
                     e.printStackTrace();
                 }
             }
+        }
         if (isWinner(p1))
             p1Wins++;
         if (isWinner(p2))
