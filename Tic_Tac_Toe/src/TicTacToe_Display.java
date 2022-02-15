@@ -13,7 +13,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
     char[][][] winBoard = new char[4][4][4];
     char p1 = 'x', p2 = 'o';
     boolean playerTurn = true;
-   static boolean  Ai1 , Ai2;
+    static boolean  Ai1 , Ai2;
     boolean random, blocking, moved;
 
     int GamePause = 0;
@@ -32,13 +32,13 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
         addKeyListener(this);
         setSize(800, 1200);
 
-        for (int c = 0; c < 4; c++) {
+        for (int s = 0; s < 4; s++) {
             int align = 100;
-            for (int s = 0; s < 4; s++) {
-                for (int r = 0; r < 4; r++) {
-                    int xPoints[] = {align + 10 + 50 * r, align + 60 + 50 * r, align + 50 + 50 * r, align + 50 * r};
-                    int yPoints[] = {60 + 40 * s + 200 * c, 60 + 40 * s + 200 * c, 100 + 40 * s + 200 * c, 100 + 40 * s + 200 * c};
-                    tile[r][c][3 - s] = new Polygon(xPoints, yPoints, 4);
+            for (int r = 0; r < 4; r++) {
+                for (int c = 0; c < 4; c++) {
+                    int xPoints[] = {align + 10 + 50 * c, align + 60 + 50 * c, align + 50 + 50 * c, align + 50 * c};
+                    int yPoints[] = {60 + 40 * r + 200 * s, 60 + 40 * r + 200 * s, 100 + 40 * r + 200 * s, 100 + 40 * r + 200 * s};
+                    tile[r][c][s] = new Polygon(xPoints, yPoints, 4);
 
                     board[r][c][s] = '-';
                     winBoard[r][c][s] = '-';
@@ -55,8 +55,8 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
             if (getStringput().charAt(0) == 'r') {
                 random = true;
             }
-else{
-    block.setBoardCopy();
+            else{
+                block.setBoardCopy();
                 blocking = true;
             }
         }
@@ -234,11 +234,11 @@ else{
                             if(blocking==true) {
                                 block.move(p1, board, moved);
                             }
-                                try {
-                                    Thread.sleep(millisToSleep);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+                            try {
+                                Thread.sleep(millisToSleep);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                         //p1 is a human player
                         else {
@@ -265,11 +265,11 @@ else{
                             if(blocking==true){
                                 block.move(p2, board, moved);
                             }
-                                try {
-                                    Thread.sleep(millisToSleep);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+                            try {
+                                Thread.sleep(millisToSleep);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                         //p2 is person
                         else {
@@ -310,15 +310,15 @@ else{
 
     public boolean playerMoves(double x, double y, char player)
     {
-        for(int c=0;c<4;c++){
-            for(int r=0;r<4;r++){
+        for(int r=0;r<4;r++){
+            for(int c=0;c<4;c++){
                 for(int s=0;s<4;s++){
                     if(tile[r][c][s].contains(x,y)){
-                        System.out.println(player + "(r: " + r +", c: "+ c + ",s : "+ s + ")" + board[r][c][s]);
+                        System.out.println(player + "(r: " + r +", c: "+ c + ", s : "+ s + ")" + board[r][c][s]);
 
                         if(board[r][c][s]=='-'){
                             board[r][c][s] = player;
-                            System.out.println(player + "(r: " + r +", c: "+ c + ",s : "+ s + ")" + board[r][c][s]);
+                            System.out.println(player + "(r: " + r +", c: "+ c + ", s : "+ s + ")" + board[r][c][s]);
                             return true;
                         }
                         else
