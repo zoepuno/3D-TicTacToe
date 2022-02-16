@@ -14,7 +14,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
     char p1 = 'x', p2 = 'o';
     boolean playerTurn = true;
     static boolean  Ai1 , Ai2;
-    boolean random, blocking, moved;
+    boolean random, blocking,sl,slb, moved;
 
     int GamePause = 0;
     int millisToSleep = 20;
@@ -24,6 +24,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
     int p2Wins = 0;
     int i;
     boolean replay = false;
+    char type;
     Blocking_AI block= new Blocking_AI();
 
     public Tic_Tac_Toe_Display() {
@@ -49,28 +50,54 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
 
 
         System.out.print("Do you want player x to be AI? (type 'y' or 'n'): ");
-        if (getStringput().charAt(0) == 'y') {
-            Ai1 = true;
-            System.out.print("Random AI(r) or Blocking AI(b): ");
-            if (getStringput().charAt(0) == 'r') {
-                random = true;
+            if(getStringput().charAt(0) == 'y') {
+                Ai1 = true;
+                System.out.print("Random AI(r) or Blocking AI(b) or StraightLine AI(l) or StraightLine-Blocking AI(s): ");
+                if (getStringput().charAt(0) == 'r') {
+                    random = true;
+                    System.out.println("random is true");
+                }
+                else if (getStringput().charAt(0) == 'b') {
+                    block.setBoardCopy();
+                    blocking = true;
+                    System.out.println("blocking is true");
+                }
+
+                else if (getStringput().charAt(0) == 'l') {
+                    block.setBoardCopy();
+                    sl = true;
+                    System.out.println("sl is true");
+                }
+                else if (getStringput().charAt(0) == 's') {
+                    block.setBoardCopy();
+                    slb = true;
+                    System.out.println("slb is true");
+                }
             }
-            else{
-                block.setBoardCopy();
-                blocking = true;
-            }
-        }
 
         System.out.print("Do you want player o to be AI? (type 'y' or 'n'): ");
         if (getStringput().charAt(0) == 'y'){
             Ai2 = true;
-            System.out.print("Random AI(r) or Blocking AI(b): ");
+            System.out.print("Random AI(r) or Blocking AI(b) or StraightLine AI(l) or StraightLine-Blocking AI(s): ");
             if (getStringput().charAt(0) == 'r') {
                 random = true;
+                System.out.println("random is true");
             }
-            if (getStringput().charAt(0) == 'b') {
+            else if (getStringput().charAt(0) == 'b') {
                 block.setBoardCopy();
                 blocking = true;
+                System.out.println("blocking is true");
+            }
+
+            else if (getStringput().charAt(0) == 'l') {
+                block.setBoardCopy();
+                sl = true;
+                System.out.println("sl is true");
+            }
+            else if (getStringput().charAt(0) == 's') {
+                block.setBoardCopy();
+                slb = true;
+                System.out.println("slb is true");
             }
         }
 
@@ -222,16 +249,14 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
 
             for (i = 0; i < nGames; i++) {
                 while ((!isWinner(p1) && !isWinner(p2))) {
-                    //p1
-                    if (playerTurn) {
-                        //p1 is AI
-                        if (Ai1)
+                    if (playerTurn) { //p1
+                        if (Ai1)//p1 is AI
                         {
-                            if(random) {
+                            if (random) {
                                 Random_Ai random1 = new Random_Ai(p1, board, moved);
                                 random1.RandomAI_Move();
                             }
-                            if(blocking==true) {
+                            if (blocking) {
                                 block.move(p1, board, moved);
                             }
                             try {
@@ -240,8 +265,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
                                 e.printStackTrace();
                             }
                         }
-                        //p1 is a human player
-                        else {
+                        else { //p1 is a human player
                             playerInput = true;
                             while (playerInput) {
                                 try {
@@ -254,10 +278,8 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
                         playerTurn = false;
                         repaint();
                     }
-                    //p2
-                    else {
-                        //p2 is RandomAi
-                        if (Ai2) {
+                    else { //p2
+                        if (Ai2) {   //p2 is RandomAi
                             if(random) {
                                 Random_Ai random2 = new Random_Ai(p1, board, moved);
                                 random2.RandomAI_Move();
@@ -271,8 +293,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
                                 e.printStackTrace();
                             }
                         }
-                        //p2 is person
-                        else {
+                        else {  //p2 is person
                             playerInput = true;
                             while (playerInput) {
                                 try {
@@ -471,8 +492,9 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, Runnab
     public static String getStringput(){
         Scanner in = new Scanner(System.in);
         while(true){
-            if(in.hasNext())
+            if(in.hasNext()) {
                 return in.next();
+            }
         }
     }
 
