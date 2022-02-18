@@ -1,10 +1,9 @@
-
-
 public class Random_Ai{
 
     boolean moved;
     char player;
     char[][][] board;
+    //sheet, row, col
 
     Random_Ai(char player, char[][][] board, boolean moved) {
         this.player = player;
@@ -18,17 +17,12 @@ public class Random_Ai{
         moved = false;
 
         do {
-            if (board[RandomAIloc.getCol()][RandomAIloc.getRow()][RandomAIloc.getSheet()] == '-') {
-                board[RandomAIloc.getCol()][RandomAIloc.getRow()][RandomAIloc.getSheet()] = player;
+            if (board[RandomAIloc.getSheet()][RandomAIloc.getRow()][RandomAIloc.getCol()] == '-') {
+                board[RandomAIloc.getSheet()][RandomAIloc.getRow()][RandomAIloc.getCol()] = player;
                 moved = true;
             } else
                 RandomAIloc = new Location((int) (Math.random() * 4), (int) (Math.random() * 4), (int) (Math.random() * 4));
         } while (!moved);
     }
 }
-
-
-
-
-
 
