@@ -16,24 +16,6 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, KeyLis
         addMouseListener(this);
         addKeyListener(this);
         setSize(800, 1200);
-        
-         for (int c = 0; c < 4; c++) {
-            int align = 100;
-            for (int s = 0; s < 4; s++) {
-                for (int r = 0; r < 4; r++) {
-                    int xPoints[] = {align + 10 + 50 * r, align + 60 + 50 * r, align + 50 + 50 * r, align + 50 * r};
-                    int yPoints[] = {60 + 40 * s + 200 * c, 60 + 40 * s + 200 * c, 100 + 40 * s + 200 * c, 100 + 40 * s + 200 * c};
-                    tile[s][r][c] = new Polygon(xPoints, yPoints, 4);
-
-                    board[s][r][c] = '-';
-                    winBoard[s][r][c] = '-';
-                }
-
-                align -= 10;
-
-            }
-        }
-
     }
 
    public void paint(Graphics p){
