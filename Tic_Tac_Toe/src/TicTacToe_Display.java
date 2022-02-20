@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, KeyListener {
 //y=r, x=c, z=s
-    Blocking_AI block= new Blocking_AI();
+
     Game play = new Game();
 
     public Tic_Tac_Toe_Display() {
