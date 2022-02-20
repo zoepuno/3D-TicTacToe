@@ -1,11 +1,12 @@
 public class Blocking_AI implements PlayerInt {
+
     char[][][] boardCopy = new char[4][4][4];
     Player play = new Player(null, '0');
     int col = 0;
     int row = 0;
     boolean done;
     Location boo;
-    char board[][][];
+    char[][][] board;
     boolean moved;
 
     public Blocking_AI( ) {
@@ -13,7 +14,7 @@ public class Blocking_AI implements PlayerInt {
     }
 
     public void setBoardCopy() {
-        if (Tic_Tac_Toe_Display.Ai1 == true) {
+        if (Game.Ai1 == true) {
             for (int l = 0; l < 4; l++) {
                 for (int c = 0; c < 4; c++) {
                     for (int r = 0; r < 4; r++) {
@@ -23,7 +24,7 @@ public class Blocking_AI implements PlayerInt {
                 }
             }
         }
-        if (Tic_Tac_Toe_Display.Ai2 == true) {
+        if (Game.Ai2 == true) {
             for (int l = 0; l < 4; l++) {
                 for (int c = 0; c < 4; c++) {
                     for (int r = 0; r < 4; r++) {
@@ -62,23 +63,23 @@ public class Blocking_AI implements PlayerInt {
         }
         }
     public void changeBoard() {
-        if (Tic_Tac_Toe_Display.Ai2 == true) {
+        if (Game.Ai2 == true) {
             for (int r = 0; r < 4; r++) {
                 for (int c = 0; c < 4; c++) {
                     for (int s = 0; s < 4; s++) {
-                        if (board[r][c][s] == 'x') {
-                            boardCopy[r][c][s] = 'x';
+                        if (board[s][c][r] == 'x') {
+                            boardCopy[s][c][r] = 'x';
                         }
                     }
                 }
             }
         }
-        if (Tic_Tac_Toe_Display.Ai2 == false) {
+        if (Game.Ai2 == false) {
             for (int r = 0; r < 4; r++) {
                 for (int c = 0; c < 4; c++) {
                     for (int s = 0; s < 4; s++) {
-                        if (board[r][c][s] == 'o') {
-                            boardCopy[r][c][s] = 'o';
+                        if (board[s][c][r] == 'o') {
+                            boardCopy[s][c][r] = 'o';
                         }
                     }
                 }
@@ -95,26 +96,28 @@ moved=false;
         while(!moved) {
             //row check
             for (int s = 0; s < 4; s++) {
-                for (int r = 0; r < 4; r++) {
-                    row = 0;
                     for (int c = 0; c < 4; c++) {
-                        if (!(boardCopy[r][c][s] == player)) {
+                        for (int r = 0; r < 4; r++) {
+                            row = 0;
+                        if (!(boardCopy[s][c][r] == player)) {
                             row++;
                         }
                         if (row == 3) {
                             for (int m = 0; m < 4; m++) {
-                                if (board[m][c][s] == '-') {
+                                if (board[s][c][m]== '-') {
                                     boo = new Location(c, r, s);
                                     moved=true;
+                                    break;
                                 }
 
                             }
                         }
                       else if (row == 2) {
                             for (int m = 0; m < 4; m++) {
-                                if (board[m][c][s] == '-') {
+                                if (board[s][c][m] == '-') {
                                     boo = new Location(c, r, s);
                                     moved=true;
+                                    break;
                                 }
 
                             }
@@ -124,118 +127,136 @@ moved=false;
 
                 }
             }
-            //col check
-            for (int s = 0; s < 4; s++) {
-                    for (int c = 0; c < 4; c++) {
-                        col=0;
+            if(!moved) {
+                //col check
+                for (int s = 0; s < 4; s++) {
+
                         for (int r = 0; r < 4; r++) {
-                        if (!(boardCopy[r][c][s] == player)) {
-                            col++;
-                        }
-                        if (col == 3) {
-                            for (int m = 0; m < 4; m++) {
-                                if (board[m][c][s] == '-') {
-                                    boo = new Location(c, r, s);
-                                    moved=true;
-                                }
-
+                            for (int c = 0; c < 4; c++) {
+                                col = 0;
+                            if (!(boardCopy[s][c][r] == player)) {
+                                col++;
                             }
-                        }
-                        else if (col == 2) {
-                            for (int m = 0; m < 4; m++) {
-                                if (board[m][c][s] == '-') {
-                                    boo = new Location(c, r, s);
-                                    moved=true;
-                                }
+                            if (col == 3) {
+                                for (int m = 0; m < 4; m++) {
+                                    if (board[s][m][r] == '-') {
+                                        boo = new Location(c, r, s);
+                                        moved = true;
+                                        break;
+                                    }
 
+                                }
+                            } else if (col == 2) {
+                                for (int m = 0; m < 4; m++) {
+                                    if (board[s][m][r] == '-') {
+                                        boo = new Location(c, r, s);
+                                        moved = true;
+                                        break;
+                                    }
+
+                                }
                             }
+
                         }
 
                     }
-
                 }
             }
-            //row down
-                    for (int r = 0; r < 4; r++) {
+            if(!moved) {
+                //row down
+                for (int r = 0; r < 4; r++) {
                     row = 0;
                     for (int c = 0; c < 4; c++) {
                         for (int s = 0; s < 4; s++) {
-                        if (!(boardCopy[r][c][s] == player)) {
-                            row++;
-                        }
-                        if (row == 3) {
-                            for (int m = 0; m < 4; m++) {
-                                if (board[m][c][s] == '-') {
-                                    boo = new Location(c, r, s);
-                                    moved=true;
-                                }
-
+                            if (!(board[s][c][r] == player)) {
+                                row++;
                             }
-                        }
-                        else if (row == 2) {
-                            for (int m = 0; m < 4; m++) {
-                                if (board[m][c][s] == '-') {
-                                    boo = new Location(c, r, s);
-                                    moved=true;
-                                }
+                            if (row == 3) {
+                                for (int m = 0; m < 4; m++) {
+                                    if (board[s][c][m] == '-') {
+                                        boo = new Location(c, r, s);
+                                        moved = true;
+                                        break;
+                                    }
 
+                                }
+                            } else if (row == 2) {
+                                for (int m = 0; m < 4; m++) {
+                                    if (board[s][c][m] == '-') {
+                                        boo = new Location(c, r, s);
+                                        moved = true;
+                                        break;
+                                    }
+
+                                }
                             }
+
                         }
 
                     }
-
                 }
             }
-            //col check
+            if(!moved) {
+                //col check
                 for (int c = 0; c < 4; c++) {
-                    col=0;
+                    col = 0;
                     for (int r = 0; r < 4; r++) {
                         for (int s = 0; s < 4; s++) {
-                        if (!(boardCopy[r][c][s] == player)) {
-                            col++;
-                        }
-                        if (col == 3) {
-                            for (int m = 0; m < 4; m++) {
-                                if (board[m][c][s] == '-') {
-                                    boo = new Location(c, r, s);
-                                    moved=true;
-                                }
-
+                            if (!(boardCopy[s][c][r] == player)) {
+                                col++;
                             }
-                        }
-                        else if (col == 2) {
-                            for (int m = 0; m < 4; m++) {
-                                if (board[m][c][s] == '-') {
-                                    boo = new Location(c, r, s);
-                                    moved=true;
-                                }
+                            if (col == 3) {
+                                for (int m = 0; m < 4; m++) {
+                                    if (board[s][m][r] == '-') {
+                                        boo = new Location(c, r, s);
+                                        moved = true;
+                                        break;
+                                    }
 
+                                }
+                            } else if (col == 2) {
+                                for (int m = 0; m < 4; m++) {
+                                    if (board[s][m][r] == '-') {
+                                        boo = new Location(c, r, s);
+                                        moved = true;
+                                        break;
+                                    }
+
+                                }
                             }
+
                         }
 
                     }
-
                 }
             }
-            //if there's nothing to block put in corner
-            for (int r = 0; r < 4; r++) {
-                for (int c = 0; c < 4; c++) {
-                    for (int s = 0; s < 4; s++) {
+            if(!moved) {
+                //if there's nothing to block put in corner
+                //z, y, x
+                for (int s = 0; s < 4; s++) {
+                    for (int r = 0; r < 4; r++) {
+                        for (int c = 0; c < 4; c++) {
 
-                        //corner first
-                        if (board[0][0][s] == '-') {
-                            boo = new Location(c, r, s);
-                            moved=true;
-                        } else if (board[3][3][s] == '-') {
-                            boo = new Location(c, r, s);
-                            moved=true;
-                        } else if (board[0][3][s] == '-') {
-                            boo = new Location(c, r, s);
-                            moved=true;
-                        } else if (board[3][0][s] == '-') {
-                            boo = new Location(c, r, s);
-                          moved=true;
 
+                            //corner first
+                            if (board[s][0][0] == '-') {
+                                boo = new Location(c, r, s);
+                                moved = true;
+                                break;
+                            } else if (board[s][0][3] == '-') {
+                                boo = new Location(c, r, s);
+                                moved = true;
+                                break;
+                            } else if (board[s][3][0] == '-') {
+                                boo = new Location(c, r, s);
+                                moved = true;
+                                break;
+                            } else if (board[s][3][3] == '-') {
+                                boo = new Location(c, r, s);
+                                moved = true;
+                                break;
+
+                            }
                         }
                     }
                 }
@@ -246,6 +267,7 @@ moved=false;
             System.out.print("\n"+ board + " "+boardCopy);
             changeBoard();
             displayBoard(boardCopy);
+            System.out.print(boo.getRow()+","+boo.getCol()+","+boo.getSheet()+"\n");
             return moved;
     }
 }
