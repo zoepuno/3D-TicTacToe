@@ -16,10 +16,27 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, KeyLis
         addMouseListener(this);
         addKeyListener(this);
         setSize(800, 1200);
+        
+         for (int c = 0; c < 4; c++) {
+            int align = 100;
+            for (int s = 0; s < 4; s++) {
+                for (int r = 0; r < 4; r++) {
+                    int xPoints[] = {align + 10 + 50 * r, align + 60 + 50 * r, align + 50 + 50 * r, align + 50 * r};
+                    int yPoints[] = {60 + 40 * s + 200 * c, 60 + 40 * s + 200 * c, 100 + 40 * s + 200 * c, 100 + 40 * s + 200 * c};
+                    tile[s][r][c] = new Polygon(xPoints, yPoints, 4);
+
+                    board[s][r][c] = '-';
+                    winBoard[s][r][c] = '-';
+                }
+
+                align -= 10;
+
+            }
+        }
 
     }
 
-    public void paint(Graphics p){
+   public void paint(Graphics p){
 
         p.setColor(Color.BLACK);
         p.fillRect(0,0,800,1200);
@@ -31,17 +48,17 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, KeyLis
                 for(int s=0;s<4;s++)
                 {
                     p.setColor(Color.WHITE);
-                    p.drawPolygon(play.tile[r][c][s]);
-                    if (play.board[r][c][s] != '-')
+                    p.drawPolygon(tile[r][c][s]);
+                    if (board[r][c][s] != '-')
                     {
-                        if(play.board[r][c][s]=='x')
+                        if(board[r][c][s]=='x')
                             p.setColor(new Color(255, 128, 128));
-                        else if (play.board[r][c][s]=='o')
+                        else if (board[r][c][s]=='o')
                             p.setColor(new Color(163, 185, 224));
-                        else if (play.winBoard[r][c][s] =='w')
+                        if (winBoard[r][c][s] =='w')
                             p.setColor(new Color(141, 224, 148));
 
-                        p.fillOval(play.tile[r][c][s].xpoints[0], play.tile[r][c][s].ypoints[0]+5, 35,35);
+                        p.fillOval(tile[r][c][s].xpoints[0], tile[r][c][s].ypoints[0]+5, 35,35);
                         p.setColor(Color.WHITE);
                     }
                 }
@@ -49,32 +66,32 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, KeyLis
         }
 
         //displys p1Wins & p2Wins
-        if(!play.Ai1 || !play.Ai2)
+        if(!Ai1 || !Ai2)
         {
             p.setFont(new Font("Sans Serif", Font.BOLD, 30));
             p.setColor(new Color(255, 128, 128));
-            p.drawString("Player 1 wins: " + play.p1Wins/2, 400,100);
+            p.drawString("Player 1 wins: " + p1Wins/2, 400,100);
             p.setColor(new Color(163, 185, 224));
-            p.drawString("Player 2 wins: " + play.p2Wins/2, 400,150);
+            p.drawString("Player 2 wins: " + p2Wins/2, 400,150);
         }
         else{
             p.setFont(new Font("Sans Serif", Font.BOLD, 30));
             p.setColor(new Color(255, 128, 128));
-            p.drawString("Player 1 wins: " + play.p1Wins, 400, 100);
+            p.drawString("Player 1 wins: " + p1Wins, 400, 100);
             p.setColor(new Color(163, 185, 224));
-            p.drawString("Player 2 wins: " + play.p2Wins, 400, 150);
+            p.drawString("Player 2 wins: " + p2Wins, 400, 150);
         }
 
         //prints which player wins
         p.setColor(new Color(141, 224, 148));
-        if(play.isWinner(play.p1)){
+        if(isWinner(p1)){
             p.drawString("PLAYER 1 WINS" , 400,600);
-            if(!play.replay && !play.Ai2 || !play.Ai1)
+            if(!replay && !Ai2 || !Ai1)
                 p.drawString("Press 'r' to replay" , 400,400);
         }
-        else if (play.isWinner(play.p2)){
+        else if (isWinner(p2)){
             p.drawString("PLAYER 2 WINS" , 400,600);
-            if(!play.replay && !play.Ai2 || !play.Ai1)
+            if(!replay && !Ai2 || !Ai1)
                 p.drawString("Press 'r' to replay" , 400,400);
         }
 
