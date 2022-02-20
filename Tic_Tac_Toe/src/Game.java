@@ -22,20 +22,23 @@ public class Game implements Runnable {
     Blocking_AI block= new Blocking_AI();
 
     public Game(){
-        for (int s = 0; s < 4; s++) {
+      for (int c = 0; c < 4; c++) {
             int align = 100;
-            for (int r = 0; r < 4; r++) {
-                for (int c = 0; c < 4; c++) {
-                    int xPoints[] = {align + 10 + 50 * c, align + 60 + 50 * c, align + 50 + 50 * c, align + 50 * c};
-                    int yPoints[] = {60 + 40 * r + 200 * s, 60 + 40 * r + 200 * s, 100 + 40 * r + 200 * s, 100 + 40 * r + 200 * s};
-                    tile[r][c][s] = new Polygon(xPoints, yPoints, 4);
+            for (int s = 0; s < 4; s++) {
+                for (int r = 0; r < 4; r++) {
+                    int xPoints[] = {align + 10 + 50 * r, align + 60 + 50 * r, align + 50 + 50 * r, align + 50 * r};
+                    int yPoints[] = {60 + 40 * s + 200 * c, 60 + 40 * s + 200 * c, 100 + 40 * s + 200 * c, 100 + 40 * s + 200 * c};
+                    tile[s][r][c] = new Polygon(xPoints, yPoints, 4);
 
-                    board[r][c][s] = '-';
-                    winBoard[r][c][s] = '-';
+                    board[s][r][c] = '-';
+                    winBoard[s][r][c] = '-';
                 }
+
                 align -= 10;
+
             }
         }
+
         System.out.print("Do you want player x to be AI? (type 'y' or 'n'): ");
         if(getStringput().charAt(0) == 'y') {
             Ai1 = true;
@@ -101,7 +104,7 @@ public class Game implements Runnable {
         t.start();
     }
 
-    public void reset(){
+   public void reset(){
         System.out.println("reset");
 
         if(!Ai1 || !Ai2) {
@@ -110,21 +113,22 @@ public class Game implements Runnable {
             for(int r=0;r<4;r++){
                 for(int c=0;c<4;c++){
                     for(int s=0;s<4;s++){
-                        board[r][c][s] = '-';
-                        winBoard[r][c][s] = '-';
+                        board[s][r][c] = '-';
+                        winBoard[s][r][c] = '-';
                     }
                 }
             }
             Thread tt = new Thread(this);
             tt.start();
+            repaint();
         }
 
         else {
             for (int r = 0; r < 4; r++) {
                 for (int c = 0; c < 4; c++) {
                     for (int s = 0; s < 4; s++) {
-                        board[r][c][s] = '-';
-                        winBoard[r][c][s] = '-';
+                        board[s][r][c] = '-';
+                        winBoard[s][r][c] = '-';
                     }
                 }
             }
@@ -133,99 +137,103 @@ public class Game implements Runnable {
     }
     public boolean isWinner(char player){
 
-        //linear levels win
+      // 2-D vertical wins
+        for (int s=0;s<4;s++){
+            for(int r=0;r<4;r++){
+                if(board[s][r][0] == player && board[s][r][1] == player &&board[s][r][2] == player && board[s][r][3] == player){
+                    winBoard[s][r][0] = 'w';
+                    winBoard[s][r][1] = 'w';
+                    winBoard[s][r][2] = 'w';
+                    winBoard[s][r][3] = 'w';
+                    return true;
+                }
+            }
+        }
+        //|x| -------
+        //|x| -------
+        //|x| -------
+        //|x| -------
+        // 3-D vertical wins
+        for (int s=0;s<4;s++){
+            for(int c=0;c<4;c++){
+                if(board[s][0][c] == player && board[s][1][c] == player &&board[s][2][c] == player && board[s][3][c] == player) {
+                    winBoard[s][0][c] = 'w';
+                    winBoard[s][1][c] = 'w';
+                    winBoard[s][2][c] = 'w';
+                    winBoard[s][3][c] = 'w';
+                    return true;
+                }
+            }
+        }
+
+        //2-D horizontal wins
         for (int r=0;r<4;r++){
             for(int c=0;c<4;c++){
-                if(board[r][c][0] == player && board[r][c][1] == player &&board[r][c][2] == player && board[r][c][3] == player){
-                    winBoard[r][c][0] = 'w';
-                    winBoard[r][c][1] = 'w';
-                    winBoard[r][c][2] = 'w';
-                    winBoard[r][c][3] = 'w';
+                if(board[0][r][c] == player && board[1][r][c] == player &&board[2][r][c] == player && board[3][r][c] == player) {
+                    winBoard[0][r][c] = 'w';
+                    winBoard[1][r][c] = 'w';
+                    winBoard[2][r][c] = 'w';
+                    winBoard[3][r][c] = 'w';
                     return true;
                 }
             }
         }
 
-        //linear row check
-        for (int r=0;r<4;r++){
-            for(int s=0;s<4;s++){
-                if(board[r][0][s] == player && board[r][1][s] == player &&board[r][2][s] == player && board[r][3][s] == player) {
-                    winBoard[r][0][s] = 'w';
-                    winBoard[r][1][s] = 'w';
-                    winBoard[r][2][s] = 'w';
-                    winBoard[r][3][s] = 'w';
-                    return true;
-                }
-            }
-        }
-        //linear columns check
-        for (int c=0;c<4;c++){
-            for(int s=0;s<4;s++){
-                if(board[0][c][s] == player && board[1][c][s] == player &&board[2][c][s] == player && board[3][c][s] == player) {
-                    winBoard[0][c][s] = 'w';
-                    winBoard[1][c][s] = 'w';
-                    winBoard[2][c][s] = 'w';
-                    winBoard[3][c][s] = 'w';
-                    return true;
-                }
-            }
-        }
-
-        //sheet diagonal check
-        for (int r=0;r<4;r++) {
-            if (board[r][0][0] == player && board[r][1][1] == player && board[r][2][2] == player && board[r][3][3] == player) {
-                winBoard[r][1][1] = 'w';
-                winBoard[r][2][2] = 'w';
-                winBoard[r][3][3] = 'w';
-                winBoard[r][0][0] = 'w';
+        //3-D sheet diagonal check
+        for (int s=0;s<4;s++) {
+            if (board[s][0][0] == player && board[s][1][1] == player && board[s][2][2] == player && board[s][3][3] == player) {
+                winBoard[s][1][1] = 'w';
+                winBoard[s][2][2] = 'w';
+                winBoard[s][3][3] = 'w';
+                winBoard[s][0][0] = 'w';
                 return true;
             }
-            else if (board[r][3][0] == player && board[r][2][1] == player && board[r][1][2] == player && board[r][0][3] == player) {
-                winBoard[r][2][1] = 'w';
-                winBoard[r][1][2] = 'w';
-                winBoard[r][0][3] = 'w';
-                winBoard[r][3][0] = 'w';
+            else if (board[s][3][0] == player && board[s][2][1] == player && board[s][1][2] == player && board[s][0][3] == player) {
+                winBoard[s][2][1] = 'w';
+                winBoard[s][1][2] = 'w';
+                winBoard[s][0][3] = 'w';
+                winBoard[s][3][0] = 'w';
                 return true;
             }
         }
 
-        //diagonal check within each column
+        //2_D row diagonal wins
+        for(int r=0;r<4;r++){
+            if(board[0][r][0] == player && board[1][r][1] == player && board[2][r][2] == player && board[3][r][3] == player) {
+                winBoard[0][r][0] = 'w';
+                winBoard[1][r][1] = 'w';
+                winBoard[2][r][2] = 'w';
+                winBoard[3][r][3] = 'w';
+                return true;
+            }
+            else if(board[3][r][0] == player && board[2][r][1] == player && board[1][r][2] == player && board[0][r][3] == player) {
+                winBoard[3][r][0] = 'w';
+                winBoard[2][r][1] = 'w';
+                winBoard[1][r][2] = 'w';
+                winBoard[0][r][3] = 'w';
+                return true;
+            }
+        }
+
+        //3-D column diagonal wins
         for(int c=0;c<4;c++){
-            if(board[0][c][0] == player && board[1][c][1] == player && board[2][c][2] == player && board[3][c][3] == player) {
-                winBoard[0][c][0] = 'w';
-                winBoard[1][c][1] = 'w';
-                winBoard[2][c][2] = 'w';
-                winBoard[3][c][3] = 'w';
+            if(board[0][0][c] == player && board[1][1][c] == player && board[2][2][c] == player && board[3][3][c] == player) {
+                winBoard[0][0][c] = 'w';
+                winBoard[1][1][c] = 'w';
+                winBoard[2][2][c] = 'w';
+                winBoard[3][3][c] = 'w';
                 return true;
             }
-            else if(board[3][c][0] == player && board[2][c][1] == player && board[1][c][2] == player && board[0][c][3] == player) {
-                winBoard[3][c][0] = 'w';
-                winBoard[2][c][1] = 'w';
-                winBoard[1][c][2] = 'w';
-                winBoard[0][c][3] = 'w';
-                return true;
-            }
-        }
-
-        //diagonal check within each sheet
-        for(int s=0;s<4;s++){
-            if(board[0][0][s] == player && board[1][1][s] == player && board[2][2][s] == player && board[3][3][s] == player) {
-                winBoard[0][0][s] = 'w';
-                winBoard[1][1][s] = 'w';
-                winBoard[2][2][s] = 'w';
-                winBoard[3][3][s] = 'w';
-                return true;
-            }
-            else if(board[3][0][s] == player && board[2][1][s] == player && board[1][2][s] == player && board[0][3][s] == player) {
-                winBoard[3][0][s] = 'w';
-                winBoard[2][1][s] = 'w';
-                winBoard[1][2][s] = 'w';
-                winBoard[0][3][s] = 'w';
+            else if(board[3][0][c] == player && board[2][1][c] == player && board[1][2][c] == player && board[0][3][c] == player) {
+                winBoard[3][0][c] = 'w';
+                winBoard[2][1][c] = 'w';
+                winBoard[1][2][c] = 'w';
+                winBoard[0][3][c] = 'w';
                 return true;
             }
         }
 
-        //internal diagonal (left to right)
+        //internal diagonals (r0 top left corner to r3 bottom right corner)
         if(board[0][0][0] == player && board[1][1][1] == player && board[2][2][2] == player && board[3][3][3] == player) {
             winBoard[0][0][0] = 'w';
             winBoard[1][1][1] = 'w';
@@ -233,27 +241,29 @@ public class Game implements Runnable {
             winBoard[3][3][3] = 'w';
             return true;
         }
+        //internal diagonals (r0 bottom left corner to r3 top right corner)
         else if(board[0][3][0] == player && board[1][2][1] == player && board[2][1][2] == player && board[3][0][3] == player) {
             winBoard[0][3][0] = 'w';
-            winBoard[1][0][1] = 'w';
-            winBoard[2][0][2] = 'w';
+            winBoard[2][2][1] = 'w';
+            winBoard[2][1][2] = 'w';
             winBoard[3][0][3] = 'w';
             return true;
         }
 
-        //internal diagonal(left to right)
+        //internal diagonals (r0 bottom right corner to r3 top right corner)
         if(board[0][0][3] == player && board[1][1][2] == player && board[2][2][1] == player && board[3][3][0] == player) {
             winBoard[0][0][3] = 'w';
-            winBoard[1][1][2] = 'w';
+            winBoard[1][2][2] = 'w';
             winBoard[2][2][1] = 'w';
             winBoard[3][3][0] = 'w';
             return true;
         }
+        //internal diagonals (r0 top left corner to r3 bottom right corner)
         else if(board[0][3][3] == player && board[1][2][2] == player && board[2][1][1] == player && board[3][0][0] == player) {
+            winBoard[3][0][0] = 'w';
+            winBoard[2][1][1] = 'w';
+            winBoard[1][2][2] = 'w';
             winBoard[0][3][3] = 'w';
-            winBoard[0][2][2] = 'w';
-            winBoard[0][1][1] = 'w';
-            winBoard[0][0][0] = 'w';
             return true;
         }
         return false;
@@ -336,16 +346,15 @@ public class Game implements Runnable {
 
     public boolean playerMoves(double x, double y, char player)
     {
-
-        for(int r=0;r<4;r++){
+for(int r=0;r<4;r++){
             for(int c=0;c<4;c++){
                 for(int s=0;s<4;s++){
-                    if(tile[r][c][s].contains(x,y)){
-                        System.out.println(player + "(r: " + r +", c: "+ c + ", s : "+ s + ")" + board[r][c][s]);
+                    if(tile[s][r][c].contains(x,y)){
+                        System.out.println(player + "(s: " + s +", r: "+ r + ", c : "+ c + ")" + board[s][r][c]);
 
-                        if(board[r][c][s]=='-'){
-                            board[r][c][s] = player;
-                            System.out.println(player + "(r: " + r +", c: "+ c + ", s : "+ s + ")" + board[r][c][s]);
+                        if(board[s][r][c]=='-'){
+                            board[s][r][c] = player;
+                            System.out.println(player + "(s: " + s +", r: "+ r + ", c : "+ c + ")" + board[s][r][c]);
                             return true;
                         }
                         else
