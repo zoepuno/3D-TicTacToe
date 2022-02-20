@@ -120,7 +120,7 @@ public class Game implements Runnable {
             }
             Thread tt = new Thread(this);
             tt.start();
-            repaint();
+          
         }
 
         else {
