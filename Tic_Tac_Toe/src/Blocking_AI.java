@@ -88,25 +88,27 @@ public class Blocking_AI implements PlayerInt {
     }
 
     public boolean move(char player, char board[][][]) {
-        int col=0;
-        int row=0;
-        int sheet=0;
+        moved=false;
+        int col;
+        int row;
+        int sheet;
         this.board=board;
-moved=false;
+
         while(!moved) {
             //row check
-            for (int s = 0; s < 4; s++) {
                     for (int c = 0; c < 4; c++) {
                         for (int r = 0; r < 4; r++) {
                             row = 0;
-                        if (!(boardCopy[s][c][r] == player)) {
+                        for (int s = 0; s < 4; s++) {
+                        if (!(boardCopy[r][c][s] == player)) {
                             row++;
                         }
                         if (row == 3) {
                             for (int m = 0; m < 4; m++) {
-                                if (board[s][c][m]== '-') {
-                                    boo = new Location(c, r, s);
+                                if (board[r][c][m]== '-') {
+                                    boo = new Location(c, s, r);
                                     moved=true;
+                                    System.out.println("Row changed because 2");
                                     break;
                                 }
 
@@ -114,9 +116,10 @@ moved=false;
                         }
                       else if (row == 2) {
                             for (int m = 0; m < 4; m++) {
-                                if (board[s][c][m] == '-') {
-                                    boo = new Location(c, r, s);
+                                if (board[r][c][m] == '-') {
+                                    boo = new Location(c, s, r);
                                     moved=true;
+                                    System.out.println("Row changed because 3");
                                     break;
                                 }
 
@@ -129,96 +132,30 @@ moved=false;
             }
             if(!moved) {
                 //col check
-                for (int s = 0; s < 4; s++) {
-
-                        for (int r = 0; r < 4; r++) {
-                            for (int c = 0; c < 4; c++) {
-                                col = 0;
-                            if (!(boardCopy[s][c][r] == player)) {
-                                col++;
-                            }
-                            if (col == 3) {
-                                for (int m = 0; m < 4; m++) {
-                                    if (board[s][m][r] == '-') {
-                                        boo = new Location(c, r, s);
-                                        moved = true;
-                                        break;
-                                    }
-
-                                }
-                            } else if (col == 2) {
-                                for (int m = 0; m < 4; m++) {
-                                    if (board[s][m][r] == '-') {
-                                        boo = new Location(c, r, s);
-                                        moved = true;
-                                        break;
-                                    }
-
-                                }
-                            }
-
-                        }
-
-                    }
-                }
-            }
-            if(!moved) {
-                //row down
-                for (int r = 0; r < 4; r++) {
-                    row = 0;
-                    for (int c = 0; c < 4; c++) {
-                        for (int s = 0; s < 4; s++) {
-                            if (!(board[s][c][r] == player)) {
-                                row++;
-                            }
-                            if (row == 3) {
-                                for (int m = 0; m < 4; m++) {
-                                    if (board[s][c][m] == '-') {
-                                        boo = new Location(c, r, s);
-                                        moved = true;
-                                        break;
-                                    }
-
-                                }
-                            } else if (row == 2) {
-                                for (int m = 0; m < 4; m++) {
-                                    if (board[s][c][m] == '-') {
-                                        boo = new Location(c, r, s);
-                                        moved = true;
-                                        break;
-                                    }
-
-                                }
-                            }
-
-                        }
-
-                    }
-                }
-            }
-            if(!moved) {
-                //col check
                 for (int c = 0; c < 4; c++) {
                     col = 0;
-                    for (int r = 0; r < 4; r++) {
-                        for (int s = 0; s < 4; s++) {
-                            if (!(boardCopy[s][c][r] == player)) {
+                     for (int r = 0; r < 4; r++) {
+                         for (int s = 0; s < 4; s++) {
+
+                            if (!(boardCopy[r][c][s] == player)) {
                                 col++;
                             }
                             if (col == 3) {
                                 for (int m = 0; m < 4; m++) {
-                                    if (board[s][m][r] == '-') {
-                                        boo = new Location(c, r, s);
+                                    if (board[r][m][s] == '-') {
+                                        boo = new Location(c, s, r);
                                         moved = true;
+                                        System.out.println("Col changed because 3");
                                         break;
                                     }
 
                                 }
                             } else if (col == 2) {
                                 for (int m = 0; m < 4; m++) {
-                                    if (board[s][m][r] == '-') {
-                                        boo = new Location(c, r, s);
+                                    if (board[r][m][s] == '-') {
+                                        boo = new Location(c, s, r);
                                         moved = true;
+                                        System.out.println("Col changed because 2");
                                         break;
                                     }
 
@@ -233,27 +170,29 @@ moved=false;
             if(!moved) {
                 //if there's nothing to block put in corner
                 //z, y, x
-                for (int s = 0; s < 4; s++) {
+                for (int c = 0; c < 4; c++) {
                     for (int r = 0; r < 4; r++) {
-                        for (int c = 0; c < 4; c++) {
+                    for (int s = 0; s < 4; s++) {
 
-
-                            //corner first
-                            if (board[s][0][0] == '-') {
+                            if (board[r][0][0] == '-') {
                                 boo = new Location(c, r, s);
                                 moved = true;
+                                System.out.println("0,0");
                                 break;
-                            } else if (board[s][0][3] == '-') {
+                            } else if (board[r][0][3] == '-') {
                                 boo = new Location(c, r, s);
                                 moved = true;
+                                System.out.println("0,3");
                                 break;
-                            } else if (board[s][3][0] == '-') {
+                            } else if (board[r][3][0] == '-') {
                                 boo = new Location(c, r, s);
                                 moved = true;
+                                System.out.println("3,0");
                                 break;
-                            } else if (board[s][3][3] == '-') {
+                            } else if (board[r][3][3] == '-') {
                                 boo = new Location(c, r, s);
                                 moved = true;
+                                System.out.println("3,3");
                                 break;
 
                             }
