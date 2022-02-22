@@ -19,10 +19,11 @@ public class Game implements Runnable {
     int i;
     boolean replay = false;
     char type;
-    Blocking_AI block= new Blocking_AI();
+    String l;
+    Blocking_AI block= new Blocking_AI(l, type);
 
     public Game(){
-      for (int c = 0; c < 4; c++) {
+        for (int c = 0; c < 4; c++) {
             int align = 100;
             for (int s = 0; s < 4; s++) {
                 for (int r = 0; r < 4; r++) {
@@ -104,7 +105,7 @@ public class Game implements Runnable {
         t.start();
     }
 
-   public void reset(){
+    public void reset(){
         System.out.println("reset");
 
         if(!Ai1 || !Ai2) {
@@ -120,7 +121,7 @@ public class Game implements Runnable {
             }
             Thread tt = new Thread(this);
             tt.start();
-          
+
         }
 
         else {
@@ -137,7 +138,7 @@ public class Game implements Runnable {
     }
     public boolean isWinner(char player){
 
-      // 2-D vertical wins
+        // 2-D vertical wins
         for (int s=0;s<4;s++){
             for(int r=0;r<4;r++){
                 if(board[s][r][0] == player && board[s][r][1] == player &&board[s][r][2] == player && board[s][r][3] == player){
@@ -283,7 +284,7 @@ public class Game implements Runnable {
                             random1.RandomAI_Move();
                         }
                         if (blocking) {
-                            moved = block.move(p1, board);
+                             block.getMove(board);
                         }
                         try {
                             Thread.sleep(millisToSleep);
@@ -308,7 +309,7 @@ public class Game implements Runnable {
                             random2.RandomAI_Move();
                         }
                         if (blocking) {
-                            moved = block.move(p2, board);
+                           block.getMove(board);
                         }
                         try {
                             Thread.sleep(millisToSleep);
@@ -346,7 +347,7 @@ public class Game implements Runnable {
 
     public boolean playerMoves(double x, double y, char player)
     {
-for(int r=0;r<4;r++){
+        for(int r=0;r<4;r++){
             for(int c=0;c<4;c++){
                 for(int s=0;s<4;s++){
                     if(tile[s][r][c].contains(x,y)){
