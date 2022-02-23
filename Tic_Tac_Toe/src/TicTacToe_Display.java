@@ -18,7 +18,7 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, KeyLis
         setSize(800, 1200);
     }
 
-   public void paint(Graphics p){
+    public void paint(Graphics p){
 
         p.setColor(Color.BLACK);
         p.fillRect(0,0,800,1200);
@@ -30,17 +30,17 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, KeyLis
                 for(int s=0;s<4;s++)
                 {
                     p.setColor(Color.WHITE);
-                    p.drawPolygon(tile[r][c][s]);
-                    if (board[r][c][s] != '-')
+                    p.drawPolygon(play.tile[r][c][s]);
+                    if (play.board[r][c][s] != '-')
                     {
-                        if(board[r][c][s]=='x')
+                        if(play.board[r][c][s]=='x')
                             p.setColor(new Color(255, 128, 128));
-                        else if (board[r][c][s]=='o')
+                        else if (play.board[r][c][s]=='o')
                             p.setColor(new Color(163, 185, 224));
-                        if (winBoard[r][c][s] =='w')
+                        if (play.winBoard[r][c][s] =='w')
                             p.setColor(new Color(141, 224, 148));
 
-                        p.fillOval(tile[r][c][s].xpoints[0], tile[r][c][s].ypoints[0]+5, 35,35);
+                        p.fillOval(play.tile[r][c][s].xpoints[0], play.tile[r][c][s].ypoints[0]+5, 35,35);
                         p.setColor(Color.WHITE);
                     }
                 }
@@ -48,32 +48,32 @@ public class Tic_Tac_Toe_Display extends JPanel implements MouseListener, KeyLis
         }
 
         //displys p1Wins & p2Wins
-        if(!Ai1 || !Ai2)
+        if(!play.Ai1 || !play.Ai2)
         {
             p.setFont(new Font("Sans Serif", Font.BOLD, 30));
             p.setColor(new Color(255, 128, 128));
-            p.drawString("Player 1 wins: " + p1Wins/2, 400,100);
+            p.drawString("Player 1 wins: " + play.p1Wins/2, 400,100);
             p.setColor(new Color(163, 185, 224));
-            p.drawString("Player 2 wins: " + p2Wins/2, 400,150);
+            p.drawString("Player 2 wins: " + play.p2Wins/2, 400,150);
         }
         else{
             p.setFont(new Font("Sans Serif", Font.BOLD, 30));
             p.setColor(new Color(255, 128, 128));
-            p.drawString("Player 1 wins: " + p1Wins, 400, 100);
+            p.drawString("Player 1 wins: " + play.p1Wins, 400, 100);
             p.setColor(new Color(163, 185, 224));
-            p.drawString("Player 2 wins: " + p2Wins, 400, 150);
+            p.drawString("Player 2 wins: " + play.p2Wins, 400, 150);
         }
 
         //prints which player wins
         p.setColor(new Color(141, 224, 148));
-        if(isWinner(p1)){
+        if(play.isWinner(play.p1)){
             p.drawString("PLAYER 1 WINS" , 400,600);
-            if(!replay && !Ai2 || !Ai1)
+            if(!play.replay && !play.Ai2 || !play.Ai1)
                 p.drawString("Press 'r' to replay" , 400,400);
         }
-        else if (isWinner(p2)){
+        else if (play.isWinner(play.p2)){
             p.drawString("PLAYER 2 WINS" , 400,600);
-            if(!replay && !Ai2 || !Ai1)
+            if(!play.replay && !play.Ai2 || !play.Ai1)
                 p.drawString("Press 'r' to replay" , 400,400);
         }
 
