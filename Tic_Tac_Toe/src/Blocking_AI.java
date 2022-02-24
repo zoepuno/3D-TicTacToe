@@ -1,20 +1,20 @@
 public class Blocking_AI implements PlayerInt {
 
     char[][][] boardCopy = new char[4][4][4];
-    Player play = new Player(null, '0');
-    int col = 0;
-    int row = 0;
-    boolean done;
-    Location boo;
-    char[][][] board;
-    boolean moved;
 
-    public Blocking_AI( ) {
+    char letter;
+    String name;
 
+
+    public Blocking_AI(char letter) {
+        this.name = "Blocking Ai";
+        this.letter = letter;
+        setBoardCopy();
+        setLetter(letter);
     }
 
     public void setBoardCopy() {
-        if (Game.Ai1 == true) {
+        if (getLetter()=='x') {
             for (int l = 0; l < 4; l++) {
                 for (int c = 0; c < 4; c++) {
                     for (int r = 0; r < 4; r++) {
@@ -24,7 +24,7 @@ public class Blocking_AI implements PlayerInt {
                 }
             }
         }
-        if (Game.Ai2 == true) {
+        if (getLetter()=='o') {
             for (int l = 0; l < 4; l++) {
                 for (int c = 0; c < 4; c++) {
                     for (int r = 0; r < 4; r++) {
@@ -35,21 +35,17 @@ public class Blocking_AI implements PlayerInt {
         }
     }
 
-    @Override
-    public Location getMove(char[][][] board) {
-
-        return null;
+    public void setLetter(char letter) {
+        this.letter=letter;
     }
 
     @Override
-    public String getName() {
-        return null;
+    public char getLetter() {
+
+
+        return letter;
     }
 
-    @Override
-    public void freshCopy() {
-
-    }
     public void displayBoard(char[][][] boardCopy) {
         for (int l = 0; l < 4; l++) {
             System.out.println("Level: " + (l + 1));
@@ -61,66 +57,67 @@ public class Blocking_AI implements PlayerInt {
             System.out.println("----------------");
             System.out.println(" " + boardCopy[3][0][l] + " | " + boardCopy[3][1][l] + " | " + boardCopy[3][2][l] + " | " + boardCopy[3][3][l] + " ");
         }
-        }
-    public void changeBoard() {
-        if (Game.Ai2 == true) {
+    }
+
+    public void changeBoard(char[][][] b) {
+        Board board = new Board(b);
+        if (getLetter()=='o') {
             for (int r = 0; r < 4; r++) {
                 for (int c = 0; c < 4; c++) {
                     for (int s = 0; s < 4; s++) {
-                        if (board[s][c][r] == 'x') {
-                            boardCopy[s][c][r] = 'x';
+                        if ( board.getLocation(c, r, s)== 'x') {
+                            boardCopy[s][r][c] = 'x';
                         }
                     }
                 }
             }
         }
-        if (Game.Ai2 == false) {
+        if (getLetter()=='x') {
             for (int r = 0; r < 4; r++) {
                 for (int c = 0; c < 4; c++) {
                     for (int s = 0; s < 4; s++) {
-                        if (board[s][c][r] == 'o') {
-                            boardCopy[s][c][r] = 'o';
+                        if (board.getLocation(c, r, s) == 'o') {
+                            boardCopy[s][r][c] = 'o';
                         }
                     }
                 }
             }
         }
     }
-
-    public boolean move(char player, char board[][][]) {
-        moved=false;
+    @Override
+    public Location getMove( char[][][] b) {
+        displayBoard(boardCopy);
+        Board board = new Board(b);
+        Location boo = null;
         int col;
         int row;
-        int sheet;
-        this.board=board;
 
-        while(!moved) {
-            //row check
-                    for (int c = 0; c < 4; c++) {
-                        for (int r = 0; r < 4; r++) {
-                            row = 0;
-                        for (int s = 0; s < 4; s++) {
-                        if (!(boardCopy[r][c][s] == player)) {
+        //row check
+            for (int r = 0; r < 4; r++) {
+                for (int c = 0; c < 4; c++) {
+                    for (int s = 0; s < 4; s++) {
+                        row = 0;
+                        if (!(boardCopy[s][r][c] == getLetter())) {
                             row++;
                         }
                         if (row == 3) {
                             for (int m = 0; m < 4; m++) {
-                                if (board[r][c][m]== '-') {
-                                    boo = new Location(c, s, r);
-                                    moved=true;
+                                if (board.getLocation(s, r, m) == '-') {
                                     System.out.println("Row changed because 2");
-                                    break;
+                                    boo = new Location(c, r, m);
+                                    changeBoard(board.getData());
+                                    return boo;
                                 }
 
                             }
-                        }
-                      else if (row == 2) {
+                        } else if (row == 2) {
                             for (int m = 0; m < 4; m++) {
-                                if (board[r][c][m] == '-') {
-                                    boo = new Location(c, s, r);
-                                    moved=true;
+                                if (board.getLocation(s, r, m) == '-') {
                                     System.out.println("Row changed because 3");
-                                    break;
+                                    boo = new Location(c, r, m);
+                                    changeBoard(board.getData());
+                                    return boo;
+
                                 }
 
                             }
@@ -130,85 +127,94 @@ public class Blocking_AI implements PlayerInt {
 
                 }
             }
-            if(!moved) {
-                //col check
+
+            //col check
+            for (int r = 0; r < 4; r++) {
                 for (int c = 0; c < 4; c++) {
                     col = 0;
-                     for (int r = 0; r < 4; r++) {
-                         for (int s = 0; s < 4; s++) {
-
-                            if (!(boardCopy[r][c][s] == player)) {
-                                col++;
-                            }
-                            if (col == 3) {
-                                for (int m = 0; m < 4; m++) {
-                                    if (board[r][m][s] == '-') {
-                                        boo = new Location(c, s, r);
-                                        moved = true;
-                                        System.out.println("Col changed because 3");
-                                        break;
-                                    }
-
-                                }
-                            } else if (col == 2) {
-                                for (int m = 0; m < 4; m++) {
-                                    if (board[r][m][s] == '-') {
-                                        boo = new Location(c, s, r);
-                                        moved = true;
-                                        System.out.println("Col changed because 2");
-                                        break;
-                                    }
-
-                                }
-                            }
-
-                        }
-
-                    }
-                }
-            }
-            if(!moved) {
-                //if there's nothing to block put in corner
-                //z, y, x
-                for (int c = 0; c < 4; c++) {
-                    for (int r = 0; r < 4; r++) {
                     for (int s = 0; s < 4; s++) {
 
-                            if (board[r][0][0] == '-') {
-                                boo = new Location(c, r, s);
-                                moved = true;
-                                System.out.println("0,0");
-                                break;
-                            } else if (board[r][0][3] == '-') {
-                                boo = new Location(c, r, s);
-                                moved = true;
-                                System.out.println("0,3");
-                                break;
-                            } else if (board[r][3][0] == '-') {
-                                boo = new Location(c, r, s);
-                                moved = true;
-                                System.out.println("3,0");
-                                break;
-                            } else if (board[r][3][3] == '-') {
-                                boo = new Location(c, r, s);
-                                moved = true;
-                                System.out.println("3,3");
-                                break;
+                        if (!(boardCopy[s][r][c] == getLetter())) {
+                            col++;
+                        }
+                        if (col == 3) {
+                            for (int m = 0; m < 4; m++) {
+                                if (board.getLocation(m, r, s) == '-') {
+                                    System.out.println("Col changed because 3");
+                                    boo = new Location(m, r, s);
+                                    changeBoard(board.getData());
+                                    return boo;
+
+                                }
 
                             }
+                        } else if (col == 2) {
+                            for (int m = 0; m < 4; m++) {
+                                if (board.getLocation(m, r, s) == '-') {
+
+                                    System.out.println("Col changed because 2");
+                                    boo = new Location(m, r, s);
+                                    changeBoard(board.getData());
+                                    return boo;
+
+                                }
+
+                            }
+                        }
+
+                    }
+
+                }
+            }
+            //if there's nothing to block put in corner
+        System.out.println("done");
+            for (int r = 0; r < 4; r++) {
+                for (int c = 0; c < 4; c++) {
+                    for (int s = 0; s < 4; s++) {
+
+                        if (board.isEmpty(0, r, 0)) {
+                            System.out.println("here?");
+                            boo = new Location(0, r, 0);
+                            changeBoard(board.getData());
+                            return boo;
+
+                        } else if (board.isEmpty(3, r, 0)) {
+                            System.out.println("why here?");
+                            boo = new Location(3, r, 0);
+                            changeBoard(board.getData());
+                            return boo;
+
+                        } else if (board.isEmpty(0, r, 3)) {
+                            System.out.println("why here??");
+                            boo = new Location(0, r, 3);
+                            changeBoard(board.getData());
+                            return boo;
+
+                        } else if (board.isEmpty(3, r, 3)) {
+                            System.out.println("why here??");
+                            boo = new Location(3, r, 3);
+                            changeBoard(board.getData());
+                            return boo;
+
                         }
                     }
                 }
             }
-        }
 
-            board[boo.getRow()][boo.getCol()][boo.getSheet()] = player;
-            System.out.print("\n"+ board + " "+boardCopy);
-            changeBoard();
-            displayBoard(boardCopy);
-            System.out.print(boo.getRow()+","+boo.getCol()+","+boo.getSheet()+"\n");
-            return moved;
+                return boo;
     }
+
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void refresh() {
+setBoardCopy();
+    }
+
 }
 /**
  * Every two it puts a block between them
