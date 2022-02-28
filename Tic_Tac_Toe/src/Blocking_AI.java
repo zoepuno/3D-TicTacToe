@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Blocking_AI implements PlayerInt {
 
     char[][][] boardCopy = new char[4][4][4];
@@ -49,13 +51,13 @@ public class Blocking_AI implements PlayerInt {
     public void displayBoard(char[][][] boardCopy) {
         for (int l = 0; l < 4; l++) {
             System.out.println("Level: " + (l + 1));
-            System.out.println(" " + boardCopy[0][0][l] + " | " + boardCopy[0][1][l] + " | " + boardCopy[0][2][l] + " | " + boardCopy[0][3][l] + " ");
+            System.out.println(" " + boardCopy[3][l][0] + " | " + boardCopy[3][l][1] + " | " + boardCopy[3][l][2] + " | " + boardCopy[3][l][3] + " ");
             System.out.println("----------------");
-            System.out.println(" " + boardCopy[1][0][l] + " | " + boardCopy[1][1][l] + " | " + boardCopy[1][2][l] + " | " + boardCopy[1][3][l] + " ");
+            System.out.println(" " + boardCopy[2][l][0] + " | " + boardCopy[2][l][1] + " | " + boardCopy[2][l][2] + " | " + boardCopy[2][l][3] + " ");
             System.out.println("----------------");
-            System.out.println(" " + boardCopy[2][0][l] + " | " + boardCopy[2][1][l] + " | " + boardCopy[2][2][l] + " | " + boardCopy[2][3][l] + " ");
+            System.out.println(" " + boardCopy[1][l][0] + " | " + boardCopy[1][l][1] + " | " + boardCopy[1][l][2] + " | " + boardCopy[1][l][3] + " ");
             System.out.println("----------------");
-            System.out.println(" " + boardCopy[3][0][l] + " | " + boardCopy[3][1][l] + " | " + boardCopy[3][2][l] + " | " + boardCopy[3][3][l] + " ");
+            System.out.println(" " + boardCopy[0][l][0] + " | " + boardCopy[0][l][1] + " | " + boardCopy[0][l][2] + " | " + boardCopy[0][l][3] + " ");
         }
     }
 
@@ -63,8 +65,9 @@ public class Blocking_AI implements PlayerInt {
         Board board = new Board(b);
         if (getLetter()=='o') {
             for (int r = 0; r < 4; r++) {
+                for (int s = 0; s < 4; s++) {
                 for (int c = 0; c < 4; c++) {
-                    for (int s = 0; s < 4; s++) {
+
                         if ( board.getLocation(c, r, s)== 'x') {
                             boardCopy[s][r][c] = 'x';
                         }
@@ -74,8 +77,8 @@ public class Blocking_AI implements PlayerInt {
         }
         if (getLetter()=='x') {
             for (int r = 0; r < 4; r++) {
+                for (int s = 0; s < 4; s++) {
                 for (int c = 0; c < 4; c++) {
-                    for (int s = 0; s < 4; s++) {
                         if (board.getLocation(c, r, s) == 'o') {
                             boardCopy[s][r][c] = 'o';
                         }
@@ -86,79 +89,305 @@ public class Blocking_AI implements PlayerInt {
     }
     @Override
     public Location getMove( char[][][] b) {
-        displayBoard(boardCopy);
         Board board = new Board(b);
         Location boo = null;
         int col;
         int row;
+        int sheet;
+        int circle;
+        int diagonals;
+//time to win
+        //Blocking Moves works \/
 
-        //row check
-            for (int r = 0; r < 4; r++) {
+        //diagonal left to right on boards
+        for (int r = 0; r < 4; r++) {
+            circle = 0;
+            diagonals = 0;
+            for (int s = 0; s < 4; s ++) {
+                for (int c = 0; c < 4; c ++) {
+
+                    if (s==c && board.getLocation(c, r, s) == getLetter()) {
+                        diagonals++;
+                        System.out.println(s+" , "+c);
+                    }
+                    if (s==c && !(board.getLocation(c, r, s) == getLetter()) && !(board.getLocation(c, r, s) == '-')) {
+                        System.out.println(s+" , "+c);
+                        circle++;
+                        System.out.println(circle);
+                    }
+                    if (circle == 3 && diagonals == 0 ) {
+                        for (int co = 0; co < 4; co += 1) {
+                            for (int so = 0; so < 4; so += 1) {
+                                if (so==co && board.getLocation(co, r, so) == '-') {
+                                    boo = new Location(co, r, so);
+                                    changeBoard(board.getData());
+                                    return boo;
+                                }
+                            }
+                        }
+                    }
+                    if (circle == 0 && diagonals == 3 ) {
+                        for (int co = 0; co < 4; co += 1) {
+                            for (int so = 0; so < 4; so += 1) {
+                                if (so==co && board.getLocation(co, r, so) == '-') {
+                                    boo = new Location(co, r, so);
+                                    changeBoard(board.getData());
+                                    return boo;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for (int r = 3; r >=0; r--) {
+            circle = 0;
+            diagonals = 0;
+            for (int s = 3; s >=0; s--) {
+                for (int c = 3; c >=0; c --) {
+                    if ((s==3 && c==0)&& (s==2 && c==1) && (s==1 && c==2)&& (s==0 && c==3) && board.getLocation(c, r, s) == getLetter()) {
+                        diagonals++;
+                    }
+                    if ((s==3 && c==0)&& (s==2 && c==1) && (s==1 && c==2)&& (s==0 && c==3) && !(board.getLocation(c, r, s) == getLetter()) && !(board.getLocation(c, r, s) == '-')) {
+                        circle++;
+                    }
+                    if (circle == 3 && diagonals == 0) {
+                        for (int co = 3; co >=0; co --) {
+                            for (int so = 3; so >= 0; so --) {
+                                if ((s==3 && c==0)&& (s==2 && c==1) && (s==1 && c==2)&& (s==0 && c==3)  && board.getLocation(co, r, so) == '-') {
+                                    boo = new Location(co, r, so);
+                                    changeBoard(board.getData());
+                                    return boo;
+                                }
+                            }
+                        }
+                    }
+                    if (circle == 0 && diagonals == 3) {
+                        for (int co = 3; co >=0; co --) {
+                            for (int so = 3; so >= 0; so --) {
+                                if ((s==3 && c==0)&& (s==2 && c==1) && (s==1 && c==2)&& (s==0 && c==3)  && board.getLocation(co, r, so) == '-') {
+                                    boo = new Location(co, r, so);
+                                    changeBoard(board.getData());
+                                    return boo;
+                                }
+                            }
+                        }
+                    }
+                    if (circle == 3 && diagonals == 0 ) {
+                        for (int co = 0; co < 4; co += 1) {
+                            for (int so = 0; so < 4; so += 1) {
+                                if (so==co && board.getLocation(co, r, so) == '-') {
+                                    boo = new Location(co, r, so);
+                                    changeBoard(board.getData());
+                                    return boo;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //3D Block
+        //left to right
+        circle = 0;
+        diagonals = 0;
+        for (int r = 0; r < 4; r++) {
+            for (int s = 0; s < 4; s++) {
                 for (int c = 0; c < 4; c++) {
-                    for (int s = 0; s < 4; s++) {
-                        row = 0;
-                        if (!(boardCopy[s][r][c] == getLetter())) {
+                    if (r == s && r == c && s == c && board.getLocation(c, r, s) == getLetter()) {
+                        diagonals++;
+                        System.out.println(s + " , " + c);
+                    }
+                    if (r == s && r == c && s == c && !(board.getLocation(c, r, s) == getLetter()) && !(board.getLocation(c, r, s) == '-')) {
+                        System.out.println(s + " , " + c);
+                        circle++;
+                        System.out.println(circle);
+                    }
+                    if (circle == 3 && diagonals == 0) {
+                        for (int ro = 0; ro < 4; ro++) {
+                            for (int co = 0; co < 4; co += 1) {
+                                for (int so = 0; so < 4; so += 1) {
+                                    if (ro == so && ro == co && so == co && board.getLocation(co, ro, so) == '-') {
+                                        boo = new Location(co, ro, so);
+                                        changeBoard(board.getData());
+                                        return boo;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (circle == 0 && diagonals == 3) {
+                        for (int ro = 0; ro < 4; ro++) {
+                            for (int co = 0; co < 4; co += 1) {
+                                for (int so = 0; so < 4; so += 1) {
+                                    if (ro == so && ro == co && so == co && board.getLocation(co, ro, so) == '-') {
+                                        boo = new Location(co, ro, so);
+                                        changeBoard(board.getData());
+                                        return boo;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //right to left
+        for (int r = 3; r >=0; r--) {
+            circle = 0;
+            diagonals = 0;
+            for (int s = 3; s >= 0; s--) {
+                for (int c = 3; c >= 0; c--) {
+                    if ((r == 0 && s == 3 && c == 0) && (r == 1 && s == 2 && c == 1) && (r == 2 && s == 1 && c == 2) && (r == 3 && s == 0 && c == 3) && board.getLocation(c, r, s) == getLetter()) {
+                        diagonals++;
+                    }
+                    if ((r == 0 && s == 3 && c == 0) && (r == 1 && s == 2 && c == 1) && (r == 2 && s == 1 && c == 2) && (r == 3 && s == 0 && c == 3) && !(board.getLocation(c, r, s) == getLetter()) && !(board.getLocation(c, r, s) == '-')) {
+                        circle++;
+                    }
+                    if (circle == 3 && diagonals == 0) {
+                        for (int ro = 3; ro >= 0; ro--) {
+                            for (int co = 3; co >= 0; co--) {
+                                for (int so = 3; so >= 0; so--) {
+                                    if ((ro == 0 && so == 3 && co == 0) && (ro == 1 && so == 2 && co == 1) && (ro == 2 && so == 1 && co == 2) && (ro == 3 && so == 0 && co == 3) && board.getLocation(co, r, so) == '-') {
+                                        boo = new Location(co, ro, so);
+                                        changeBoard(board.getData());
+                                        return boo;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (circle == 0 && diagonals == 3) {
+                        for (int ro = 3; ro >= 0; ro--) {
+                            for (int co = 3; co >= 0; co--) {
+                                for (int so = 3; so >= 0; so--) {
+                                    if ((ro == 0 && so == 3 && co == 0) && (ro == 1 && so == 2 && co == 1) && (ro == 2 && so == 1 && co == 2) && (ro == 3 && so == 0 && co == 3) && board.getLocation(co, r, so) == '-') {
+                                        boo = new Location(co, ro, so);
+                                        changeBoard(board.getData());
+                                        return boo;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //sheet check
+        for (int r = 0; r < 4; r++) {
+            for (int c = 0; c < 4; c++) {
+                sheet=0;
+                circle=0;
+                for (int s = 0; s < 4; s++) {
+                    if (board.getLocation(c, r, s) == getLetter()) {
+                        sheet++;
+                    }
+                    if (!(board.getLocation(c, r, s) == getLetter()) && !(board.getLocation(c, r, s) == '-')) {
+                        circle++;
+                    }
+                    if (circle==3 && sheet==0) {
+                        for (int so = 0; so < 4; so++) {
+                            if (board.getLocation(c, r, so) == '-') {
+                                boo = new Location(c, r, so);
+                                changeBoard(board.getData());
+                                return boo;
+                            }
+                        }
+                    }
+                    if (circle==0 && sheet==3) {
+                        for (int so = 0; so < 4; so++) {
+                            if (board.getLocation(c, r, so) == '-') {
+                                boo = new Location(c, r, so);
+                                changeBoard(board.getData());
+                                return boo;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+//col
+        for (int r = 0; r < 4; r++) {
+            for (int s = 0; s < 4; s++) {
+                circle=0;
+                col = 0;
+                for (int c = 0; c < 4; c++) {
+                    if (board.getLocation(c, r, s) == getLetter()) {
+                        col++;
+                    }
+                    if (!(board.getLocation(c, r, s) == getLetter()) && !(board.getLocation(c, r, s) == '-')) {
+                        circle++;
+                    }
+                    if (circle==3 && col==0) {
+                        for (int co = 0; co < 4; co++) {
+                            if (board.getLocation(co, r, s) == '-'){
+                                boo = new Location(co, r, s);
+                                changeBoard(board.getData());
+                                return boo;
+
+                            }
+                        }
+                    }
+                    if (circle==0 && col==3) {
+                        for (int co = 0; co < 4; co++) {
+                            if (board.getLocation(co, r, s) == '-'){
+                                boo = new Location(co, r, s);
+                                changeBoard(board.getData());
+                                return boo;
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //to stop the threes
+        for (int s = 0; s < 4; s++) {
+            for (int c = 0; c < 4; c++) {
+                for (int r = 0; r < 4; r++) {
+                    if (s==2 && c==2){
+                        if (board.getLocation(c, r, s) == '-' ) {
+                            boo = new Location(c, r, s);
+                            changeBoard(board.getData());
+                            return boo;
+
+                        }
+                    }
+
+                }
+            }
+        }
+            //row check
+            for (int s = 0; s < 4; s++) {
+                for (int c = 0; c < 4; c++) {
+                    circle=0;
+                    row = 0;
+                    for (int r = 0; r < 4; r++) {
+                        if (board.getLocation(c, r, s) == getLetter()) {
                             row++;
                         }
-                        if (row == 3) {
-                            for (int m = 0; m < 4; m++) {
-                                if (board.getLocation(s, r, m) == '-') {
-                                    System.out.println("Row changed because 2");
-                                    boo = new Location(c, r, m);
-                                    changeBoard(board.getData());
-                                    return boo;
-                                }
-
-                            }
-                        } else if (row == 2) {
-                            for (int m = 0; m < 4; m++) {
-                                if (board.getLocation(s, r, m) == '-') {
-                                    System.out.println("Row changed because 3");
-                                    boo = new Location(c, r, m);
+                        if (!(board.getLocation(c, r, s) == getLetter()) && !(board.getLocation(c, r, s) == '-')) {
+                            circle++;
+                        }
+                        if (circle==3 && row==0) {
+                            for (int ro = 0; ro < 4; ro++) {
+                                if (board.getLocation(c, ro, s) == '-' ) {
+                                    boo = new Location(c, ro, s);
                                     changeBoard(board.getData());
                                     return boo;
 
                                 }
-
                             }
                         }
-
-                    }
-
-                }
-            }
-
-            //col check
-            for (int r = 0; r < 4; r++) {
-                for (int c = 0; c < 4; c++) {
-                    col = 0;
-                    for (int s = 0; s < 4; s++) {
-
-                        if (!(boardCopy[s][r][c] == getLetter())) {
-                            col++;
-                        }
-                        if (col == 3) {
-                            for (int m = 0; m < 4; m++) {
-                                if (board.getLocation(m, r, s) == '-') {
-                                    System.out.println("Col changed because 3");
-                                    boo = new Location(m, r, s);
+                        if (circle==0 && row==3) {
+                            for (int ro = 0; ro < 4; ro++) {
+                                if (board.getLocation(c, ro, s) == '-' ) {
+                                    boo = new Location(c, ro, s);
                                     changeBoard(board.getData());
                                     return boo;
 
                                 }
-
-                            }
-                        } else if (col == 2) {
-                            for (int m = 0; m < 4; m++) {
-                                if (board.getLocation(m, r, s) == '-') {
-
-                                    System.out.println("Col changed because 2");
-                                    boo = new Location(m, r, s);
-                                    changeBoard(board.getData());
-                                    return boo;
-
-                                }
-
                             }
                         }
 
@@ -166,43 +395,42 @@ public class Blocking_AI implements PlayerInt {
 
                 }
             }
-            //if there's nothing to block put in corner
-        System.out.println("done");
-            for (int r = 0; r < 4; r++) {
-                for (int c = 0; c < 4; c++) {
-                    for (int s = 0; s < 4; s++) {
 
-                        if (board.isEmpty(0, r, 0)) {
-                            System.out.println("here?");
-                            boo = new Location(0, r, 0);
-                            changeBoard(board.getData());
-                            return boo;
-
-                        } else if (board.isEmpty(3, r, 0)) {
-                            System.out.println("why here?");
-                            boo = new Location(3, r, 0);
-                            changeBoard(board.getData());
-                            return boo;
-
-                        } else if (board.isEmpty(0, r, 3)) {
-                            System.out.println("why here??");
-                            boo = new Location(0, r, 3);
-                            changeBoard(board.getData());
-                            return boo;
-
-                        } else if (board.isEmpty(3, r, 3)) {
-                            System.out.println("why here??");
-                            boo = new Location(3, r, 3);
-                            changeBoard(board.getData());
-                            return boo;
-
-                        }
-                    }
+        // 2-D vertical wins
+        for (int s=0;s<4;s++){
+            for(int r=0;r<4;r++){
+                if(board.getLocation(0,r,s) =='-'  && board.getLocation(0,r,s) == '-' && board.getLocation(0,r,s) == '-' && board.getLocation(0,r,s) == '-'){
+                    boo = new Location(0, r, s);
+                    changeBoard(board.getData());
+                    return boo;
                 }
             }
+        }
+        // 3-D vertical wins
+        for (int s=0;s<4;s++){
+            for(int c=0;c<4;c++){
+                if(board.getLocation(c,0,s) =='-'  && board.getLocation(c,0,s) == '-' && board.getLocation(c,0,s) == '-' && board.getLocation(c,0,s) == '-') {
+                    boo = new Location(c, 0, s);
+                    changeBoard(board.getData());
+                    return boo;
+                }
+            }
+        }
 
-                return boo;
-    }
+        //2-D horizontal wins
+        for (int r=0;r<4;r++){
+            for(int c=0;c<4;c++){
+                if(board.getLocation(c,r,0) =='-'  && board.getLocation(c,r,0) == '-' && board.getLocation(c,r,0) == '-' && board.getLocation(c,r,0) == '-') {
+                    boo = new Location(c, r, 0);
+                    changeBoard(board.getData());
+                    return boo;
+                }
+            }
+        }
+        //Diagonals
+
+            return boo;
+        }
 
 
     @Override
