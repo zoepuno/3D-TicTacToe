@@ -25,19 +25,6 @@ public class Blocking_AI implements PlayerInt {
         return letter;
     }
 
-    public void displayBoard(char[][][] boardCopy) {
-        for (int l = 0; l < 4; l++) {
-            System.out.println("Level: " + (l + 1));
-            System.out.println(" " + boardCopy[3][l][0] + " | " + boardCopy[3][l][1] + " | " + boardCopy[3][l][2] + " | " + boardCopy[3][l][3] + " ");
-            System.out.println("----------------");
-            System.out.println(" " + boardCopy[2][l][0] + " | " + boardCopy[2][l][1] + " | " + boardCopy[2][l][2] + " | " + boardCopy[2][l][3] + " ");
-            System.out.println("----------------");
-            System.out.println(" " + boardCopy[1][l][0] + " | " + boardCopy[1][l][1] + " | " + boardCopy[1][l][2] + " | " + boardCopy[1][l][3] + " ");
-            System.out.println("----------------");
-            System.out.println(" " + boardCopy[0][l][0] + " | " + boardCopy[0][l][1] + " | " + boardCopy[0][l][2] + " | " + boardCopy[0][l][3] + " ");
-        }
-    }
-
     @Override
     public Location getMove( char[][][] b) {
         Board board = new Board(b);
@@ -142,10 +129,8 @@ public class Blocking_AI implements PlayerInt {
                 for (int c = 0; c < 4; c++) {
                     if (r == s && r == c && s == c && board.getLocation(c, r, s) == getLetter()) {
                         diagonals++;
-                        System.out.println(s + " , " + c);
                     }
                     if (r == s && r == c && s == c && !(board.getLocation(c, r, s) == getLetter()) && !(board.getLocation(c, r, s) == '-')) {
-                        System.out.println(s + " , " + c);
                         circle++;
                         System.out.println(circle);
                     }
@@ -215,6 +200,7 @@ public class Blocking_AI implements PlayerInt {
                 }
             }
         }
+        
         //sheet check
         for (int r = 0; r < 4; r++) {
             for (int c = 0; c < 4; c++) {
@@ -227,7 +213,7 @@ public class Blocking_AI implements PlayerInt {
                     if (!(board.getLocation(c, r, s) == getLetter()) && !(board.getLocation(c, r, s) == '-')) {
                         circle++;
                     }
-                    if (circle==3 && sheet==0) {
+                    if (circle==0 && sheet==3) {
                         for (int so = 0; so < 4; so++) {
                             if (board.getLocation(c, r, so) == '-') {
                                 boo = new Location(c, r, so);
@@ -235,7 +221,7 @@ public class Blocking_AI implements PlayerInt {
                             }
                         }
                     }
-                    if (circle==0 && sheet==3) {
+                    if (circle==3 && sheet==0) {
                         for (int so = 0; so < 4; so++) {
                             if (board.getLocation(c, r, so) == '-') {
                                 boo = new Location(c, r, so);
@@ -259,15 +245,6 @@ public class Blocking_AI implements PlayerInt {
                     if (!(board.getLocation(c, r, s) == getLetter()) && !(board.getLocation(c, r, s) == '-')) {
                         circle++;
                     }
-                    if (circle==3 && col==0) {
-                        for (int co = 0; co < 4; co++) {
-                            if (board.getLocation(co, r, s) == '-'){
-                                boo = new Location(co, r, s);
-                                return boo;
-
-                            }
-                        }
-                    }
                     if (circle==0 && col==3) {
                         for (int co = 0; co < 4; co++) {
                             if (board.getLocation(co, r, s) == '-'){
@@ -277,21 +254,15 @@ public class Blocking_AI implements PlayerInt {
                             }
                         }
                     }
-                }
-            }
-        }
-        //to stop the threes
-        for (int s = 0; s < 4; s++) {
-            for (int c = 0; c < 4; c++) {
-                for (int r = 0; r < 4; r++) {
-                    if (s==2 && c==2){
-                        if (board.getLocation(c, r, s) == '-' ) {
-                            boo = new Location(c, r, s);
-                            return boo;
+                    if (circle==3 && col==0) {
+                        for (int co = 0; co < 4; co++) {
+                            if (board.getLocation(co, r, s) == '-'){
+                                boo = new Location(co, r, s);
+                                return boo;
 
+                            }
                         }
                     }
-
                 }
             }
         }
@@ -307,7 +278,7 @@ public class Blocking_AI implements PlayerInt {
                         if (!(board.getLocation(c, r, s) == getLetter()) && !(board.getLocation(c, r, s) == '-')) {
                             circle++;
                         }
-                        if (circle==3 && row==0) {
+                        if (circle==0 && row==3) {
                             for (int ro = 0; ro < 4; ro++) {
                                 if (board.getLocation(c, ro, s) == '-' ) {
                                     boo = new Location(c, ro, s);
@@ -316,7 +287,7 @@ public class Blocking_AI implements PlayerInt {
                                 }
                             }
                         }
-                        if (circle==0 && row==3) {
+                        if (circle==3 && row==0) {
                             for (int ro = 0; ro < 4; ro++) {
                                 if (board.getLocation(c, ro, s) == '-' ) {
                                     boo = new Location(c, ro, s);
@@ -330,7 +301,21 @@ public class Blocking_AI implements PlayerInt {
 
                 }
             }
+        //to stop the threes
+        for (int s = 0; s < 4; s++) {
+            for (int c = 0; c < 4; c++) {
+                for (int r = 0; r < 4; r++) {
+                    if (s==2 && c==2){
+                        if (board.getLocation(c, r, s) == '-' ) {
+                            boo = new Location(c, r, s);
+                            return boo;
 
+                        }
+                    }
+
+                }
+            }
+        }
         // 2-D vertical wins
         for (int s=0;s<4;s++){
             for(int r=0;r<4;r++){
