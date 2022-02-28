@@ -2,8 +2,6 @@ import java.util.Random;
 
 public class Blocking_AI implements PlayerInt {
 
-    char[][][] boardCopy = new char[4][4][4];
-
     char letter;
     String name;
 
@@ -11,31 +9,10 @@ public class Blocking_AI implements PlayerInt {
     public Blocking_AI(char letter) {
         this.name = "Blocking Ai";
         this.letter = letter;
-        setBoardCopy();
         setLetter(letter);
     }
 
-    public void setBoardCopy() {
-        if (getLetter()=='x') {
-            for (int l = 0; l < 4; l++) {
-                for (int c = 0; c < 4; c++) {
-                    for (int r = 0; r < 4; r++) {
-                        boardCopy[l][r][c] = 'x';
 
-                    }
-                }
-            }
-        }
-        if (getLetter()=='o') {
-            for (int l = 0; l < 4; l++) {
-                for (int c = 0; c < 4; c++) {
-                    for (int r = 0; r < 4; r++) {
-                        boardCopy[l][r][c] = 'o';
-                    }
-                }
-            }
-        }
-    }
 
     public void setLetter(char letter) {
         this.letter=letter;
@@ -61,32 +38,6 @@ public class Blocking_AI implements PlayerInt {
         }
     }
 
-    public void changeBoard(char[][][] b) {
-        Board board = new Board(b);
-        if (getLetter()=='o') {
-            for (int r = 0; r < 4; r++) {
-                for (int s = 0; s < 4; s++) {
-                for (int c = 0; c < 4; c++) {
-
-                        if ( board.getLocation(c, r, s)== 'x') {
-                            boardCopy[s][r][c] = 'x';
-                        }
-                    }
-                }
-            }
-        }
-        if (getLetter()=='x') {
-            for (int r = 0; r < 4; r++) {
-                for (int s = 0; s < 4; s++) {
-                for (int c = 0; c < 4; c++) {
-                        if (board.getLocation(c, r, s) == 'o') {
-                            boardCopy[s][r][c] = 'o';
-                        }
-                    }
-                }
-            }
-        }
-    }
     @Override
     public Location getMove( char[][][] b) {
         Board board = new Board(b);
@@ -120,7 +71,6 @@ public class Blocking_AI implements PlayerInt {
                             for (int so = 0; so < 4; so += 1) {
                                 if (so==co && board.getLocation(co, r, so) == '-') {
                                     boo = new Location(co, r, so);
-                                    changeBoard(board.getData());
                                     return boo;
                                 }
                             }
@@ -131,7 +81,6 @@ public class Blocking_AI implements PlayerInt {
                             for (int so = 0; so < 4; so += 1) {
                                 if (so==co && board.getLocation(co, r, so) == '-') {
                                     boo = new Location(co, r, so);
-                                    changeBoard(board.getData());
                                     return boo;
                                 }
                             }
@@ -156,7 +105,6 @@ public class Blocking_AI implements PlayerInt {
                             for (int so = 3; so >= 0; so --) {
                                 if ((s==3 && c==0)&& (s==2 && c==1) && (s==1 && c==2)&& (s==0 && c==3)  && board.getLocation(co, r, so) == '-') {
                                     boo = new Location(co, r, so);
-                                    changeBoard(board.getData());
                                     return boo;
                                 }
                             }
@@ -167,7 +115,6 @@ public class Blocking_AI implements PlayerInt {
                             for (int so = 3; so >= 0; so --) {
                                 if ((s==3 && c==0)&& (s==2 && c==1) && (s==1 && c==2)&& (s==0 && c==3)  && board.getLocation(co, r, so) == '-') {
                                     boo = new Location(co, r, so);
-                                    changeBoard(board.getData());
                                     return boo;
                                 }
                             }
@@ -178,7 +125,6 @@ public class Blocking_AI implements PlayerInt {
                             for (int so = 0; so < 4; so += 1) {
                                 if (so==co && board.getLocation(co, r, so) == '-') {
                                     boo = new Location(co, r, so);
-                                    changeBoard(board.getData());
                                     return boo;
                                 }
                             }
@@ -209,7 +155,6 @@ public class Blocking_AI implements PlayerInt {
                                 for (int so = 0; so < 4; so += 1) {
                                     if (ro == so && ro == co && so == co && board.getLocation(co, ro, so) == '-') {
                                         boo = new Location(co, ro, so);
-                                        changeBoard(board.getData());
                                         return boo;
                                     }
                                 }
@@ -222,7 +167,6 @@ public class Blocking_AI implements PlayerInt {
                                 for (int so = 0; so < 4; so += 1) {
                                     if (ro == so && ro == co && so == co && board.getLocation(co, ro, so) == '-') {
                                         boo = new Location(co, ro, so);
-                                        changeBoard(board.getData());
                                         return boo;
                                     }
                                 }
@@ -250,7 +194,6 @@ public class Blocking_AI implements PlayerInt {
                                 for (int so = 3; so >= 0; so--) {
                                     if ((ro == 0 && so == 3 && co == 0) && (ro == 1 && so == 2 && co == 1) && (ro == 2 && so == 1 && co == 2) && (ro == 3 && so == 0 && co == 3) && board.getLocation(co, r, so) == '-') {
                                         boo = new Location(co, ro, so);
-                                        changeBoard(board.getData());
                                         return boo;
                                     }
                                 }
@@ -263,7 +206,6 @@ public class Blocking_AI implements PlayerInt {
                                 for (int so = 3; so >= 0; so--) {
                                     if ((ro == 0 && so == 3 && co == 0) && (ro == 1 && so == 2 && co == 1) && (ro == 2 && so == 1 && co == 2) && (ro == 3 && so == 0 && co == 3) && board.getLocation(co, r, so) == '-') {
                                         boo = new Location(co, ro, so);
-                                        changeBoard(board.getData());
                                         return boo;
                                     }
                                 }
@@ -289,7 +231,6 @@ public class Blocking_AI implements PlayerInt {
                         for (int so = 0; so < 4; so++) {
                             if (board.getLocation(c, r, so) == '-') {
                                 boo = new Location(c, r, so);
-                                changeBoard(board.getData());
                                 return boo;
                             }
                         }
@@ -298,7 +239,6 @@ public class Blocking_AI implements PlayerInt {
                         for (int so = 0; so < 4; so++) {
                             if (board.getLocation(c, r, so) == '-') {
                                 boo = new Location(c, r, so);
-                                changeBoard(board.getData());
                                 return boo;
                             }
                         }
@@ -323,7 +263,6 @@ public class Blocking_AI implements PlayerInt {
                         for (int co = 0; co < 4; co++) {
                             if (board.getLocation(co, r, s) == '-'){
                                 boo = new Location(co, r, s);
-                                changeBoard(board.getData());
                                 return boo;
 
                             }
@@ -333,7 +272,6 @@ public class Blocking_AI implements PlayerInt {
                         for (int co = 0; co < 4; co++) {
                             if (board.getLocation(co, r, s) == '-'){
                                 boo = new Location(co, r, s);
-                                changeBoard(board.getData());
                                 return boo;
 
                             }
@@ -349,7 +287,6 @@ public class Blocking_AI implements PlayerInt {
                     if (s==2 && c==2){
                         if (board.getLocation(c, r, s) == '-' ) {
                             boo = new Location(c, r, s);
-                            changeBoard(board.getData());
                             return boo;
 
                         }
@@ -374,7 +311,6 @@ public class Blocking_AI implements PlayerInt {
                             for (int ro = 0; ro < 4; ro++) {
                                 if (board.getLocation(c, ro, s) == '-' ) {
                                     boo = new Location(c, ro, s);
-                                    changeBoard(board.getData());
                                     return boo;
 
                                 }
@@ -384,7 +320,6 @@ public class Blocking_AI implements PlayerInt {
                             for (int ro = 0; ro < 4; ro++) {
                                 if (board.getLocation(c, ro, s) == '-' ) {
                                     boo = new Location(c, ro, s);
-                                    changeBoard(board.getData());
                                     return boo;
 
                                 }
@@ -401,7 +336,6 @@ public class Blocking_AI implements PlayerInt {
             for(int r=0;r<4;r++){
                 if(board.getLocation(0,r,s) =='-'  && board.getLocation(0,r,s) == '-' && board.getLocation(0,r,s) == '-' && board.getLocation(0,r,s) == '-'){
                     boo = new Location(0, r, s);
-                    changeBoard(board.getData());
                     return boo;
                 }
             }
@@ -411,7 +345,6 @@ public class Blocking_AI implements PlayerInt {
             for(int c=0;c<4;c++){
                 if(board.getLocation(c,0,s) =='-'  && board.getLocation(c,0,s) == '-' && board.getLocation(c,0,s) == '-' && board.getLocation(c,0,s) == '-') {
                     boo = new Location(c, 0, s);
-                    changeBoard(board.getData());
                     return boo;
                 }
             }
@@ -422,7 +355,6 @@ public class Blocking_AI implements PlayerInt {
             for(int c=0;c<4;c++){
                 if(board.getLocation(c,r,0) =='-'  && board.getLocation(c,r,0) == '-' && board.getLocation(c,r,0) == '-' && board.getLocation(c,r,0) == '-') {
                     boo = new Location(c, r, 0);
-                    changeBoard(board.getData());
                     return boo;
                 }
             }
@@ -440,7 +372,6 @@ public class Blocking_AI implements PlayerInt {
 
     @Override
     public void refresh() {
-setBoardCopy();
     }
 
 }
