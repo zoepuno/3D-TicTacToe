@@ -15,45 +15,35 @@ public class StraightLine_AI implements PlayerInt{
         Board board = new Board(b);
         Location sa = null;
 
-                     for (int r = 0; r < 4; r++) {
-                         for (int s = 0; s < 4; s++) {
-                             for (int c = 0; c < 4; c++) {
-                                 //col straight
-                                 while (board.getLocation(c, r, s) == '-') {
-                                     sa = new Location(c, r, s);
-                                     return sa;
-                                 }
-                             }
-                         }
-                     }
-                    //sheet straight
-                for (int r = 0; r < 4; r++) {
-                    for (int c = 0; c < 4; c++) {
-                    for (int s = 0; s < 4; s++) {
-                    while (board.getLocation(c, r, s) == '-') {
-                        sa = new Location(c, r, s);
-                        return sa;
-                    }
-
+        for (int s = 0; s < 4; s++) {
+            for (int r = 0; r < 4; r++) {
+                if (board.getLocation(0, r, s) == '-' && board.getLocation(0, r, s) == '-' && board.getLocation(0, r, s) == '-' && board.getLocation(0, r, s) == '-') {
+                    sa = new Location(0, r, s);
+                    return sa;
                 }
             }
-
         }
-                    //row straight
+        // 3-D vertical wins
         for (int s = 0; s < 4; s++) {
             for (int c = 0; c < 4; c++) {
-                for (int r = 0; r < 4; r++) {
-                    while (board.getLocation(c, r, s) == '-') {
-                        sa = new Location(c, r, s);
-                        return sa;
-                    }
-
+                if (board.getLocation(c, 0, s) == '-' && board.getLocation(c, 0, s) == '-' && board.getLocation(c, 0, s) == '-' && board.getLocation(c, 0, s) == '-') {
+                    sa = new Location(c, 0, s);
+                    return sa;
                 }
-                    }
+            }
+        }
 
+        //2-D horizontal wins
+        for (int r = 0; r < 4; r++) {
+            for (int c = 0; c < 4; c++) {
+                if (board.getLocation(c, r, 0) == '-' && board.getLocation(c, r, 0) == '-' && board.getLocation(c, r, 0) == '-' && board.getLocation(c, r, 0) == '-') {
+                    sa = new Location(c, r, 0);
+                    return sa;
                 }
+            }
+        }
 
-                return sa;
+            return sa;
 
         }
 
@@ -61,6 +51,11 @@ public class StraightLine_AI implements PlayerInt{
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getStudentName() {
+        return null;
     }
 
     @Override
