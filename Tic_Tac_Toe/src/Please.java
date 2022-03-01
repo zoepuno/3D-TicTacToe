@@ -2,13 +2,13 @@ public class Please implements PlayerInt {
 
     private char letter;
     private String name;
-    private Counts counts = new Counts();
     String studentName = "";
     private int[] opps = new int[4];
     private int[] mys = new int[4];
     private Board board;
     private Location loc;
-    private char me, opp;
+    private char mee, opp;
+
     public int[] getOpps() {
         return opps;
     }
@@ -29,7 +29,7 @@ public class Please implements PlayerInt {
     public char getLetter() {
         return letter;
     }
-    @Override
+
     public String getStudentName(){
         return studentName;
     }
@@ -42,6 +42,7 @@ public class Please implements PlayerInt {
         int row;
         int col;
         int sheet;
+        int diagonals;
         Location best = null;
 
         for(int y = 0; y < 4; y++) {
@@ -60,7 +61,8 @@ public class Please implements PlayerInt {
                 }
             }
         }
-        //sheet check
+
+      //sheet check
         for (int r = 0; r < 4; r++) {
             for (int c = 0; c < 4; c++) {
                 sheet=0;
@@ -91,6 +93,7 @@ public class Please implements PlayerInt {
                 }
             }
         }
+
 //col
         for (int r = 0; r < 4; r++) {
             for (int s = 0; s < 4; s++) {
@@ -124,6 +127,7 @@ public class Please implements PlayerInt {
                 }
             }
         }
+
         //row check
         for (int s = 0; s < 4; s++) {
             for (int c = 0; c < 4; c++) {
@@ -154,14 +158,166 @@ public class Please implements PlayerInt {
                             }
                         }
                     }
-
                 }
+            }
+        }
 
+        //3D Block
+        //left to right
+        circle = 0;
+        diagonals = 0;
+
+        for (int r = 0; r < 4; r++) {
+            for (int s = 0; s < 4; s++) {
+                for (int c = 0; c < 4; c++) {
+
+                    if (r == s && r == c && s == c && b.getLocation(c, r, s) == getLetter()) {
+                        diagonals++;
+                    }
+                    if (r == s && r == c && s == c && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
+                        circle++;
+                        System.out.println(circle);
+                    }
+
+
+                    if (circle == 3 && diagonals == 0) {
+
+                        for (int ro = 0; ro < 4; ro++) {
+                            for (int co = 0; co < 4; co += 1) {
+                                for (int so = 0; so < 4; so += 1) {
+                                    
+                                    if (ro == so && ro == co && so == co && b.getLocation(co, ro, so) == '-') {
+                                        best = new Location(co, ro, so);
+                                        return best;
+                                    }
+                                    
+                                }
+                            }
+                        }
+
+                    }
+                    if (circle == 0 && diagonals == 3) {
+
+                        for (int ro = 0; ro < 4; ro++) {
+                            for (int co = 0; co < 4; co += 1) {
+                                for (int so = 0; so < 4; so += 1) {
+                                    if (ro == so && ro == co && so == co && b.getLocation(co, ro, so) == '-') {
+                                        best = new Location(co, ro, so);
+                                        return best;
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+        //right to left
+        for (int r = 3; r >=0; r--) {
+            circle = 0;
+            diagonals = 0;
+            for (int s = 3; s >= 0; s--) {
+                for (int c = 3; c >= 0; c--) {
+                    if ((r == 0 && s == 3 && c == 0) && (r == 1 && s == 2 && c == 1) && (r == 2 && s == 1 && c == 2) && (r == 3 && s == 0 && c == 3) && b.getLocation(c, r, s) == getLetter()) {
+                        diagonals++;
+                    }
+                    if ((r == 0 && s == 3 && c == 0) && (r == 1 && s == 2 && c == 1) && (r == 2 && s == 1 && c == 2) && (r == 3 && s == 0 && c == 3) && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
+                        circle++;
+                    }
+                   
+                    if (circle == 3 && diagonals == 0) {
+                        
+                        for (int ro = 3; ro >= 0; ro--) {
+                            for (int co = 3; co >= 0; co--) {
+                                for (int so = 3; so >= 0; so--) {
+                                    
+                                    if ((ro == 0 && so == 3 && co == 0) && (ro == 1 && so == 2 && co == 1) && (ro == 2 && so == 1 && co == 2) 
+                                            && (ro == 3 && so == 0 && co == 3) && b.getLocation(co, ro, so) == '-') {
+                                        best = new Location(co, ro, so);
+                                        return best;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (circle == 0 && diagonals == 3) {
+                        
+                        for (int ro = 3; ro >= 0; ro--) {
+                            for (int co = 3; co >= 0; co--) {
+                                for (int so = 3; so >= 0; so--) {
+
+                                    if ((ro == 0 && so == 3 && co == 0) && (ro == 1 && so == 2 && co == 1) && (ro == 2 && so == 1 && co == 2)
+                                            && (ro == 3 && so == 0 && co == 3) && b.getLocation(co, ro, so) == '-') {
+                                        best = new Location(co, ro, so);
+                                        return best;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         return best;
     }
-
+/* //
+    if ((r == 0 && s == 0 && c == 0) && (r == 1 && s == 1 && c == 1) && (r == 2 && s == 2 && c == 2) && (r == 3 && s == 3 && c == 3) && b.getLocation(c, r, s) == getLetter()) {
+        diagonals++;
+    }
+    if ((r == 0 && s == 0 && c == 0) && (r == 1 && s == 1 && c == 1) && (r == 2 && s == 2 && c == 2) && (r == 3 && s == 3 && c == 3) && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
+        circle++;
+    }
+    //
+    if ((r == 0 && s == 0 && c == 3) && (r == 1 && s == 1 && c == 2) && (r == 2 && s == 2 && c == 1) && (r == 3 && s == 3 && c == 0) && b.getLocation(c, r, s) == getLetter()) {
+        diagonals++;
+    }
+    if ((r == 0 && s == 0 && c == 3) && (r == 1 && s == 1 && c == 2) && (r == 2 && s == 2 && c == 1) && (r == 3 && s == 3 && c == 0) && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
+        circle++;
+    }
+    //
+    if ((r == 3 && s == 0 && c == 0) && (r == 2 && s == 1 && c == 1) && (r == 1 && s == 2 && c == 2) && (r == 0 && s == 3 && c == 3) && b.getLocation(c, r, s) == getLetter()) {
+        diagonals++;
+    }
+    if ((r == 3 && s == 0 && c == 0) && (r == 2 && s == 1 && c == 1) && (r == 1 && s == 2 && c == 2) && (r == 0 && s == 3 && c == 3) && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
+        circle++;
+    }
+    //
+    if ((r == 3 && s == 0 && c == 3) && (r == 2 && s == 1 && c == 2) && (r == 1 && s == 2 && c == 1) && (r == 0 && s == 3 && c == 0) && b.getLocation(c, r, s) == getLetter()) {
+        diagonals++;
+    }
+    if ((r == 3 && s == 0 && c == 3) && (r == 2 && s == 1 && c == 2) && (r == 1 && s == 2 && c == 1) && (r == 0 && s == 3 && c == 0) && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
+        circle++;
+    }
+                    
+                    
+//
+    if ((ro == 0 && so == 0 && co == 0) && (ro == 1 && so == 1 && co == 1) && (ro == 2 && so == 2 && co == 2)
+            && (ro == 3 && so == 3 && co == 3) && b.getLocation(co, ro, so) == '-') {
+        best = new Location(co, ro, so);
+        return best;
+    }
+    //
+    if ((ro == 0 && so == 0 && co == 3) && (ro == 1 && so == 1 && co == 2) && (ro == 2 && so == 2 && co == 1)
+            && (ro == 3 && so == 3 && co == 0) && b.getLocation(co, ro, so) == '-') {
+        best = new Location(co, ro, so);
+        return best;
+    }
+    //
+    if ((ro == 3 && so == 0 && co == 0) && (ro == 2 && so == 1 && co == 1) && (ro == 1 && so == 2 && co == 2)
+            && (ro == 0 && so == 3 && co == 3) && b.getLocation(co, ro, so) == '-') {
+        best = new Location(co, ro, so);
+        return best;
+    }
+    //
+    if ((ro == 3 && so == 0 && co == 3) && (ro == 2 && so == 1 && co == 2) && (ro == 1 && so == 2 && co == 1)
+            && (ro == 0 && so == 3 && co == 0) && b.getLocation(co, ro, so) == '-') {
+        best = new Location(co, ro, so);
+        return best;
+    }
+        
+ */
+    
     // Pre:       method is called
     // Post:   returns the name of the player
     public String getName() {
@@ -180,7 +336,8 @@ public class Please implements PlayerInt {
     {
         this.board = board;
         this.loc = loc;
-        this.me = me;
+        this.mee = me;
+        opp = (me=='X')?'O': 'X';
 
         int c = loc.getCol();
         int r = loc.getRow();
@@ -192,7 +349,7 @@ public class Please implements PlayerInt {
         int count = 1;
         for(int col = 0;col<4;col++) {
 
-            if(b[s][r][col]== me) {
+            if(b[s][r][col]== mee) {
                 count++;
             }
 
@@ -211,7 +368,7 @@ public class Please implements PlayerInt {
                 count++;
             }
 
-            else if(b[s][r][col]==me) {
+            else if(b[s][r][col]==mee) {
                 count = 0;
                 break;
             }
@@ -223,7 +380,7 @@ public class Please implements PlayerInt {
         count = 1;
         for(int row = 0;row<4;row++) {
 
-            if(b[s][row][c]==me) {
+            if(b[s][row][c]==mee) {
                 count++;
             }
 
@@ -242,7 +399,7 @@ public class Please implements PlayerInt {
                 count++;
             }
 
-            else if(b[s][row][c]==me)
+            else if(b[s][row][c]==mee)
             {
                 count = 0;
                 break;
@@ -254,7 +411,7 @@ public class Please implements PlayerInt {
         count = 1;
         for(int shee = 0;shee<4;shee++) {
 
-            if(b[shee][r][c]==me) {
+            if(b[shee][r][c]==mee) {
                 count++;
             }
 
@@ -273,7 +430,7 @@ public class Please implements PlayerInt {
                 count++;
             }
 
-            else if(b[sheet][r][c]==me) {
+            else if(b[sheet][r][c]==mee) {
                 count=0;
                 break;
             }
@@ -285,7 +442,7 @@ public class Please implements PlayerInt {
             count = 1;
             for(int d = 0;d<4;d++) {
 
-                if(b[s][d][d]==me) {
+                if(b[s][d][d]==mee) {
                     count++;
                 }
 
@@ -304,7 +461,7 @@ public class Please implements PlayerInt {
                     count++;
                 }
 
-                else if(b[s][d][d]==me) {
+                else if(b[s][d][d]==mee) {
                     count = 0;
                     break;
                 }
@@ -317,7 +474,7 @@ public class Please implements PlayerInt {
             //my z diagonal 2
             count = 1;
             for(int d = 0;d<4;d++) {
-                if(b[s][d][3-d]==me) {
+                if(b[s][d][3-d]==mee) {
                     count++;
                 }
                 else if(b[s][d][3-d]==opp) {
@@ -333,7 +490,7 @@ public class Please implements PlayerInt {
                 if(b[s][d][3-d]==opp) {
                     count++;
                 }
-                else if(b[s][d][3-d]==me) {
+                else if(b[s][d][3-d]==mee) {
                     count = 0;
                     break;
                 }
@@ -346,7 +503,7 @@ public class Please implements PlayerInt {
             count = 1;
             for(int d = 0;d<4;d++) {
 
-                if(b[d][r][d]==me) {
+                if(b[d][r][d]==mee) {
                     count++;
                 }
                 else if(b[d][r][d]==opp) {
@@ -362,7 +519,7 @@ public class Please implements PlayerInt {
                 if(b[d][r][d]==opp) {
                     count++;
                 }
-                else if(b[d][r][d]==me) {
+                else if(b[d][r][d]==mee) {
                     count = 0;
                     break;
                 }
@@ -372,7 +529,7 @@ public class Please implements PlayerInt {
         //y plane diagonal 2
         if(c+s==3) {
             for(int d = 0;d<4;d++) {
-                if(b[d][r][3-d]==me) {
+                if(b[d][r][3-d]==mee) {
                     count++;
                 }
                 if(b[d][r][3-d]==opp) {
@@ -385,18 +542,17 @@ public class Please implements PlayerInt {
                 if(b[aa][r][3-aa]==opp) {
                     count++;
                 }
-                if(b[aa][r][3-aa] == me) {
+                if(b[aa][r][3-aa] == mee) {
                     count = 0;
                     break;
                 }
             }
             addOpp(count);
-            System.out.println("Blocking diagonal special 2");
         }
         //x plane diagonal 1
         if(r==s) {
             for(int d = 0;d<4;d++) {
-                if(b[d][d][c]==me) {
+                if(b[d][d][c]==mee) {
                     count++;
                 }
                 else if(b[d][d][c]==opp) {
@@ -410,20 +566,20 @@ public class Please implements PlayerInt {
                 if(b[d][d][c]==opp) {
                     count++;
                 }
-                else if(b[d][d][c]==me) {
+                else if(b[d][d][c]==mee) {
 
                     count = 0;
                     break;
                 }
             }
             addOpp(count);
-            
+
         }
         //x plane diagonal 2
         if(r+s==3) {
             for(int d = 0;d<4;d++) {
 
-                if(b[d][3-d][c]==me) {
+                if(b[d][3-d][c]==mee) {
                     count++;
                 }
 
@@ -439,7 +595,7 @@ public class Please implements PlayerInt {
                     count++;
                 }
 
-                if(b[d][3-d][c]==me) {
+                if(b[d][3-d][c]==mee) {
                     count = 0;
                     break;
                 }
@@ -448,11 +604,11 @@ public class Please implements PlayerInt {
         }
 
         //special dia 1
-        if(r==s && r==c) {
+        if(r == s && r == c && s == c) {
             //special dia 1 me
             count = 1;
-            for(int d = 0;d<4;d++) {
-                if(b[d][d][d]==me) {
+            for(int d= 0;d<4;d++) {
+                if(b[d][d][d]==mee) {
                     count++;
                 }
                 else if(b[d][d][d]==opp)
@@ -462,13 +618,14 @@ public class Please implements PlayerInt {
                 }
             }
             addMe(count);
+
             //special dia 1 opp
             count = 1;
-            for(int d = 0;d<4;d++) {
+            for(int d =0;d<4;d++) {
                 if(b[d][d][d]==opp){
                     count++;
                 }
-                else if(b[d][d][d]==me) {
+                else if(b[d][d][d]==mee) {
                     count = 0;
                     break;
                 }
@@ -481,7 +638,7 @@ public class Please implements PlayerInt {
             //special dia 2 me
             count = 1;
             for(int d = 0;d<4;d++){
-                if(b[d][d][3-d]==me) {
+                if(b[d][d][3-d]==mee) {
                     count++;
                 }
                 else if(b[d][d][3-d]==opp) {
@@ -496,7 +653,7 @@ public class Please implements PlayerInt {
                 if(b[d][d][3-d]==opp) {
                     count++;
                 }
-                else if(b[d][d][3-d]==me) {
+                else if(b[d][d][3-d]==mee) {
                     count = 0;
                     break;
                 }
@@ -508,7 +665,7 @@ public class Please implements PlayerInt {
             //special dia 3 me
             count = 1;
             for(int d = 0;d<4;d++) {
-                if(b[3-d][d][d]==me) {
+                if(b[3-d][d][d]==mee) {
                     count++;
                 }
                 if(b[3-d][d][d]==opp) {
@@ -523,7 +680,7 @@ public class Please implements PlayerInt {
                 if(b[3-d][d][d]==opp) {
                     count++;
                 }
-                if(b[3-d][d][d]==me) {
+                if(b[3-d][d][d]==mee) {
                     count = 0;
                     break;
                 }
@@ -536,7 +693,7 @@ public class Please implements PlayerInt {
             //special dia 4 me
             count = 1;
             for(int a = 0;a<4;a++) {
-                if(b[3-a][a][3-a]==me) {
+                if(b[3-a][a][3-a]==mee) {
                     count++;
                 }
                 if(b[3-a][a][3-a]==opp) {
@@ -551,7 +708,7 @@ public class Please implements PlayerInt {
                 if(b[3-a][a][3-a]==opp) {
                     count++;
                 }
-                if(b[3-a][a][3-a]==me) {
+                if(b[3-a][a][3-a]==mee) {
                     count = 0;
                     break;
                 }
