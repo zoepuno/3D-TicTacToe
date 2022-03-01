@@ -12,17 +12,19 @@ public class Please implements PlayerInt {
     public int[] getOpps() {
         return opps;
     }
+
     public int[] getMys() {
         return mys;
     }
+
     public Board getBoard() {
         return board;
     }
 
     Please(char letter) {
-        name      = "In A Day";
-        this.letter    = letter;
-        this.studentName=" Zoe Puno & Jessica Sollars";
+        name = "In A Day";
+        this.letter = letter;
+        this.studentName = " Zoe Puno & Jessica Sollars";
     }
 
 
@@ -30,12 +32,12 @@ public class Please implements PlayerInt {
         return letter;
     }
 
-    public String getStudentName(){
+    public String getStudentName() {
         return studentName;
     }
 
     @Override
-    public Location getMove(char[][][] board){
+    public Location getMove(char[][][] board) {
         Board b = new Board(board);
         int max = -1;
         int circle;
@@ -45,15 +47,15 @@ public class Please implements PlayerInt {
         int diagonals;
         Location best = null;
 
-        for(int y = 0; y < 4; y++) {
+        for (int y = 0; y < 4; y++) {
             for (int z = 0; z < 4; z++) {
                 for (int x = 0; x < 4; x++) {
-                    Location l = new Location(z,y,x);
-                    if(b.isEmpty(l)) {
-                        calculate(b,l,letter);
-                        int score = getMys()[0]*10+getMys()[1]*3000+getMys()[2]*3500+getMys()[3]*1000000+getOpps()[0]+getOpps()[1]*1000+getOpps()[2]*3000+getOpps()[3]*100000;
+                    Location l = new Location(z, y, x);
+                    if (b.isEmpty(l)) {
+                        calculate(b, l, letter);
+                        int score = getMys()[0] * 10 + getMys()[1] * 3000 + getMys()[2] * 3500 + getMys()[3] * 1000000 + getOpps()[0] + getOpps()[1] * 1000 + getOpps()[2] * 3000 + getOpps()[3] * 100000;
 
-                        if(score>max) {
+                        if (score > max) {
                             max = score;
                             best = l;
                         }
@@ -62,19 +64,19 @@ public class Please implements PlayerInt {
             }
         }
 
-      //sheet check
+        //sheet check
         for (int r = 0; r < 4; r++) {
             for (int c = 0; c < 4; c++) {
-                sheet=0;
-                circle=0;
+                sheet = 0;
+                circle = 0;
                 for (int s = 0; s < 4; s++) {
-                    if (b.getLocation(c,r,s)== getLetter()) {
+                    if (b.getLocation(c, r, s) == getLetter()) {
                         sheet++;
                     }
                     if (!(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
                         circle++;
                     }
-                    if (circle==0 && sheet==3) {
+                    if (circle == 0 && sheet == 3) {
                         for (int so = 0; so < 4; so++) {
                             if (b.getLocation(c, r, so) == '-') {
                                 best = new Location(c, r, so);
@@ -82,7 +84,7 @@ public class Please implements PlayerInt {
                             }
                         }
                     }
-                    if (circle==3 && sheet==0) {
+                    if (circle == 3 && sheet == 0) {
                         for (int so = 0; so < 4; so++) {
                             if (b.getLocation(c, r, so) == '-') {
                                 best = new Location(c, r, so);
@@ -97,7 +99,7 @@ public class Please implements PlayerInt {
 //col
         for (int r = 0; r < 4; r++) {
             for (int s = 0; s < 4; s++) {
-                circle=0;
+                circle = 0;
                 col = 0;
                 for (int c = 0; c < 4; c++) {
                     if (b.getLocation(c, r, s) == getLetter()) {
@@ -106,18 +108,18 @@ public class Please implements PlayerInt {
                     if (!(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
                         circle++;
                     }
-                    if (circle==0 && col==3) {
+                    if (circle == 0 && col == 3) {
                         for (int co = 0; co < 4; co++) {
-                            if (b.getLocation(co, r, s) == '-'){
+                            if (b.getLocation(co, r, s) == '-') {
                                 best = new Location(co, r, s);
                                 return best;
 
                             }
                         }
                     }
-                    if (circle==3 && col==0) {
+                    if (circle == 3 && col == 0) {
                         for (int co = 0; co < 4; co++) {
-                            if (b.getLocation(co, r, s) == '-'){
+                            if (b.getLocation(co, r, s) == '-') {
                                 best = new Location(co, r, s);
                                 return best;
 
@@ -131,7 +133,7 @@ public class Please implements PlayerInt {
         //row check
         for (int s = 0; s < 4; s++) {
             for (int c = 0; c < 4; c++) {
-                circle=0;
+                circle = 0;
                 row = 0;
                 for (int r = 0; r < 4; r++) {
                     if (b.getLocation(c, r, s) == getLetter()) {
@@ -140,18 +142,18 @@ public class Please implements PlayerInt {
                     if (!(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
                         circle++;
                     }
-                    if (circle==0 && row==3) {
+                    if (circle == 0 && row == 3) {
                         for (int ro = 0; ro < 4; ro++) {
-                            if (b.getLocation(c, ro, s) == '-' ) {
+                            if (b.getLocation(c, ro, s) == '-') {
                                 best = new Location(c, ro, s);
                                 return best;
 
                             }
                         }
                     }
-                    if (circle==3 && row==0) {
+                    if (circle == 3 && row == 0) {
                         for (int ro = 0; ro < 4; ro++) {
-                            if (b.getLocation(c, ro, s) == '-' ) {
+                            if (b.getLocation(c, ro, s) == '-') {
                                 best = new Location(c, ro, s);
                                 return best;
 
@@ -185,12 +187,12 @@ public class Please implements PlayerInt {
                         for (int ro = 0; ro < 4; ro++) {
                             for (int co = 0; co < 4; co += 1) {
                                 for (int so = 0; so < 4; so += 1) {
-                                    
+
                                     if (ro == so && ro == co && so == co && b.getLocation(co, ro, so) == '-') {
                                         best = new Location(co, ro, so);
                                         return best;
                                     }
-                                    
+
                                 }
                             }
                         }
@@ -214,7 +216,7 @@ public class Please implements PlayerInt {
             }
         }
         //right to left
-        for (int r = 3; r >=0; r--) {
+        for (int r = 3; r >= 0; r--) {
             circle = 0;
             diagonals = 0;
             for (int s = 3; s >= 0; s--) {
@@ -225,14 +227,14 @@ public class Please implements PlayerInt {
                     if ((r == 0 && s == 3 && c == 0) && (r == 1 && s == 2 && c == 1) && (r == 2 && s == 1 && c == 2) && (r == 3 && s == 0 && c == 3) && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
                         circle++;
                     }
-                   
+
                     if (circle == 3 && diagonals == 0) {
-                        
+
                         for (int ro = 3; ro >= 0; ro--) {
                             for (int co = 3; co >= 0; co--) {
                                 for (int so = 3; so >= 0; so--) {
-                                    
-                                    if ((ro == 0 && so == 3 && co == 0) && (ro == 1 && so == 2 && co == 1) && (ro == 2 && so == 1 && co == 2) 
+
+                                    if ((ro == 0 && so == 3 && co == 0) && (ro == 1 && so == 2 && co == 1) && (ro == 2 && so == 1 && co == 2)
                                             && (ro == 3 && so == 0 && co == 3) && b.getLocation(co, ro, so) == '-') {
                                         best = new Location(co, ro, so);
                                         return best;
@@ -242,7 +244,7 @@ public class Please implements PlayerInt {
                         }
                     }
                     if (circle == 0 && diagonals == 3) {
-                        
+
                         for (int ro = 3; ro >= 0; ro--) {
                             for (int co = 3; co >= 0; co--) {
                                 for (int so = 3; so >= 0; so--) {
@@ -259,65 +261,202 @@ public class Please implements PlayerInt {
                 }
             }
         }
-        return best;
+
+        circle = 0;
+        diagonals = 0;
+        for (int r = 0; r < 4; r++) {
+            for (int s = 0; s < 4; s++) {
+                for (int c = 0; c < 4; c++) {
+
+                    if ((r == 0 && s == 0 && c == 0) && (r == 1 && s == 1 && c == 1) && (r == 2 && s == 2 && c == 2) && (r == 3 && s == 3 && c == 3) && b.getLocation(c, r, s) == getLetter()) {
+                        diagonals++;
+                    }
+                    if ((r == 0 && s == 0 && c == 0) && (r == 1 && s == 1 && c == 1) && (r == 2 && s == 2 && c == 2) && (r == 3 && s == 3 && c == 3) && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
+                        circle++;
+                    }
+
+                    if (circle == 3 && diagonals == 0) {
+
+                        for (int ro = 0; ro < 4; ro++) {
+                            for (int co = 0; co < 4; co += 1) {
+                                for (int so = 0; so < 4; so += 1) {
+
+                                    if ((ro == 0 && so == 0 && co == 0) && (ro == 1 && so == 1 && co == 1) && (ro == 2 && so == 2 && co == 2)
+                                            && (ro == 3 && so == 3 && co == 3) && b.getLocation(co, ro, so) == '-') {
+                                        best = new Location(co, ro, so);
+                                        return best;
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+                    if (circle == 0 && diagonals == 3) {
+
+                        for (int ro = 0; ro < 4; ro++) {
+                            for (int co = 0; co < 4; co += 1) {
+                                for (int so = 0; so < 4; so += 1) {
+                                    if ((ro == 0 && so == 0 && co == 0) && (ro == 1 && so == 1 && co == 1) && (ro == 2 && so == 2 && co == 2)
+                                            && (ro == 3 && so == 3 && co == 3) && b.getLocation(co, ro, so) == '-') {
+                                        best = new Location(co, ro, so);
+                                        return best;
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        circle = 0;
+        diagonals = 0;
+        for (int r = 0; r < 4; r++) {
+            for (int s = 0; s < 4; s++) {
+                for (int c = 0; c < 4; c++) {
+                    if ((r == 0 && s == 0 && c == 3) && (r == 1 && s == 1 && c == 2) && (r == 2 && s == 2 && c == 1) && (r == 3 && s == 3 && c == 0) && b.getLocation(c, r, s) == getLetter()) {
+                        diagonals++;
+                    }
+                    if ((r == 0 && s == 0 && c == 3) && (r == 1 && s == 1 && c == 2) && (r == 2 && s == 2 && c == 1) && (r == 3 && s == 3 && c == 0) && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
+                        circle++;
+                    }
+                    if (circle == 3 && diagonals == 0) {
+
+                        for (int ro = 0; ro < 4; ro++) {
+                            for (int co = 0; co < 4; co += 1) {
+                                for (int so = 0; so < 4; so += 1) {
+
+                                    if ((ro == 0 && so == 0 && co == 3) && (ro == 1 && so == 1 && co == 2) && (ro == 2 && so == 2 && co == 1)
+                                            && (ro == 3 && so == 3 && co == 0) && b.getLocation(co, ro, so) == '-') {
+                                        best = new Location(co, ro, so);
+                                        return best;
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+                    if (circle == 0 && diagonals == 3) {
+
+                        for (int ro = 0; ro < 4; ro++) {
+                            for (int co = 0; co < 4; co += 1) {
+                                for (int so = 0; so < 4; so += 1) {
+                                    if ((ro == 0 && so == 0 && co == 3) && (ro == 1 && so == 1 && co == 2) && (ro == 2 && so == 2 && co == 1)
+                                            && (ro == 3 && so == 3 && co == 0) && b.getLocation(co, ro, so) == '-') {
+                                        best = new Location(co, ro, so);
+                                        return best;
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+            }
+        }
+
+
+        circle = 0;
+        diagonals = 0;
+        for (int r = 0; r < 4; r++) {
+            for (int s = 0; s < 4; s++) {
+                for (int c = 0; c < 4; c++) {
+                    if ((r == 3 && s == 0 && c == 0) && (r == 2 && s == 1 && c == 1) && (r == 1 && s == 2 && c == 2) && (r == 0 && s == 3 && c == 3) && b.getLocation(c, r, s) == getLetter()) {
+                        diagonals++;
+                    }
+                    if ((r == 3 && s == 0 && c == 0) && (r == 2 && s == 1 && c == 1) && (r == 1 && s == 2 && c == 2) && (r == 0 && s == 3 && c == 3) && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
+                        circle++;
+                    }
+                }
+                if (circle == 3 && diagonals == 0) {
+
+                    for (int ro = 0; ro < 4; ro++) {
+                        for (int co = 0; co < 4; co += 1) {
+                            for (int so = 0; so < 4; so += 1) {
+
+                                if ((ro == 3 && so == 0 && co == 0) && (ro == 2 && so == 1 && co == 1) && (ro == 1 && so == 2 && co == 2) && (ro == 0 && so == 3 && co == 3) && b.getLocation(co, ro, so) == '-') {
+                                    best = new Location(co, ro, so);
+                                    return best;
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+                if (circle == 0 && diagonals == 3) {
+
+                    for (int ro = 0; ro < 4; ro++) {
+                        for (int co = 0; co < 4; co += 1) {
+                            for (int so = 0; so < 4; so += 1) {
+
+                                if ((ro == 3 && so == 0 && co == 0) && (ro == 2 && so == 1 && co == 1) && (ro == 1 && so == 2 && co == 2) && (ro == 0 && so == 3 && co == 3) && b.getLocation(co, ro, so) == '-') {
+                                    best = new Location(co, ro, so);
+                                    return best;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        circle = 0;
+        diagonals = 0;
+        for (int r = 0; r < 4; r++) {
+            for (int s = 0; s < 4; s++) {
+                for (int c = 0; c < 4; c++) {
+                    if ((r == 3 && s == 0 && c == 3) && (r == 2 && s == 1 && c == 2) && (r == 1 && s == 2 && c == 1) && (r == 0 && s == 3 && c == 0) && b.getLocation(c, r, s) == getLetter()) {
+                        diagonals++;
+                    }
+                    if ((r == 3 && s == 0 && c == 3) && (r == 2 && s == 1 && c == 2) && (r == 1 && s == 2 && c == 1) && (r == 0 && s == 3 && c == 0) && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
+                        circle++;
+                    }
+                    if (circle == 3 && diagonals == 0) {
+
+                        for (int ro = 0; ro < 4; ro++) {
+                            for (int co = 0; co < 4; co += 1) {
+                                for (int so = 0; so < 4; so += 1) {
+
+                                    if ((ro == 3 && so == 0 && co == 3) && (ro == 2 && so == 1 && co == 2) && (ro == 1 && so == 2 && co == 1)
+                                            && (ro == 0 && so == 3 && co == 0) && b.getLocation(co, ro, so) == '-') {
+                                        best = new Location(co, ro, so);
+                                        return best;
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+                    if (circle == 0 && diagonals == 3) {
+
+                        for (int ro = 0; ro < 4; ro++) {
+                            for (int co = 0; co < 4; co += 1) {
+                                for (int so = 0; so < 4; so += 1) {
+                                    if ((ro == 3 && so == 0 && co == 3) && (ro == 2 && so == 1 && co == 2) && (ro == 1 && so == 2 && co == 1)
+                                            && (ro == 0 && so == 3 && co == 0) && b.getLocation(co, ro, so) == '-') {
+                                        best = new Location(co, ro, so);
+                                        return best;
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+return best;
     }
-/* //
-    if ((r == 0 && s == 0 && c == 0) && (r == 1 && s == 1 && c == 1) && (r == 2 && s == 2 && c == 2) && (r == 3 && s == 3 && c == 3) && b.getLocation(c, r, s) == getLetter()) {
-        diagonals++;
-    }
-    if ((r == 0 && s == 0 && c == 0) && (r == 1 && s == 1 && c == 1) && (r == 2 && s == 2 && c == 2) && (r == 3 && s == 3 && c == 3) && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
-        circle++;
-    }
-    //
-    if ((r == 0 && s == 0 && c == 3) && (r == 1 && s == 1 && c == 2) && (r == 2 && s == 2 && c == 1) && (r == 3 && s == 3 && c == 0) && b.getLocation(c, r, s) == getLetter()) {
-        diagonals++;
-    }
-    if ((r == 0 && s == 0 && c == 3) && (r == 1 && s == 1 && c == 2) && (r == 2 && s == 2 && c == 1) && (r == 3 && s == 3 && c == 0) && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
-        circle++;
-    }
-    //
-    if ((r == 3 && s == 0 && c == 0) && (r == 2 && s == 1 && c == 1) && (r == 1 && s == 2 && c == 2) && (r == 0 && s == 3 && c == 3) && b.getLocation(c, r, s) == getLetter()) {
-        diagonals++;
-    }
-    if ((r == 3 && s == 0 && c == 0) && (r == 2 && s == 1 && c == 1) && (r == 1 && s == 2 && c == 2) && (r == 0 && s == 3 && c == 3) && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
-        circle++;
-    }
-    //
-    if ((r == 3 && s == 0 && c == 3) && (r == 2 && s == 1 && c == 2) && (r == 1 && s == 2 && c == 1) && (r == 0 && s == 3 && c == 0) && b.getLocation(c, r, s) == getLetter()) {
-        diagonals++;
-    }
-    if ((r == 3 && s == 0 && c == 3) && (r == 2 && s == 1 && c == 2) && (r == 1 && s == 2 && c == 1) && (r == 0 && s == 3 && c == 0) && !(b.getLocation(c, r, s) == getLetter()) && !(b.getLocation(c, r, s) == '-')) {
-        circle++;
-    }
-                    
-                    
-//
-    if ((ro == 0 && so == 0 && co == 0) && (ro == 1 && so == 1 && co == 1) && (ro == 2 && so == 2 && co == 2)
-            && (ro == 3 && so == 3 && co == 3) && b.getLocation(co, ro, so) == '-') {
-        best = new Location(co, ro, so);
-        return best;
-    }
-    //
-    if ((ro == 0 && so == 0 && co == 3) && (ro == 1 && so == 1 && co == 2) && (ro == 2 && so == 2 && co == 1)
-            && (ro == 3 && so == 3 && co == 0) && b.getLocation(co, ro, so) == '-') {
-        best = new Location(co, ro, so);
-        return best;
-    }
-    //
-    if ((ro == 3 && so == 0 && co == 0) && (ro == 2 && so == 1 && co == 1) && (ro == 1 && so == 2 && co == 2)
-            && (ro == 0 && so == 3 && co == 3) && b.getLocation(co, ro, so) == '-') {
-        best = new Location(co, ro, so);
-        return best;
-    }
-    //
-    if ((ro == 3 && so == 0 && co == 3) && (ro == 2 && so == 1 && co == 2) && (ro == 1 && so == 2 && co == 1)
-            && (ro == 0 && so == 3 && co == 0) && b.getLocation(co, ro, so) == '-') {
-        best = new Location(co, ro, so);
-        return best;
-    }
-        
- */
-    
+
+
     // Pre:       method is called
     // Post:   returns the name of the player
     public String getName() {
@@ -618,102 +757,6 @@ public class Please implements PlayerInt {
                 }
             }
             addMe(count);
-
-            //special dia 1 opp
-            count = 1;
-            for(int d =0;d<4;d++) {
-                if(b[d][d][d]==opp){
-                    count++;
-                }
-                else if(b[d][d][d]==mee) {
-                    count = 0;
-                    break;
-                }
-            }
-            addOpp(count);
-        }
-
-        //special dia 2
-        if(r==s){
-            //special dia 2 me
-            count = 1;
-            for(int d = 0;d<4;d++){
-                if(b[d][d][3-d]==mee) {
-                    count++;
-                }
-                else if(b[d][d][3-d]==opp) {
-                    count = 0;
-                    break;
-                }
-            }
-            addMe(count);
-            //special dia 2 opp
-            count = 1;
-            for(int d = 0;d<4;d++) {
-                if(b[d][d][3-d]==opp) {
-                    count++;
-                }
-                else if(b[d][d][3-d]==mee) {
-                    count = 0;
-                    break;
-                }
-            }
-            addOpp(count);
-        }
-        //special dia 3
-        if(r==c) {
-            //special dia 3 me
-            count = 1;
-            for(int d = 0;d<4;d++) {
-                if(b[3-d][d][d]==mee) {
-                    count++;
-                }
-                if(b[3-d][d][d]==opp) {
-                    count = 0;
-                    break;
-                }
-            }
-            addMe(count);
-            //special dia 3 opp
-            count = 1;
-            for(int d = 0;d<4;d++){
-                if(b[3-d][d][d]==opp) {
-                    count++;
-                }
-                if(b[3-d][d][d]==mee) {
-                    count = 0;
-                    break;
-                }
-            }
-            addOpp(count);
-        }
-
-        //special dia 4
-        if(c==s) {
-            //special dia 4 me
-            count = 1;
-            for(int a = 0;a<4;a++) {
-                if(b[3-a][a][3-a]==mee) {
-                    count++;
-                }
-                if(b[3-a][a][3-a]==opp) {
-                    count = 0;
-                    break;
-                }
-            }
-            addMe(count);
-            //special dia 4 opp
-            count = 1;
-            for(int a = 0;a<4;a++) {
-                if(b[3-a][a][3-a]==opp) {
-                    count++;
-                }
-                if(b[3-a][a][3-a]==mee) {
-                    count = 0;
-                    break;
-                }
-            }
-            addOpp(count);
         }
     }
 
